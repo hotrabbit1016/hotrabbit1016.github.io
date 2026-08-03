@@ -267,6 +267,16 @@
   th { color: var(--ink); font-weight: 700; white-space: nowrap; }
   td { color: var(--soft); }
 
+  /* ---------- about meta (學歷/語言) ---------- */
+  .meta { margin-top: 20px; border-top: 1px solid var(--line); padding-top: 15px; }
+  .meta-row { display: flex; gap: 15px; align-items: baseline; margin-bottom: 6px; }
+  .meta-row:last-child { margin-bottom: 0; }
+  .meta-k {
+    color: var(--faint); font-size: .76rem; letter-spacing: 1.6px; text-transform: uppercase;
+    font-weight: 700; min-width: 74px; flex: none;
+  }
+  .meta-v { color: var(--soft); font-size: .95rem; }
+
   /* ---------- footer ---------- */
   footer {
     border-top: 1px solid var(--line); margin-top: 20px;
@@ -348,11 +358,21 @@
       <p>5 年後端開發，都在線上娛樂平台。主力是 C#/.NET，寫過玩家下注、結算、營運後台這類典型的 API 與即時推播服務；另外也用 Go 做過稽核資料管道，用 Python 做實體賽道的硬體控制與 AI 影像判定。</p>
       <p>比較不一樣的地方是我的工作同時橫跨軟硬兩端。一端是雲上的分散式服務，另一端是會真的壞掉的實體設備與不穩定的 AI 推論。這讓我很習慣處理「外部訊號不可信」的問題，也讓我在寫服務時比較在意失效路徑而不只是快樂路徑。</p>
       <p>這個網站是因為我的公開 GitHub 看不出我在做什麼——五年的專業作品都在公司的私有 GitLab 上，外人看不到。所以這裡放的不是程式碼，是那些程式碼背後的設計決策與取捨。</p>
+      <div class="meta">
+        <div class="meta-row"><span class="meta-k">學歷</span><span class="meta-v">國立中興大學　電機工程學系</span></div>
+        <div class="meta-row"><span class="meta-k">語言</span><span class="meta-v">中文（母語）、英文（TOEIC 770）</span></div>
+        <div class="meta-row"><span class="meta-k">所在地</span><span class="meta-v">新竹市</span></div>
+      </div>
     </div>
     <div class="l-en" style="max-width:76ch">
       <p>Five years of backend development, all of it on online entertainment platforms. Mostly C#/.NET — player betting, settlement, operations back-office: the usual mix of APIs and real-time push. I've also built an audit data pipeline in Go, and used Python for physical track control and AI-based result judging.</p>
       <p>What's less usual is that my work spans both sides. One end is distributed services in the cloud; the other is physical equipment that genuinely breaks, and inference that is never quite reliable. I've got used to treating external signals as untrustworthy, and I pay more attention to failure paths than to happy paths.</p>
       <p>I built this site because my public GitHub says nothing about what I actually do — five years of professional work sits in a company GitLab nobody outside can see. So what's here isn't code; it's the design decisions and trade-offs behind it.</p>
+      <div class="meta">
+        <div class="meta-row"><span class="meta-k">Education</span><span class="meta-v">National Chung Hsing University — Electrical Engineering</span></div>
+        <div class="meta-row"><span class="meta-k">Languages</span><span class="meta-v">Mandarin (native), English (TOEIC 770)</span></div>
+        <div class="meta-row"><span class="meta-k">Based in</span><span class="meta-v">Hsinchu, Taiwan</span></div>
+      </div>
     </div>
   </section>
 
@@ -647,21 +667,21 @@ consumer group → ClickHouse operation_logs</code></pre>
     <!-- ============ 5 ============ -->
     <article class="proj">
       <div class="proj-top">
-        <h3><span class="l-zh">AI 影像辨識賽果判定</span><span class="l-en">AI Result Judging from Video</span></h3>
-        <span class="proj-when">2022 – 2026</span>
+        <h3><span class="l-zh">彈珠賽事影像判定</span><span class="l-en">Marble Race Result Judging</span></h3>
+        <span class="proj-when">2024 &ndash; 2026</span>
       </div>
-      <div class="stack"><span>Python</span><span>YOLO</span><span>Roboflow</span><span>PyTorch</span><span>TensorFlow</span><span>OpenCV</span><span>ONNX</span><span>FastAPI</span><span>PyQt5</span></div>
-      <p class="lead"><span class="l-zh">分兩個階段：前期做真人棋牌類的視覺辨識，取代原本的條碼掃描；後期做彈珠賽事的即時排名判定。兩者都已上線運行。</span><span class="l-en">Two phases: first, visual recognition for live card games, replacing barcode scanning; later, real-time ranking for marble races. Both are in production.</span></p>
+      <div class="stack"><span>Python</span><span>YOLO</span><span>Roboflow</span><span>PyTorch</span><span>OpenCV</span><span>ONNX</span><span>FastAPI</span><span>PyQt5</span></div>
+      <p class="lead"><span class="l-zh">用影像辨識即時判定彈珠賽事的落球排名，取代人工判讀。已上線運行。</span><span class="l-en">Real-time ranking for marble races from video, replacing manual reading of the result. In production.</span></p>
       <ul class="l-zh">
-        <li>彈珠賽果以 Roboflow 標註並訓練 YOLO 模型，把每顆球訓練成獨立 class，排名系統就能直接用 class 辨識球體，繞過多物件追蹤的 ID switch 問題。</li>
+        <li>以 Roboflow 標註並訓練 YOLO 模型，把每顆球訓練成獨立 class，排名系統就能直接用 class 辨識球體，繞過多物件追蹤的 ID switch 問題。</li>
         <li>落球判定做成四狀態機。關鍵決定是所有閾值都用秒、不用幀數——YOLO 推論的 fps 會隨負載浮動，拿幀數當基準遲早會漂掉。</li>
         <li>二段時間確認用來容忍偶發的漏偵測，存活時間門檻濾掉開局瞬間的雜訊誤判，另有 stale 機制清除幽靈軌跡。</li>
         <li>排名依據取「最後一次被偵測到的時間」而不是確認落球的時刻，確認延遲才不會影響排名的公平性。</li>
         <li>對外以 FastAPI 提供賽果查詢，現場操作介面用 PyQt5；推論放在獨立執行緒，避免卡住 UI。</li>
       </ul>
       <ul class="l-en">
-        <li>For the marble races I labelled and trained a YOLO model in Roboflow, with each ball as its own class. The ranking system can then identify a ball directly by class, sidestepping the ID-switch problem in multi-object tracking.</li>
-        <li>Drop detection is a four-state machine. The key decision was to express every threshold in seconds rather than frames — inference fps drifts with load, so a frame-based threshold will eventually misjudge.</li>
+        <li>Labelled and trained a YOLO model in Roboflow, with each ball as its own class. The ranking system can then identify a ball directly by class, sidestepping the ID-switch problem in multi-object tracking.</li>
+        <li>Drop detection is a four-state machine. The key decision was to express every threshold in seconds rather than frames &mdash; inference fps drifts with load, so a frame-based threshold will eventually misjudge.</li>
         <li>A two-stage time confirmation absorbs occasional missed detections, a survival threshold filters out noise at the start of a round, and a stale rule clears ghost tracks.</li>
         <li>Ranking uses the time a ball was last seen, not the moment the drop was confirmed, so confirmation latency doesn't distort the result.</li>
         <li>Results are served over FastAPI, with a PyQt5 interface for staff on site. Inference runs on its own thread so the UI stays responsive.</li>
@@ -671,11 +691,11 @@ consumer group → ClickHouse operation_logs</code></pre>
         <summary><span class="l-zh">狀態機與五個閾值</span><span class="l-en">The state machine and its five thresholds</span></summary>
         <div class="dbody">
           <div class="l-zh">
-            <pre><code>ACTIVE ──越過判定線──▶ PENDING ──消失一段時間──▶ CONFIRMING
-                                                      │
-                          再消失一段時間 → 確認落球 ──▶ DROPPED
+            <pre><code>ACTIVE &#9472;&#9472;越過判定線&#9472;&#9472;&#9654; PENDING &#9472;&#9472;消失一段時間&#9472;&#9472;&#9654; CONFIRMING
+                                                      &#9474;
+                          再消失一段時間 &#8594; 確認落球 &#9472;&#9472;&#9654; DROPPED
 
-ACTIVE ──消失過久──▶ 清除（幽靈軌跡）</code></pre>
+ACTIVE &#9472;&#9472;消失過久&#9472;&#9472;&#9654; 清除（幽靈軌跡）</code></pre>
             <div class="tablewrap"><table>
               <thead><tr><th>閾值</th><th>防的是什麼</th></tr></thead>
               <tbody>
@@ -689,16 +709,16 @@ ACTIVE ──消失過久──▶ 清除（幽靈軌跡）</code></pre>
             <p>這套判定邏輯的前提是「模型一定會錯」。與其追求更高的辨識率，不如讓下游邏輯能吸收錯誤——漏偵測用時間容忍，誤判用存活門檻濾掉，兩種失效方式分開處理。</p>
           </div>
           <div class="l-en">
-            <pre><code>ACTIVE ──crosses the line──▶ PENDING ──gone a while──▶ CONFIRMING
-                                                           │
-                            gone again → drop confirmed ──▶ DROPPED
+            <pre><code>ACTIVE &#9472;&#9472;crosses the line&#9472;&#9472;&#9654; PENDING &#9472;&#9472;gone a while&#9472;&#9472;&#9654; CONFIRMING
+                                                           &#9474;
+                            gone again &#8594; drop confirmed &#9472;&#9472;&#9654; DROPPED
 
-ACTIVE ──gone too long──▶ cleared (ghost track)</code></pre>
+ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</code></pre>
             <div class="tablewrap"><table>
               <thead><tr><th>Threshold</th><th>What it guards against</th></tr></thead>
               <tbody>
                 <tr><td>Line position</td><td>Only a ball past the line enters the elimination flow</td></tr>
-                <tr><td>Disappearance time (into CONFIRMING)</td><td>Occasional missed detections — briefly gone isn't a drop</td></tr>
+                <tr><td>Disappearance time (into CONFIRMING)</td><td>Occasional missed detections &mdash; briefly gone isn't a drop</td></tr>
                 <tr><td>Confirmation time</td><td>A second stage before the drop is taken as final</td></tr>
                 <tr><td>Survival threshold</td><td>False positives at the start of a round taking a rank</td></tr>
                 <tr><td>Stale time</td><td>Ghost tracks that never reappear</td></tr>
@@ -713,6 +733,24 @@ ACTIVE ──gone too long──▶ cleared (ghost track)</code></pre>
     <!-- ============ 6 ============ -->
     <article class="proj">
       <div class="proj-top">
+        <h3><span class="l-zh">真人棋牌視覺辨識</span><span class="l-en">Live Card Game Recognition</span></h3>
+        <span class="proj-when">2022 &ndash; 2024</span>
+      </div>
+      <div class="stack"><span>Python</span><span>TensorFlow</span><span>OpenCV</span></div>
+      <p class="lead"><span class="l-zh">真人棋牌桌的牌面視覺辨識，取代原本的條碼掃描流程。這是我做影像辨識的起點，後來彈珠賽事那套判定邏輯也是從這裡累積出來的經驗。</span><span class="l-en">Card recognition for live card tables, replacing a barcode-scanning workflow. This was where my computer-vision work started, and the judging logic I later built for the marble races grew out of it.</span></p>
+      <ul class="l-zh">
+        <li>以 TensorFlow 訓練棋牌辨識模型，讓系統直接從影像判讀牌面，牌組不再需要依賴條碼。</li>
+        <li>辨識結果進入賽局流程後，仍保留現場人工確認這一關，模型判斷不會單獨決定一局的結果。</li>
+      </ul>
+      <ul class="l-en">
+        <li>Trained a TensorFlow model to read cards straight from video, so the decks no longer had to carry barcodes.</li>
+        <li>A recognised result still passes through human confirmation on site — the model's judgement never decides a round on its own.</li>
+      </ul>
+    </article>
+
+    <!-- ============ 7 ============ -->
+    <article class="proj">
+      <div class="proj-top">
         <h3><span class="l-zh">Webhook 對接模擬器</span><span class="l-en">Webhook Integration Simulator</span></h3>
         <span class="proj-when">2026</span>
       </div>
@@ -722,19 +760,6 @@ ACTIVE ──gone too long──▶ cleared (ghost track)</code></pre>
 
   </section>
 
-  <section id="education">
-    <h2><span class="l-zh">學歷與語言</span><span class="l-en">Education &amp; Languages</span></h2>
-    <div class="skillgrid">
-      <div class="card">
-        <h3><span class="l-zh">學歷</span><span class="l-en">Education</span></h3>
-        <p><span class="l-zh">國立中興大學　電機工程學系</span><span class="l-en">National Chung Hsing University — Electrical Engineering</span></p>
-      </div>
-      <div class="card">
-        <h3><span class="l-zh">語言</span><span class="l-en">Languages</span></h3>
-        <p><span class="l-zh">中文（母語）、英文（TOEIC 770）</span><span class="l-en">Mandarin (native), English (TOEIC 770)</span></p>
-      </div>
-    </div>
-  </section>
 
 </main>
 
