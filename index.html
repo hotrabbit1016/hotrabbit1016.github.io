@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>吳承儒 Jack Wu — 後端工程師 / Backend Engineer</title>
+<meta name="description" content="後端工程師，五年線上娛樂平台經驗。C#/.NET、Go、Python；分散式租約、稽核資料管道、實體硬體控制與 AI 影像判定。Backend engineer with five years on online entertainment platforms.">
+<link rel="canonical" href="https://hotrabbit1016.github.io/">
+<meta name="author" content="吳承儒 Jack Wu">
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="profile">
+<meta property="og:url" content="https://hotrabbit1016.github.io/">
+<meta property="og:title" content="吳承儒 Jack Wu — 後端工程師 / Backend Engineer">
+<meta property="og:description" content="五年線上娛樂平台後端。C#/.NET、Go、Python；從分散式服務寫到會壞掉的實體硬體。">
+<meta property="og:image" content="https://hotrabbit1016.github.io/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="吳承儒 Jack Wu — 後端工程師 / Backend Engineer">
+<meta name="twitter:description" content="五年線上娛樂平台後端。C#/.NET、Go、Python；從分散式服務寫到會壞掉的實體硬體。">
+<meta name="twitter:image" content="https://hotrabbit1016.github.io/og.png">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='13' fill='%23234a6d'/><text x='32' y='45' font-size='32' font-family='Helvetica,Arial,sans-serif' font-weight='700' fill='%23ffffff' text-anchor='middle'>JW</text></svg>">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "吳承儒",
+  "alternateName": "Jack Wu",
+  "url": "https://hotrabbit1016.github.io/",
+  "jobTitle": "Backend Engineer",
+  "description": "Backend engineer with five years of experience on online entertainment platforms, spanning distributed services, hardware control and computer vision.",
+  "knowsAbout": ["C#", ".NET", "Go", "Python", "Redis", "ClickHouse", "Kubernetes", "SignalR", "RabbitMQ", "Distributed Systems", "YOLO", "Computer Vision", "Embedded Systems"],
+  "alumniOf": { "@type": "CollegeOrUniversity", "name": "National Chung Hsing University" },
+  "sameAs": ["https://github.com/hotrabbit1016"],
+  "address": { "@type": "PostalAddress", "addressLocality": "Hsinchu", "addressCountry": "TW" }
+}
+</script>
+
+<style>
+  :root {
+    --bg: #fbfbfc;
+    --panel: #ffffff;
+    --ink: #16191d;
+    --soft: #5b636d;
+    --faint: #8b929b;
+    --line: #e2e5ea;
+    --chip: #f0f3f6;
+    --accent: #234a6d;
+    --accent-soft: #eaf1f7;
+    --code-bg: #f5f7f9;
+    --shadow: 0 1px 2px rgba(20,25,35,.05), 0 8px 24px rgba(20,25,35,.04);
+  }
+  html[data-theme="dark"] {
+    --bg: #0f1216;
+    --panel: #161b21;
+    --ink: #e8ebef;
+    --soft: #a2abb6;
+    --faint: #737d88;
+    --line: #262d36;
+    --chip: #1e252d;
+    --accent: #7fb3dd;
+    --accent-soft: #17242f;
+    --code-bg: #131920;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.22);
+  }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) {
+      --bg: #0f1216;
+      --panel: #161b21;
+      --ink: #e8ebef;
+      --soft: #a2abb6;
+      --faint: #737d88;
+      --line: #262d36;
+      --chip: #1e252d;
+      --accent: #7fb3dd;
+      --accent-soft: #17242f;
+      --code-bg: #131920;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.22);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Helvetica Neue", Helvetica, Arial, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ---------- language switching ---------- */
+  html[data-lang="zh"] .l-en { display: none !important; }
+  html[data-lang="en"] .l-zh { display: none !important; }
+
+  /* ---------- skip link ---------- */
+  .skip {
+    position: absolute; left: -9999px; top: 0; z-index: 100;
+    background: var(--accent); color: #fff; padding: 10px 16px; border-radius: 0 0 6px 0;
+  }
+  .skip:focus { left: 0; }
+
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(180%) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-in {
+    max-width: 1000px; margin: 0 auto; padding: 10px 22px;
+    display: flex; align-items: center; gap: 18px;
+  }
+  .brand { font-weight: 700; letter-spacing: .5px; margin-right: auto; white-space: nowrap; }
+  .navlinks { display: flex; gap: 16px; flex-wrap: wrap; }
+  .navlinks a {
+    color: var(--soft); text-decoration: none; font-size: .87rem; padding: 3px 0;
+    border-bottom: 1.5px solid transparent;
+  }
+  .navlinks a:hover, .navlinks a.on { color: var(--ink); border-bottom-color: var(--accent); }
+  .toggles { display: flex; gap: 7px; }
+  .tbtn {
+    background: var(--chip); color: var(--soft); border: 1px solid var(--line);
+    border-radius: 999px; padding: 4px 11px; font-size: .8rem; cursor: pointer;
+    font-family: inherit; line-height: 1.5; white-space: nowrap;
+  }
+  .tbtn:hover { color: var(--ink); border-color: var(--accent); }
+
+  /* ---------- layout ---------- */
+  main { max-width: 1000px; margin: 0 auto; padding: 0 22px 90px; }
+  section { padding-top: 58px; }
+  h2 {
+    font-size: 1.06rem; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 22px; font-weight: 700;
+    display: flex; align-items: center; gap: 13px;
+  }
+  h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  p { margin: 0 0 15px; }
+
+  /* ---------- hero ---------- */
+  .hero { padding-top: 68px; }
+  .hero h1 {
+    font-size: clamp(2.1rem, 6vw, 3.15rem); margin: 0 0 6px;
+    letter-spacing: 1px; line-height: 1.2;
+  }
+  .hero .alt { color: var(--faint); font-size: 1rem; letter-spacing: 2px; margin-bottom: 18px; }
+  .hero .role { font-size: 1.15rem; color: var(--accent); font-weight: 600; margin-bottom: 14px; }
+  .hero .pitch { font-size: 1.12rem; color: var(--soft); max-width: 63ch; margin-bottom: 26px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 30px; }
+  .chip {
+    background: var(--chip); border: 1px solid var(--line); color: var(--soft);
+    border-radius: 5px; padding: 3px 10px; font-size: .82rem; white-space: nowrap;
+  }
+  .cta { display: flex; flex-wrap: wrap; gap: 11px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+    border-radius: 7px; padding: 10px 19px; font-size: .93rem; font-weight: 600;
+    border: 1px solid var(--accent);
+  }
+  .btn-primary { background: var(--accent); color: var(--bg); }
+  .btn-primary:hover { opacity: .88; }
+  .btn-ghost { background: transparent; color: var(--accent); }
+  .btn-ghost:hover { background: var(--accent-soft); }
+  .btn svg { width: 17px; height: 17px; fill: currentColor; flex: none; }
+
+  /* ---------- skills ---------- */
+  .skillgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 13px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: 16px 18px; box-shadow: var(--shadow);
+  }
+  .card h3 {
+    margin: 0 0 9px; font-size: .82rem; letter-spacing: 1.4px; text-transform: uppercase;
+    color: var(--faint); font-weight: 700;
+  }
+  .card p { margin: 0; font-size: .94rem; color: var(--soft); line-height: 1.65; }
+
+  /* ---------- experience ---------- */
+  .job {
+    position: relative; padding-left: 26px; padding-bottom: 26px;
+    border-left: 2px solid var(--line);
+  }
+  .job:last-of-type { border-left-color: transparent; padding-bottom: 6px; }
+  .job::before {
+    content: ""; position: absolute; left: -6px; top: 8px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--bg);
+  }
+  .job-top { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; }
+  .job-co { font-weight: 700; font-size: 1.06rem; }
+  .job-when { color: var(--faint); font-size: .87rem; font-variant-numeric: tabular-nums; }
+  .job p { margin: 5px 0 0; color: var(--soft); font-size: .96rem; max-width: 70ch; }
+  .aside {
+    border-left: 3px solid var(--accent); background: var(--accent-soft);
+    padding: 12px 16px; border-radius: 0 8px 8px 0; color: var(--soft);
+    font-size: .93rem; margin-top: 8px;
+  }
+  .aside p:last-child { margin-bottom: 0; }
+
+  /* ---------- projects ---------- */
+  .proj {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    padding: 20px 22px; margin-bottom: 15px; box-shadow: var(--shadow);
+  }
+  .proj-top { display: flex; flex-wrap: wrap; gap: 3px 14px; align-items: baseline; margin-bottom: 11px; }
+  .proj h3 { margin: 0; font-size: 1.13rem; font-weight: 700; }
+  .proj-when { color: var(--faint); font-size: .86rem; font-variant-numeric: tabular-nums; }
+  .proj .stack { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 13px; }
+  .proj .stack span {
+    background: var(--chip); border: 1px solid var(--line); color: var(--faint);
+    border-radius: 4px; padding: 1px 8px; font-size: .78rem; white-space: nowrap;
+  }
+  .proj > .lead { color: var(--soft); margin-bottom: 12px; max-width: 76ch; }
+  ul { margin: 0 0 13px; padding-left: 21px; }
+  li { margin-bottom: 8px; color: var(--soft); }
+  li:last-child { margin-bottom: 0; }
+  li strong { color: var(--ink); }
+
+  details {
+    border-top: 1px dashed var(--line); margin-top: 14px; padding-top: 12px;
+  }
+  summary {
+    cursor: pointer; color: var(--accent); font-size: .9rem; font-weight: 600;
+    list-style: none; display: flex; align-items: center; gap: 7px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "▸"; transition: transform .18s ease; display: inline-block; font-size: .9em;
+  }
+  details[open] > summary::before { transform: rotate(90deg); }
+  details > div, details > .dbody { padding-top: 13px; }
+  details h4 {
+    margin: 16px 0 7px; font-size: .89rem; letter-spacing: .6px; color: var(--ink);
+    text-transform: uppercase; font-weight: 700;
+  }
+  details h4:first-child { margin-top: 0; }
+
+  pre {
+    background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px;
+    padding: 13px 15px; overflow-x: auto; font-size: .8rem; line-height: 1.6;
+    margin: 0 0 13px; color: var(--soft);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  code {
+    background: var(--code-bg); border: 1px solid var(--line); border-radius: 4px;
+    padding: .5px 5px; font-size: .86em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    overflow-wrap: anywhere; word-break: break-word;
+  }
+  pre code { background: none; border: none; padding: 0; font-size: 1em; }
+
+  .tablewrap { overflow-x: auto; margin-bottom: 13px; }
+  table { border-collapse: collapse; width: 100%; min-width: 460px; font-size: .89rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px 8px 0; border-bottom: 1px solid var(--line); }
+  th { color: var(--ink); font-weight: 700; white-space: nowrap; }
+  td { color: var(--soft); }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--line); margin-top: 20px;
+    padding: 26px 22px 40px; text-align: center; color: var(--faint); font-size: .88rem;
+  }
+  footer .flinks { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
+  footer a { text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    body { font-size: 15.5px; }
+    .topbar-in { padding: 9px 16px; gap: 12px; }
+    .navlinks { display: none; }
+    main { padding: 0 16px 70px; }
+    section { padding-top: 46px; }
+    .proj { padding: 17px 16px; }
+    .hero { padding-top: 46px; }
+  }
+
+  @media print {
+    .topbar, .cta, footer .flinks { display: none; }
+    body { background: #fff; color: #000; font-size: 10.5pt; }
+    details { display: block; }
+    details > .dbody, details > div { display: block !important; }
+    .proj { break-inside: avoid; box-shadow: none; }
+    a { color: #000; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main"><span class="l-zh">跳至主要內容</span><span class="l-en">Skip to content</span></a>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <span class="brand">吳承儒 <span style="color:var(--faint);font-weight:400">Jack Wu</span></span>
+    <nav class="navlinks" aria-label="Sections">
+      <a href="#about"><span class="l-zh">關於</span><span class="l-en">About</span></a>
+      <a href="#skills"><span class="l-zh">技術</span><span class="l-en">Skills</span></a>
+      <a href="#experience"><span class="l-zh">經歷</span><span class="l-en">Experience</span></a>
+      <a href="#projects"><span class="l-zh">專案</span><span class="l-en">Projects</span></a>
+    </nav>
+    <div class="toggles">
+      <button class="tbtn" id="langBtn" type="button" aria-label="Switch language">EN</button>
+      <button class="tbtn" id="themeBtn" type="button" aria-label="Switch colour theme">◐</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" id="top">
+    <h1>吳承儒</h1>
+    <div class="alt">Wu Cheng-Ju &nbsp;/&nbsp; Jack Wu</div>
+    <div class="role"><span class="l-zh">後端工程師</span><span class="l-en">Backend Engineer</span></div>
+    <p class="pitch">
+      <span class="l-zh">五年線上娛樂平台後端。一端是雲上的分散式服務，另一端是會真的壞掉的實體硬體。</span>
+      <span class="l-en">Five years of backend work on online entertainment platforms. One end is distributed services in the cloud; the other is physical hardware that genuinely breaks.</span>
+    </p>
+    <div class="chips">
+      <span class="chip">C# / .NET</span><span class="chip">Go</span><span class="chip">Python</span>
+      <span class="chip">Redis</span><span class="chip">ClickHouse</span><span class="chip">Kubernetes</span>
+      <span class="chip">SignalR</span><span class="chip">RabbitMQ</span><span class="chip">YOLO</span>
+    </div>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://github.com/hotrabbit1016" rel="me noopener">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.07-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A7.995 7.995 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        GitHub
+      </a>
+      <a class="btn btn-ghost" href="resume.pdf" download>
+        <span class="l-zh">下載履歷 PDF</span><span class="l-en">Download résumé</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2><span class="l-zh">關於</span><span class="l-en">About</span></h2>
+    <div class="l-zh" style="max-width:76ch">
+      <p>5 年後端開發，都在線上娛樂平台。主力是 C#/.NET，寫過玩家下注、結算、營運後台這類典型的 API 與即時推播服務；另外也用 Go 做過稽核資料管道，用 Python 做實體賽道的硬體控制與 AI 影像判定。</p>
+      <p>比較不一樣的地方是我的工作同時橫跨軟硬兩端。一端是雲上的分散式服務，另一端是會真的壞掉的實體設備與不穩定的 AI 推論。這讓我很習慣處理「外部訊號不可信」的問題，也讓我在寫服務時比較在意失效路徑而不只是快樂路徑。</p>
+      <p>這個網站是因為我的公開 GitHub 看不出我在做什麼——五年的專業作品都在公司的私有 GitLab 上，外人看不到。所以這裡放的不是程式碼，是那些程式碼背後的設計決策與取捨。</p>
+    </div>
+    <div class="l-en" style="max-width:76ch">
+      <p>Five years of backend development, all of it on online entertainment platforms. Mostly C#/.NET — player betting, settlement, operations back-office: the usual mix of APIs and real-time push. I've also built an audit data pipeline in Go, and used Python for physical track control and AI-based result judging.</p>
+      <p>What's less usual is that my work spans both sides. One end is distributed services in the cloud; the other is physical equipment that genuinely breaks, and inference that is never quite reliable. I've got used to treating external signals as untrustworthy, and I pay more attention to failure paths than to happy paths.</p>
+      <p>I built this site because my public GitHub says nothing about what I actually do — five years of professional work sits in a company GitLab nobody outside can see. So what's here isn't code; it's the design decisions and trade-offs behind it.</p>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2><span class="l-zh">技術能力</span><span class="l-en">Skills</span></h2>
+    <div class="skillgrid">
+      <div class="card">
+        <h3><span class="l-zh">後端</span><span class="l-en">Backend</span></h3>
+        <p>C# / .NET 10、ASP.NET Core、EF Core、Go（Gin、Ent、Uber Fx）、Python</p>
+      </div>
+      <div class="card">
+        <h3><span class="l-zh">即時與訊息</span><span class="l-en">Realtime &amp; Messaging</span></h3>
+        <p><span class="l-zh">SignalR（Hub 設計、重連治理）、WebSocket、RabbitMQ、NATS</span><span class="l-en">SignalR (hub design, reconnection), WebSocket, RabbitMQ, NATS</span></p>
+      </div>
+      <div class="card">
+        <h3><span class="l-zh">資料儲存</span><span class="l-en">Data Stores</span></h3>
+        <p><span class="l-zh">MySQL、Redis（Lua script、Stream、分散式鎖）、ClickHouse、Elasticsearch</span><span class="l-en">MySQL, Redis (Lua scripting, Streams, distributed locks), ClickHouse, Elasticsearch</span></p>
+      </div>
+      <div class="card">
+        <h3><span class="l-zh">部署與維運</span><span class="l-en">Infrastructure</span></h3>
+        <p>Docker、Kubernetes、Helm、GitLab CI、ArgoCD、Istio、OpenTelemetry</p>
+      </div>
+      <div class="card">
+        <h3><span class="l-zh">AI 與影像</span><span class="l-en">AI &amp; Vision</span></h3>
+        <p>YOLO、Roboflow、PyTorch、TensorFlow、OpenCV、ONNX</p>
+      </div>
+      <div class="card">
+        <h3><span class="l-zh">硬體介接</span><span class="l-en">Hardware</span></h3>
+        <p><span class="l-zh">SPI（MCP23S17）、UART / RF、Raspberry Pi、基礎電路焊接與電路板設計討論</span><span class="l-en">SPI (MCP23S17), UART / RF, Raspberry Pi, basic soldering and PCB design discussion</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <h2><span class="l-zh">經歷</span><span class="l-en">Experience</span></h2>
+
+    <div class="job">
+      <div class="job-top">
+        <span class="job-co"><span class="l-zh">泰鑫軟體</span><span class="l-en">Sentinel IT</span></span>
+        <span class="job-when">2024/01 – <span class="l-zh">現在</span><span class="l-en">present</span></span>
+      </div>
+      <p class="l-zh">公司經營者更換，原團隊與整條產品線一起移轉過來（2024/07 完成正式聘用）。負責桌台客戶端重構、營運後台、聊天平台稽核功能，以及實體賽道控制與 AI 賽果判定。</p>
+      <p class="l-en">The business changed hands and the whole team moved across with the product line (formal employment from 2024/07). Work covers the table-client rewrite, the operations back-office, audit logging for a chat platform, plus physical track control and AI result judging.</p>
+    </div>
+
+    <div class="job">
+      <div class="job-top">
+        <span class="job-co"><span class="l-zh">凱馺國際、鼎順數位科技</span><span class="l-en">Ifalo International · Dingshun Digital</span></span>
+        <span class="job-when">2021/04 – 2023/12</span>
+      </div>
+      <p class="l-zh">前後隸屬兩間公司，實際經營者與團隊相同，工作內容連續未中斷。從桌台系統的報表轉檔與狀態處理開始，後期負責玩家端下注服務與桌台現場管理服務。</p>
+      <p class="l-en">Two companies on paper, the same owner and the same team in practice — the work never broke. Started on report conversion and table state handling, later moved onto the player betting service and the on-site table management service.</p>
+    </div>
+
+    <div class="aside">
+      <p class="l-zh">這五年都是同一個團隊、同一條產品線。前期任職的兩間公司背後是同一位經營者，2024 年才真正換了經營者，團隊與系統一起移轉過去，所以下面的專案期間會跨越任職紀錄。</p>
+      <p class="l-en">All five years were with the same team on the same product line. The two earlier companies sat under one owner; 2024 was the only real change of employer, and the team moved with the system. That's why the project dates below cross the employment records.</p>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2><span class="l-zh">專案</span><span class="l-en">Projects</span></h2>
+
+    <!-- ============ 1 ============ -->
+    <article class="proj">
+      <div class="proj-top">
+        <h3><span class="l-zh">線上娛樂平台後端服務群</span><span class="l-en">Platform Backend Services</span></h3>
+        <span class="proj-when">2022 – 2026</span>
+      </div>
+      <div class="stack"><span>.NET</span><span>SignalR</span><span>RabbitMQ</span><span>Redis</span><span>EF Core</span><span>MySQL</span></div>
+      <p class="lead"><span class="l-zh">三個服務串起玩家端到營運端的鏈路，我負責其中的交易流程、即時推播與後台功能。</span><span class="l-en">Three services connecting the player side to the operations side. I worked on the transaction flows, the real-time push, and the back-office features.</span></p>
+      <ul class="l-zh">
+        <li><strong>PlayerGameServer</strong>——玩家下注與取消下注的交易流程，結算後以 SignalR 即時推播通知；跨服務的狀態變更走 MQ 事件處理。</li>
+        <li><strong>桌台營運後台</strong>——營運與客服端的管理後台，包含權限稽核、局結果更正流程，以及第三方開獎結果的驗證機制；管理員登入以 Otp.NET 加上二階段驗證。</li>
+        <li><strong>桌台現場管理服務</strong>——荷官與攝影棚端的 SignalR Hub，負責賽局流程的指令下發。開牌結果要經過 AI 辨識與現場人工雙重確認才算成立。</li>
+      </ul>
+      <ul class="l-en">
+        <li><strong>PlayerGameServer</strong> — the bet and bet-cancellation transaction flow, with settlement pushed to players over SignalR; cross-service state changes go through MQ events.</li>
+        <li><strong>Operations back-office</strong> — the admin console for operations and customer support: permission auditing, a correction flow for round results, and verification of third-party draw results. Admin login is backed by two-factor via Otp.NET.</li>
+        <li><strong>On-site table management</strong> — the SignalR hub for dealers and the studio, issuing round-flow commands. A revealed result only stands once AI recognition and a human on site both confirm it.</li>
+      </ul>
+    </article>
+
+    <!-- ============ 2 ============ -->
+    <article class="proj">
+      <div class="proj-top">
+        <h3><span class="l-zh">桌台客戶端重構</span><span class="l-en">Table Client Rewrite</span></h3>
+        <span class="proj-when">2025 – 2026</span>
+      </div>
+      <div class="stack"><span>.NET 10</span><span>Redis</span><span>Kubernetes</span><span>xUnit</span></div>
+      <p class="lead"><span class="l-zh">把原本的 WPF 桌面程式改成可容器化的 Console 服務，並解掉多 Pod 部署時同一張桌被重複接管的問題。主程式與測試由我獨立設計與實作，共用函式庫則是團隊共同維護。</span><span class="l-en">Turned a WPF desktop application into a containerisable console service, and fixed the problem of one table being taken over by two pods at once. I designed and wrote the main application and its tests; the shared libraries are maintained by the team.</span></p>
+      <ul class="l-zh">
+        <li>以 Redis + Lua script 實作桌台租約。用 Lua 而不是 GET-then-SET，是為了消掉 check-then-act 之間的 race——同一張桌被兩個 Pod 同時接管會造成重複下注，那是金流事故。</li>
+        <li>Supervisor–Worker 調度：每桌一個 worker 與獨立 DI scope，單桌異常不影響其他桌。續租失敗就主動停掉 worker，寧可短暫沒人服務，也不能兩個 Pod 同時操作同一張桌。</li>
+        <li>桌台生命週期改用 State Pattern，狀態分派收斂成單一 factory，未處理到的狀態一律落進錯誤復原。</li>
+        <li>補上覆蓋 8 個桌台狀態與調度核心的單元測試，並把時間相關邏輯改走 <code>TimeProvider</code>，倒數與掃描迴圈才能用假時鐘快進測試。</li>
+        <li>清掉版控裡的明文密碼與連線字串，改由 K8s Secret 注入。</li>
+      </ul>
+      <ul class="l-en">
+        <li>Table leases are implemented with Redis plus Lua scripts. Lua rather than GET-then-SET, because the gap between check and act is a real race — two pods driving the same table means duplicate bets, which is a money incident.</li>
+        <li>Supervisor–worker scheduling: one worker and one DI scope per table, so a fault on one table doesn't touch the others. If renewal fails the worker is stopped deliberately — a table briefly unattended is better than two pods acting on it.</li>
+        <li>The table lifecycle moved to a state pattern, with dispatch collapsed into a single factory and any unhandled state falling through to error recovery.</li>
+        <li>Added unit tests covering the eight table states and the scheduling core, and moved time-dependent logic onto <code>TimeProvider</code> so countdowns and scan loops can be fast-forwarded with a fake clock.</li>
+        <li>Removed plaintext passwords and connection strings from version control; they now come from Kubernetes secrets.</li>
+      </ul>
+
+      <details>
+        <summary><span class="l-zh">租約與調度的實作細節</span><span class="l-en">How the lease and scheduling work</span></summary>
+        <div class="dbody">
+          <div class="l-zh">
+            <h4>租約的三段 Lua script</h4>
+            <p>Key 是 <code>table-client:lease:{遊戲類型}:{桌號}</code>，value 存 podId，所以每張桌各自有一個 owner 標記。三個操作都必須先確認 owner 是自己：</p>
+            <pre><code>acquire  value 已是自己      → 續期
+         key 不存在         → SET PX 搶下
+         其他               → 回 0，不搶別人的
+
+renew    owner 相符才 pexpire
+
+release  owner 相符才 del</code></pre>
+            <p>拆成 GET 再 SET 或 DEL 的話，兩個動作之間有空窗，可能覆寫掉別人剛搶到的租約。放進 Lua 讓判斷與寫入變成一個原子操作。</p>
+            <h4>Supervisor 每輪掃描做的事</h4>
+            <pre><code>worker 存在但沒在跑  → 回收舊實例
+worker 不存在        → 搶租約；搶到才建 worker
+                       建立失敗要 rollback：
+                       dispose scope + 釋放租約
+worker 存在          → 續租；失敗就停掉 worker</code></pre>
+            <p>最後一條是刻意的取捨：租約失效代表這張桌的所有權可能已經被別人拿走，繼續操作的風險遠高於短暫停擺。關閉時統一釋放所有 worker、scope 與租約，支援 graceful shutdown。</p>
+            <h4>狀態機</h4>
+            <p>桌台共 10 種狀態，factory 顯式處理其中 7 種，其餘連同未定義值一律落進錯誤復原分支。整個系統只有這一處 switch，新增狀態只要改一個地方。</p>
+          </div>
+          <div class="l-en">
+            <h4>The three Lua scripts</h4>
+            <p>The key is <code>table-client:lease:{gameKind}:{tableNumber}</code> and the value holds the pod id, so every table carries its own owner marker. All three operations check ownership first:</p>
+            <pre><code>acquire  value already mine  → extend
+         key missing         → SET PX to claim
+         otherwise           → return 0, never steal
+
+renew    pexpire only if the owner matches
+
+release  del only if the owner matches</code></pre>
+            <p>Split into GET then SET or DEL, there is a window between the two calls where you can overwrite a lease someone else has just claimed. Inside Lua the check and the write are one atomic step.</p>
+            <h4>What the supervisor does each pass</h4>
+            <pre><code>worker exists but stopped → reclaim the old instance
+no worker                → try the lease; build only on success
+                            on failure roll back:
+                            dispose scope + release lease
+worker running           → renew; on failure stop the worker</code></pre>
+            <p>That last line is a deliberate trade-off. A lost lease means ownership may already have moved elsewhere, and carrying on is far riskier than a brief gap. On shutdown every worker, scope and lease is released together.</p>
+            <h4>State machine</h4>
+            <p>There are ten table states. The factory handles seven explicitly; everything else, including undefined values, falls into error recovery. It's the only switch on that enum in the codebase, so adding a state means touching one place.</p>
+          </div>
+        </div>
+      </details>
+    </article>
+
+    <!-- ============ 3 ============ -->
+    <article class="proj">
+      <div class="proj-top">
+        <h3><span class="l-zh">聊天平台操作稽核</span><span class="l-en">Chat Platform Audit Logging</span></h3>
+        <span class="proj-when">2026</span>
+      </div>
+      <div class="stack"><span>Go</span><span>ClickHouse</span><span>Redis Stream</span><span>Gin</span><span>Uber Fx</span></div>
+      <p class="lead"><span class="l-zh">多租戶聊天平台的稽核紀錄功能，從方案選型、設計文件到上線由我獨立完成。</span><span class="l-en">Audit logging for a multi-tenant chat platform — option analysis, design documents and delivery, done solo.</span></p>
+      <ul class="l-zh">
+        <li>選型時放棄「擴充既有 audit_logs」這個比較快的做法，改建獨立的 operation_logs 表。工時大約多一倍，換到的是業務語意跟 HTTP raw log 徹底分開，而且完全不動既有管道。</li>
+        <li>寫入走 Redis Stream 加 Consumer Group 再落 ClickHouse，稽核不拖慢主請求；ClickHouse 用 MergeTree 按日分區、TTL 自動過期。</li>
+        <li>Middleware 負責 HTTP 層語意（角色、選單、操作類型），Service 層負責變更前後的狀態快照，兩條路徑匯流到同一個 Stream 再合併寫入。</li>
+        <li>把 OperationType 與 Menu 做成實作 <code>encoding.TextUnmarshaler</code> 的封閉型別。一份實作同時擋住 Gin form binding 與 Redis Stream 的髒資料，非法值直接 400，而不是靜默回一個空結果。</li>
+        <li>查詢區間的界線踩到時區問題：QA 回報同一天查得到、但凌晨那幾個小時被擋掉。根因是前端以當地日界回推天數、後端跑 UTC，兩邊差了將近一天。最後決定後端不引入業務時區，只做寬鬆的 backstop 並多留一天緩衝吸收時差，精準界線交前端把關。</li>
+        <li>快照一開始記 base enum 跟裸 ID，後來全改成角色名與資源名。稽核紀錄的讀者是稽核人員，記 <code>role=3</code> 對他們沒有意義。</li>
+      </ul>
+      <ul class="l-en">
+        <li>The faster option was to extend the existing audit_logs table. I built a separate operation_logs table instead — roughly double the effort, in exchange for keeping business meaning fully apart from raw HTTP logs and leaving the existing pipeline untouched.</li>
+        <li>Writes go through a Redis stream and a consumer group before landing in ClickHouse, so auditing never slows the main request. The table is MergeTree, partitioned by day, with a TTL for expiry.</li>
+        <li>Middleware supplies the HTTP-level meaning (role, menu, operation type); the service layer supplies before/after state snapshots. Both paths meet in the same stream and are merged on write.</li>
+        <li>OperationType and Menu are closed types implementing <code>encoding.TextUnmarshaler</code>. One implementation guards both Gin form binding and the stream consumer, so an invalid value returns 400 instead of quietly yielding an empty result set.</li>
+        <li>The query window ran into a timezone problem: QA could query a given day, but the early-morning hours of it were rejected. The frontend counted back from local midnight while the backend ran on UTC — nearly a full day apart. I kept business timezones out of the backend, left it a loose backstop with an extra day of slack, and let the frontend enforce the precise boundary.</li>
+        <li>Snapshots first recorded base enums and bare IDs. I changed all of them to role and resource names — the people reading an audit trail are auditors, and <code>role=3</code> means nothing to them.</li>
+      </ul>
+
+      <details>
+        <summary><span class="l-zh">架構與那個時區決策</span><span class="l-en">Architecture, and that timezone call</span></summary>
+        <div class="dbody">
+          <div class="l-zh">
+            <h4>兩條寫入路徑</h4>
+            <pre><code>HTTP 請求
+   ↓
+operation_log middleware
+   讀 JWT / RBAC     → 角色
+   依路由推導        → 操作類型、選單
+   GET 白名單命中    → 查詢條件寫入 before_state
+   ↓
+Redis Stream ──── Service 層 CUD 方法
+   │                 操作前查詢 → before_state
+   │                 操作後查詢 → after_state
+   ↓
+Consumer Group → ClickHouse operation_logs</code></pre>
+            <p>Middleware 拿不到業務快照，Service 層拿不到 HTTP context，所以拆兩條路徑各自蒐集，再於 Stream 匯流。</p>
+            <h4>為什麼時區界線交給前端</h4>
+            <p>需求是「可查最近 N 天」。後端跑 UTC，前端在 UTC+8 以當地當天 00:00 往回推算，兩者最多差將近一天，結果邊界那天的凌晨時段會被後端誤擋——這是 QA 實際回報的 bug。</p>
+            <p>要在後端做精準判斷，就得把業務時區帶進後端邏輯。我選擇不這樣做：後端只做寬鬆的 backstop、多留一天緩衝吸收落差，精準的使用者體驗界線由前端負責。代價是後端實際可查的範圍比需求多一天，但換到的是後端保持時區無關。</p>
+            <h4>記錄粒度</h4>
+            <p>稽核紀錄記太少沒用，記太多等於沒記。GET 端點採白名單，只有命中的才記；前端自動輪詢可帶一個 header 略過記錄，避免列表刷新把有價值的紀錄洗掉。</p>
+          </div>
+          <div class="l-en">
+            <h4>Two write paths</h4>
+            <pre><code>HTTP request
+   ↓
+operation_log middleware
+   read JWT / RBAC      → role
+   derive from route    → operation type, menu
+   whitelisted GET      → query terms into before_state
+   ↓
+Redis Stream ──── service-layer CUD methods
+   │                 query before  → before_state
+   │                 query after   → after_state
+   ↓
+consumer group → ClickHouse operation_logs</code></pre>
+            <p>Middleware can't see business snapshots and the service layer can't see HTTP context, so each path collects what it can and they merge in the stream.</p>
+            <h4>Why the frontend owns the timezone boundary</h4>
+            <p>The requirement was "queryable for the last N days". The backend runs UTC; the frontend counts back from local midnight in UTC+8. Up to nearly a day apart, which meant the early hours of the boundary day were rejected — a bug QA actually filed.</p>
+            <p>Judging it precisely on the backend would mean pulling a business timezone into backend logic. I chose not to: the backend keeps a loose backstop with a day of slack, and the frontend owns the precise boundary. The cost is that the backend will serve a day more than the requirement; the gain is a backend that stays timezone-agnostic.</p>
+            <h4>How much to record</h4>
+            <p>Record too little and an audit trail is useless; record everything and it may as well be. GET endpoints are whitelisted, and the frontend's automatic polling can pass a header to skip logging, so list refreshes don't flush out the entries that matter.</p>
+          </div>
+        </div>
+      </details>
+    </article>
+
+    <!-- ============ 4 ============ -->
+    <article class="proj">
+      <div class="proj-top">
+        <h3><span class="l-zh">實體賽道控制與韌體</span><span class="l-en">Physical Track Control &amp; Firmware</span></h3>
+        <span class="proj-when">2024 – 2026</span>
+      </div>
+      <div class="stack"><span>Python</span><span>SPI</span><span>UART/RF</span><span>Raspberry Pi</span><span>Flask</span><span>OpenTelemetry</span></div>
+      <p class="lead"><span class="l-zh">控制 8 條實體賽道（含一條實體測試賽道）的自動化系統，從硬體驅動到 Web 監控介面由我獨立開發。除了控制軟體，也寫韌體、跟外部廠商一起討論電路板設計、做基礎焊接。</span><span class="l-en">The automation system driving eight physical tracks (one of them a physical test track), built solo from the hardware drivers up to the web monitor. Alongside the control software I wrote firmware, worked with an external vendor on the board design, and did the basic soldering.</span></p>
+      <ul class="l-zh">
+        <li>硬體抽象層以 SPI 驅動 MCP23S17 I/O Expander，讀取最多 28 路光學感測器，並自動偵測新舊兩代感測板，讓同一份程式碼吃兩種硬體。</li>
+        <li>RF 閘門驅動是最難的一塊，實體環境什麼都會壞，所以疊了六層防禦（展開看細節）。</li>
+        <li>賽道流程用 Strategy 加 Factory，8 條賽道各有自己的開賽條件與結束判定，新增一條只要加一個 flow 並註冊，不動主控迴圈。</li>
+        <li>偵測不到硬體時自動退回模擬模式，開發者在沒有 SPI 的 Mac 上也能跑完整流程。</li>
+        <li>依賽事事件切換 OBS 場景，把遊戲邏輯與直播導播串起來。三個進程分別以 systemd 常駐，監控介面掛掉不會影響賽道控制。</li>
+      </ul>
+      <ul class="l-en">
+        <li>The hardware layer drives an MCP23S17 I/O expander over SPI to read up to 28 optical sensors, and detects which of two sensor-board generations is present so one codebase serves both.</li>
+        <li>The RF gate driver was the hard part. In a physical setting everything fails eventually, so it ended up with six layers of defence (details below).</li>
+        <li>Track flows use strategy plus factory: each of the eight tracks has its own start conditions and finish rules, and adding one means adding a flow and registering it, without touching the main loop.</li>
+        <li>When no hardware is detected it falls back to a simulation mode, so a developer on a Mac with no SPI can still run the whole flow.</li>
+        <li>OBS scenes switch on race events, tying game logic to the broadcast. Three processes run under systemd, so losing the monitor UI doesn't affect track control.</li>
+      </ul>
+
+      <details>
+        <summary><span class="l-zh">RF 驅動的六層防禦，以及各自防什麼</span><span class="l-en">Six layers in the RF driver, and what each one is for</span></summary>
+        <div class="dbody">
+          <div class="l-zh">
+            <div class="tablewrap"><table>
+              <thead><tr><th>機制</th><th>防的是什麼</th></tr></thead>
+              <tbody>
+                <tr><td>指數退避重試</td><td>RF 干擾與封包遺失</td></tr>
+                <tr><td>port 重新初始化的斷路器（強制 2 秒冷卻）</td><td>USB 連續斷線引發 reinit 風暴，進而級聯崩潰</td></tr>
+                <tr><td>明確拉低 DTR/RTS，不依賴特定晶片行為</td><td>USB-to-serial 模組被控制線 toggle 重置</td></tr>
+                <tr><td>閒置時每秒探測 CTS</td><td>USB autosuspend 讓裝置睡著</td></tr>
+                <tr><td><code>atexit</code> 收尾，關閉前清除控制線</td><td>重啟後留下 zombie handle</td></tr>
+                <tr><td>write timeout</td><td>裝置 TX buffer 卡住時無限阻塞</td></tr>
+              </tbody>
+            </table></div>
+            <p>每一層都對應一個實際踩過的狀況，不是預先想像出來的。這也是我後來寫服務時比較在意失效路徑的原因——實體環境會用各種方式提醒你，樂觀假設不成立。</p>
+            <h4>雙代感測板自動偵測</h4>
+            <p>舊板一顆晶片 12 路感測器，新板兩顆 28 路。兩顆晶片的硬體位址都是 0，靠獨立的 chip select 區分。程式先建第一顆，再嘗試建第二顆並標記是否存在，感測器數量上限隨偵測結果決定，所以舊賽道不需要維護另一個分支。</p>
+          </div>
+          <div class="l-en">
+            <div class="tablewrap"><table>
+              <thead><tr><th>Mechanism</th><th>What it guards against</th></tr></thead>
+              <tbody>
+                <tr><td>Exponential backoff on retry</td><td>RF interference and dropped packets</td></tr>
+                <tr><td>Circuit breaker on port re-init (2-second cooldown)</td><td>Repeated USB drops causing a re-init storm, then a cascading failure</td></tr>
+                <tr><td>DTR/RTS driven low explicitly, no reliance on chip behaviour</td><td>USB-to-serial modules being reset by control-line toggling</td></tr>
+                <tr><td>CTS probed once a second while idle</td><td>USB autosuspend putting the device to sleep</td></tr>
+                <tr><td><code>atexit</code> cleanup, control lines cleared before close</td><td>Zombie handles left behind after a restart</td></tr>
+                <tr><td>Write timeout</td><td>Blocking forever when the device TX buffer stalls</td></tr>
+              </tbody>
+            </table></div>
+            <p>Every layer maps to something that actually happened, not something imagined up front. It's also why I now pay attention to failure paths in services — a physical setup finds plenty of ways to show you that optimistic assumptions don't hold.</p>
+            <h4>Detecting two sensor-board generations</h4>
+            <p>The older board has one chip and 12 sensors; the newer one has two chips and 28. Both chips sit at hardware address 0 and are told apart by separate chip-select lines. The code brings up the first chip, tries the second and records whether it answered, and the sensor limit follows from that — so older tracks don't need a separate branch.</p>
+          </div>
+        </div>
+      </details>
+    </article>
+
+    <!-- ============ 5 ============ -->
+    <article class="proj">
+      <div class="proj-top">
+        <h3><span class="l-zh">AI 影像辨識賽果判定</span><span class="l-en">AI Result Judging from Video</span></h3>
+        <span class="proj-when">2022 – 2026</span>
+      </div>
+      <div class="stack"><span>Python</span><span>YOLO</span><span>Roboflow</span><span>PyTorch</span><span>TensorFlow</span><span>OpenCV</span><span>ONNX</span><span>FastAPI</span><span>PyQt5</span></div>
+      <p class="lead"><span class="l-zh">分兩個階段：前期做真人棋牌類的視覺辨識，取代原本的條碼掃描；後期做彈珠賽事的即時排名判定。兩者都已上線運行。</span><span class="l-en">Two phases: first, visual recognition for live card games, replacing barcode scanning; later, real-time ranking for marble races. Both are in production.</span></p>
+      <ul class="l-zh">
+        <li>彈珠賽果以 Roboflow 標註並訓練 YOLO 模型，把每顆球訓練成獨立 class，排名系統就能直接用 class 辨識球體，繞過多物件追蹤的 ID switch 問題。</li>
+        <li>落球判定做成四狀態機。關鍵決定是所有閾值都用秒、不用幀數——YOLO 推論的 fps 會隨負載浮動，拿幀數當基準遲早會漂掉。</li>
+        <li>二段時間確認用來容忍偶發的漏偵測，存活時間門檻濾掉開局瞬間的雜訊誤判，另有 stale 機制清除幽靈軌跡。</li>
+        <li>排名依據取「最後一次被偵測到的時間」而不是確認落球的時刻，確認延遲才不會影響排名的公平性。</li>
+        <li>對外以 FastAPI 提供賽果查詢，現場操作介面用 PyQt5；推論放在獨立執行緒，避免卡住 UI。</li>
+      </ul>
+      <ul class="l-en">
+        <li>For the marble races I labelled and trained a YOLO model in Roboflow, with each ball as its own class. The ranking system can then identify a ball directly by class, sidestepping the ID-switch problem in multi-object tracking.</li>
+        <li>Drop detection is a four-state machine. The key decision was to express every threshold in seconds rather than frames — inference fps drifts with load, so a frame-based threshold will eventually misjudge.</li>
+        <li>A two-stage time confirmation absorbs occasional missed detections, a survival threshold filters out noise at the start of a round, and a stale rule clears ghost tracks.</li>
+        <li>Ranking uses the time a ball was last seen, not the moment the drop was confirmed, so confirmation latency doesn't distort the result.</li>
+        <li>Results are served over FastAPI, with a PyQt5 interface for staff on site. Inference runs on its own thread so the UI stays responsive.</li>
+      </ul>
+
+      <details>
+        <summary><span class="l-zh">狀態機與五個閾值</span><span class="l-en">The state machine and its five thresholds</span></summary>
+        <div class="dbody">
+          <div class="l-zh">
+            <pre><code>ACTIVE ──越過判定線──▶ PENDING ──消失一段時間──▶ CONFIRMING
+                                                      │
+                          再消失一段時間 → 確認落球 ──▶ DROPPED
+
+ACTIVE ──消失過久──▶ 清除（幽靈軌跡）</code></pre>
+            <div class="tablewrap"><table>
+              <thead><tr><th>閾值</th><th>防的是什麼</th></tr></thead>
+              <tbody>
+                <tr><td>判定線位置</td><td>只有越線的球才進入淘汰流程</td></tr>
+                <tr><td>消失時間（進 CONFIRMING）</td><td>容忍 YOLO 偶發漏偵測，消失一下不算落球</td></tr>
+                <tr><td>確認時間</td><td>二段確認，再等一段時間才判定成立</td></tr>
+                <tr><td>存活時間門檻</td><td>過濾開局瞬間的誤判，雜訊不佔排名</td></tr>
+                <tr><td>stale 時間</td><td>清除長時間沒再出現的幽靈軌跡</td></tr>
+              </tbody>
+            </table></div>
+            <p>這套判定邏輯的前提是「模型一定會錯」。與其追求更高的辨識率，不如讓下游邏輯能吸收錯誤——漏偵測用時間容忍，誤判用存活門檻濾掉，兩種失效方式分開處理。</p>
+          </div>
+          <div class="l-en">
+            <pre><code>ACTIVE ──crosses the line──▶ PENDING ──gone a while──▶ CONFIRMING
+                                                           │
+                            gone again → drop confirmed ──▶ DROPPED
+
+ACTIVE ──gone too long──▶ cleared (ghost track)</code></pre>
+            <div class="tablewrap"><table>
+              <thead><tr><th>Threshold</th><th>What it guards against</th></tr></thead>
+              <tbody>
+                <tr><td>Line position</td><td>Only a ball past the line enters the elimination flow</td></tr>
+                <tr><td>Disappearance time (into CONFIRMING)</td><td>Occasional missed detections — briefly gone isn't a drop</td></tr>
+                <tr><td>Confirmation time</td><td>A second stage before the drop is taken as final</td></tr>
+                <tr><td>Survival threshold</td><td>False positives at the start of a round taking a rank</td></tr>
+                <tr><td>Stale time</td><td>Ghost tracks that never reappear</td></tr>
+              </tbody>
+            </table></div>
+            <p>The whole design assumes the model will be wrong. Rather than chase a higher detection rate, it lets the downstream logic absorb errors: time tolerance for missed detections, a survival threshold for false ones, each failure mode handled separately.</p>
+          </div>
+        </div>
+      </details>
+    </article>
+
+    <!-- ============ 6 ============ -->
+    <article class="proj">
+      <div class="proj-top">
+        <h3><span class="l-zh">Webhook 對接模擬器</span><span class="l-en">Webhook Integration Simulator</span></h3>
+        <span class="proj-when">2026</span>
+      </div>
+      <div class="stack"><span>Python</span><span>Docker</span><span>Helm</span><span>GitLab CI</span><span>ArgoCD</span></div>
+      <p class="lead"><span class="l-zh">從零做到 K8s 常駐的內部工具，讓後端與 QA 在拿不到廠商測試環境時也能驗證 webhook 對接。刻意只用標準庫寫，QA 不必裝任何套件；自帶精簡 Helm chart 與三階段 CI pipeline。部署前把憑證從 K8s Secret 改成由使用者在網頁自填、存各自瀏覽器，並在 README 寫明這個工具沒有身份驗證機制、只能放測試環境憑證。</span><span class="l-en">An internal tool taken from nothing to a running Kubernetes deployment, so backend and QA could verify a webhook integration without access to the vendor's test environment. Written against the standard library only, so QA installs nothing; it ships its own small Helm chart and a three-stage CI pipeline. Before deploying I moved the credentials out of a Kubernetes secret and into the user's own browser, and wrote plainly in the README that the tool has no authentication and should only ever hold test credentials.</span></p>
+    </article>
+
+  </section>
+
+  <section id="education">
+    <h2><span class="l-zh">學歷與語言</span><span class="l-en">Education &amp; Languages</span></h2>
+    <div class="skillgrid">
+      <div class="card">
+        <h3><span class="l-zh">學歷</span><span class="l-en">Education</span></h3>
+        <p><span class="l-zh">國立中興大學　電機工程學系</span><span class="l-en">National Chung Hsing University — Electrical Engineering</span></p>
+      </div>
+      <div class="card">
+        <h3><span class="l-zh">語言</span><span class="l-en">Languages</span></h3>
+        <p><span class="l-zh">中文（母語）、英文（TOEIC 770）</span><span class="l-en">Mandarin (native), English (TOEIC 770)</span></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="flinks">
+    <a href="https://github.com/hotrabbit1016" rel="me noopener">GitHub</a>
+    <a href="resume.pdf" download><span class="l-zh">履歷 PDF</span><span class="l-en">Résumé PDF</span></a>
+    <a href="#top"><span class="l-zh">回到頂端</span><span class="l-en">Back to top</span></a>
+  </div>
+  <div>
+    <span class="l-zh">吳承儒 · 新竹 · 有興趣合作的話，請透過 GitHub 與我聯絡</span>
+    <span class="l-en">Jack Wu · Hsinchu, Taiwan · If you'd like to talk, reach me through GitHub</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var html = document.documentElement;
+
+  // ----- language -----
+  var langBtn = document.getElementById('langBtn');
+  function setLang(l, persist) {
+    html.setAttribute('data-lang', l);
+    html.setAttribute('lang', l === 'zh' ? 'zh-Hant' : 'en');
+    langBtn.textContent = l === 'zh' ? 'EN' : '中';
+    langBtn.setAttribute('aria-label', l === 'zh' ? 'Switch to English' : '切換為繁體中文');
+    if (persist) { try { localStorage.setItem('lang', l); } catch (e) {} }
+  }
+  var urlLang = new URLSearchParams(location.search).get('lang');
+  var savedLang = null;
+  try { savedLang = localStorage.getItem('lang'); } catch (e) {}
+  var initLang = (urlLang === 'en' || urlLang === 'zh') ? urlLang
+               : (savedLang === 'en' || savedLang === 'zh') ? savedLang
+               : (navigator.language || '').toLowerCase().indexOf('zh') === 0 ? 'zh' : 'zh';
+  setLang(initLang, false);
+  langBtn.addEventListener('click', function () {
+    setLang(html.getAttribute('data-lang') === 'zh' ? 'en' : 'zh', true);
+  });
+
+  // ----- theme -----
+  var themeBtn = document.getElementById('themeBtn');
+  function setTheme(t, persist) {
+    if (t) { html.setAttribute('data-theme', t); } else { html.removeAttribute('data-theme'); }
+    var dark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    themeBtn.textContent = dark ? '☀' : '☾';
+    themeBtn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+    if (persist) { try { t ? localStorage.setItem('theme', t) : localStorage.removeItem('theme'); } catch (e) {} }
+  }
+  var savedTheme = null;
+  try { savedTheme = localStorage.getItem('theme'); } catch (e) {}
+  setTheme(savedTheme === 'dark' || savedTheme === 'light' ? savedTheme : null, false);
+  themeBtn.addEventListener('click', function () {
+    var cur = html.getAttribute('data-theme');
+    var dark = cur === 'dark' || (!cur && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    setTheme(dark ? 'light' : 'dark', true);
+  });
+
+  // ----- nav highlight -----
+  var links = Array.prototype.slice.call(document.querySelectorAll('.navlinks a'));
+  var targets = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var i = targets.indexOf(en.target);
+        links.forEach(function (a, j) { a.classList.toggle('on', i === j); });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    targets.forEach(function (t) { if (t) obs.observe(t); });
+  }
+})();
+</script>
+
+</body>
+</html>
