@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://hotrabbit1016.github.io/sitemap.xml
