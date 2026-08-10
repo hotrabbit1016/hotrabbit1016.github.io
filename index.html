@@ -268,6 +268,66 @@
   th { color: var(--ink); font-weight: 700; white-space: nowrap; }
   td { color: var(--soft); }
 
+  /* ---------- 介面示意（重繪，非截圖） ---------- */
+  figure.mock { margin: 4px 0 15px; }
+  .mock-ui {
+    border: 1px solid var(--line); border-radius: 9px; overflow: hidden;
+    background: var(--code-bg); font-size: .78rem; line-height: 1.4;
+  }
+  .mock-bar {
+    display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline;
+    padding: 7px 11px; border-bottom: 1px solid var(--line); background: var(--panel);
+  }
+  .mock-bar b { font-size: .82rem; }
+  .mock-bar span { color: var(--faint); }
+  .mock-bar span i { font-style: normal; color: var(--accent); font-weight: 600; }
+  .mock-body { display: grid; grid-template-columns: 1fr 176px; }
+  .mock-view {
+    position: relative; background: #10151b; min-height: 172px;
+    border-right: 1px solid var(--line); overflow: hidden;
+  }
+  .mock-line {
+    position: absolute; top: 0; bottom: 0; left: 72%; width: 0;
+    border-left: 2px dashed #d8b23f;
+  }
+  .mock-line em {
+    position: absolute; top: 5px; left: 5px; font-style: normal;
+    color: #d8b23f; font-size: .68rem; white-space: nowrap;
+  }
+  .mock-box { position: absolute; border: 1.5px solid #49d67d; border-radius: 2px; }
+  .mock-box u {
+    position: absolute; bottom: 100%; left: -1.5px; text-decoration: none;
+    background: #49d67d; color: #08130c; font-size: .62rem;
+    padding: 0 3px; white-space: nowrap; border-radius: 2px 2px 0 0;
+  }
+  .mock-box i {
+    position: absolute; inset: 3px; border-radius: 50%;
+    background: radial-gradient(circle at 32% 30%, #fff, #8fa6bd 45%, #4a5b6e);
+  }
+  .mock-box.miss { border-color: #7e8794; border-style: dashed; }
+  .mock-box.rt u { left: auto; right: -1.5px; border-radius: 2px 2px 0 0; }
+  .mock-box.miss u { background: #7e8794; color: #12161b; }
+  .mock-side { padding: 8px 10px; }
+  .mock-side h6 {
+    margin: 0 0 7px; font-size: .68rem; letter-spacing: 1.3px; text-transform: uppercase;
+    color: var(--faint); font-weight: 700;
+  }
+  .mock-rank { list-style: none; margin: 0; padding: 0; }
+  .mock-rank li {
+    display: flex; gap: 8px; align-items: baseline; margin: 0 0 5px;
+    color: var(--soft); font-variant-numeric: tabular-nums;
+  }
+  .mock-rank li b { color: var(--accent); min-width: 13px; }
+  .mock-rank li s { text-decoration: none; margin-left: auto; color: var(--faint); font-size: .64rem; letter-spacing: .3px; }
+  .mock-rank li.wait { color: var(--faint); }
+  figure.mock figcaption {
+    color: var(--faint); font-size: .82rem; margin-top: 8px; max-width: 74ch;
+  }
+  @media (max-width: 560px) {
+    .mock-body { grid-template-columns: 1fr; }
+    .mock-view { border-right: 0; border-bottom: 1px solid var(--line); }
+  }
+
   /* ---------- about meta (學歷/語言) ---------- */
   .meta { margin-top: 20px; border-top: 1px solid var(--line); padding-top: 15px; }
   .meta-row { display: flex; gap: 15px; align-items: baseline; margin-bottom: 6px; }
@@ -453,6 +513,42 @@
       </div>
       <div class="stack"><span>Python</span><span>YOLO</span><span>Roboflow</span><span>PyTorch</span><span>OpenCV</span><span>ONNX</span><span>FastAPI</span><span>PyQt5</span></div>
       <p class="lead"><span class="l-zh">用影像辨識即時判定彈珠賽事的落球排名，取代人工判讀。已上線運行。</span><span class="l-en">Real-time ranking for marble races from video, replacing manual reading of the result. In production.</span></p>
+
+      <figure class="mock">
+        <div class="mock-ui" role="img"
+             aria-label="落球判定監看介面示意：左側為影像與偵測框，右側為即時排名">
+          <div class="mock-bar">
+            <b><span class="l-zh">落球判定監看</span><span class="l-en">Drop Judging Monitor</span></b>
+            <span><span class="l-zh">狀態</span><span class="l-en">Status</span> <i><span class="l-zh">偵測中</span><span class="l-en">running</span></i></span>
+            <span><span class="l-zh">已落球</span><span class="l-en">Dropped</span> <i>4 / 10</i></span>
+            <span><span class="l-zh">推論</span><span class="l-en">Inference</span> <i>27 fps</i></span>
+          </div>
+          <div class="mock-body">
+            <div class="mock-view">
+              <div class="mock-line"><em><span class="l-zh">判定線</span><span class="l-en">drop line</span></em></div>
+              <div class="mock-box"      style="left:12%;top:22%;width:34px;height:34px"><u>ball_06 · .96</u><i></i></div>
+              <div class="mock-box"      style="left:31%;top:57%;width:30px;height:30px"><u>ball_02 · .93</u><i></i></div>
+              <div class="mock-box"      style="left:49%;top:31%;width:31px;height:31px"><u>ball_09 · .88</u><i></i></div>
+              <div class="mock-box miss rt" style="left:76%;top:63%;width:29px;height:29px"><u>ball_04 · —</u><i></i></div>
+            </div>
+            <div class="mock-side">
+              <h6><span class="l-zh">即時排名</span><span class="l-en">Live ranking</span></h6>
+              <ul class="mock-rank">
+                <li><b>1</b> ball_07 <s>DROPPED</s></li>
+                <li><b>2</b> ball_01 <s>DROPPED</s></li>
+                <li><b>3</b> ball_10 <s>DROPPED</s></li>
+                <li><b>4</b> ball_03 <s>DROPPED</s></li>
+                <li class="wait"><b>5</b> ball_04 <s>CONFIRMING</s></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <figcaption>
+          <span class="l-zh">介面示意，依實際版面重繪，不是產品截圖。每顆球是獨立 class，所以框上標的是球號而不是追蹤 ID；灰色虛線框那顆是這一幀沒被偵測到、正在等時間確認的狀態（<code>CONFIRMING</code>），不會立刻被判成落球。</span>
+          <span class="l-en">A redrawn illustration of the layout, not a product screenshot. Each ball is its own class, so a box carries a ball number rather than a tracking ID. The grey dashed box is a ball that went undetected on this frame and is waiting out the time confirmation (<code>CONFIRMING</code>) instead of being ruled dropped straight away.</span>
+        </figcaption>
+      </figure>
+
       <ul class="l-zh">
         <li>以 Roboflow 標註並訓練 YOLO 模型，把每顆球訓練成獨立 class，排名系統就能直接用 class 辨識球體，繞過多物件追蹤的 ID switch 問題。</li>
         <li>落球判定做成四狀態機。關鍵決定是所有閾值都用秒、不用幀數——YOLO 推論的 fps 會隨負載浮動，拿幀數當基準遲早會漂掉。</li>
