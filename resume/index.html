@@ -664,32 +664,102 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
 
     <article class="proj">
       <div class="proj-top">
-        <h3><span class="l-zh">線上娛樂平台後端服務群</span><span class="l-en">Platform Backend Services</span></h3>
-        <span class="proj-when">2022 – 2026</span>
+        <h3><span class="l-zh">玩家端下注與結算服務</span><span class="l-en">Player Betting &amp; Settlement</span></h3>
+        <span class="proj-when">2022 &ndash; 2025</span>
       </div>
       <div class="stack"><span>.NET</span><span>SignalR</span><span>RabbitMQ</span><span>Redis</span><span>EF Core</span><span>MySQL</span></div>
       <dl class="brief l-zh">
-        <dt>做什麼用的</dt><dd>玩家下注與結算、營運與客服後台、現場桌台管理，三塊串成從玩家端到營運端的完整流程。</dd>
-        <dt>我的角色</dt><dd>團隊專案，我負責交易流程、即時推播與後台功能。</dd>
-        <dt>成果</dt><dd>營運中的正式服務，五年間持續開發與維護。</dd>
+        <dt>做什麼用的</dt><dd>玩家下注、取消下注與結算的服務端，結果要即時回到玩家畫面上。</dd>
+        <dt>我的角色</dt><dd>團隊共同開發的服務，我負責其中的下注與取消下注交易流程、結算後的即時推播。</dd>
+        <dt>成果</dt><dd>營運中的正式服務，前後維護約四年。</dd>
       </dl>
       <dl class="brief l-en">
-        <dt>What it's for</dt><dd>Player betting and settlement, the back-office for operations and support, and on-site table management — three pieces forming the path from the player to the operator.</dd>
-        <dt>My part</dt><dd>A team project; I worked on the transaction flows, the real-time push and the back-office features.</dd>
-        <dt>Outcome</dt><dd>A live production service, developed and maintained across five years.</dd>
+        <dt>What it's for</dt><dd>The service behind placing a bet, cancelling one and settling it — with the result reaching the player's screen immediately.</dd>
+        <dt>My part</dt><dd>A team-built service; I worked on the bet and bet-cancellation transaction flow and the push that follows settlement.</dd>
+        <dt>Outcome</dt><dd>A live production service, maintained for about four years.</dd>
       </dl>
       <details>
-        <summary><span class="l-zh">技術重點（3 點）</span><span class="l-en">Technical detail (3)</span></summary>
+        <summary><span class="l-zh">技術重點（2 點）</span><span class="l-en">Technical detail (2)</span></summary>
         <div class="dbody">
           <ul class="l-zh">
-            <li><strong>PlayerGameServer</strong>——玩家下注與取消下注的交易流程，結算後以 SignalR 即時推播通知；跨服務的狀態變更走 MQ 事件處理。</li>
-            <li><strong>桌台營運後台</strong>——營運與客服端的管理後台，包含權限稽核、局結果更正流程，以及第三方開獎結果的驗證機制；管理員登入以 Otp.NET 加上二階段驗證。</li>
-            <li><strong>桌台現場管理服務</strong>——荷官與攝影棚端的 SignalR Hub，負責下達賽局流程的指令。開牌結果要經過 AI 辨識與現場人工雙重確認才算成立。</li>
+            <li>下注與取消下注走交易流程，結算完成後以 SignalR 即時推播通知玩家端。</li>
+            <li>跨服務的狀態變更不直接呼叫，改走 MQ 事件處理，服務之間不互相等待。</li>
           </ul>
           <ul class="l-en">
-            <li><strong>PlayerGameServer</strong> — the bet and bet-cancellation transaction flow, with settlement pushed to players over SignalR; cross-service state changes go through MQ events.</li>
-            <li><strong>Operations back-office</strong> — the admin console for operations and customer support: permission auditing, a correction flow for round results, and verification of third-party draw results. Admin login is backed by two-factor via Otp.NET.</li>
-            <li><strong>On-site table management</strong> — the SignalR hub for dealers and the studio, issuing round-flow commands. A revealed result only stands once AI recognition and a human on site both confirm it.</li>
+            <li>Bets and cancellations run as transactions, and once settlement completes the result is pushed to the player over SignalR.</li>
+            <li>Cross-service state changes go through MQ events rather than direct calls, so services don't wait on each other.</li>
+          </ul>
+        </div>
+      </details>
+    </article>
+
+    <!-- ============ 桌台現場操作端 ============ -->
+    <article class="proj">
+      <div class="proj-top">
+        <h3><span class="l-zh">桌台現場操作端</span><span class="l-en">On-site Table Console</span></h3>
+        <span class="proj-when">2022 &ndash; 2025</span>
+      </div>
+      <div class="stack"><span>.NET</span><span>WPF</span><span>MVVM</span><span>OBS</span></div>
+      <dl class="brief l-zh">
+        <dt>做什麼用的</dt><dd>荷官在現場操作每一局的程式：開局、輸入開牌結果、確認後送出，並與直播畫面連動。</dd>
+        <dt>我的角色</dt><dd>桌台端程式的主要作者——其中一代的主畫面與核心邏輯九成以上由我實作。桌台服務端是團隊共同開發，我負責其中的狀態查詢與部分桌台端介面。</dd>
+        <dt>成果</dt><dd>現場實際使用；開牌結果必須經過二次確認才成立，單一次輸入不會直接決定一局。</dd>
+      </dl>
+      <dl class="brief l-en">
+        <dt>What it's for</dt><dd>The program dealers use on the floor for each round: open it, enter the revealed result, confirm, submit — kept in step with the live stream.</dd>
+        <dt>My part</dt><dd>Main author of the console itself — for one generation I wrote over ninety percent of the main view and core logic. The table service behind it was built by the team; I worked on its state queries and part of the console-facing API.</dd>
+        <dt>Outcome</dt><dd>Used on the floor; a revealed result only stands after a second confirmation, so a single entry never decides a round on its own.</dd>
+      </dl>
+      <details>
+        <summary><span class="l-zh">技術重點（4 點）</span><span class="l-en">Technical detail (4)</span></summary>
+        <div class="dbody">
+          <ul class="l-zh">
+            <li>現場輸入的結果與確認後的結果<strong>分成兩個獨立欄位</strong>存放，確認動作才有比對的對象；若共用一個欄位，第二次確認就只是覆寫自己。</li>
+            <li>每開新局都把確認結果重設為空，避免上一局的確認狀態殘留下來影響下一局。</li>
+            <li>結果解析走 factory 依遊戲種類分派，解析失敗時把整個畫面狀態記進 log 再回報失敗，不會拿一個半成品的結果往下送。</li>
+            <li>開牌送出後逐層檢查回應：連線失敗與業務錯誤碼分開處理、各自記錄，不會靜靜當成成功。任一路直播來源斷線也會反映到操作介面上。</li>
+          </ul>
+          <ul class="l-en">
+            <li>The entered result and the confirmed result are held in <strong>two separate fields</strong>, so confirmation has something to compare against. Sharing one field would make the second check merely overwrite itself.</li>
+            <li>Opening a new round resets the confirmed result, so last round's confirmation can't carry over into the next one.</li>
+            <li>Parsing goes through a factory that dispatches on game type; on a parse failure the whole view state is logged and the call reports failure rather than passing a half-formed result on.</li>
+            <li>After submitting, the response is checked in layers — transport failure and business error codes are handled and logged separately, never quietly treated as success. A dropped stream source also surfaces in the console.</li>
+          </ul>
+        </div>
+      </details>
+    </article>
+
+    <!-- ============ 桌台營運後台 ============ -->
+    <article class="proj">
+      <div class="proj-top">
+        <h3><span class="l-zh">桌台營運後台</span><span class="l-en">Operations Back-office</span></h3>
+        <span class="proj-when">2022 &ndash; 2025</span>
+      </div>
+      <div class="stack"><span>.NET</span><span>ASP.NET Core</span><span>MySQL</span><span>Redis</span></div>
+      <dl class="brief l-zh">
+        <dt>做什麼用的</dt><dd>營運與客服用的管理後台：誰能操作什麼（角色與權限）、風控查詢、報表與維護模式。</dd>
+        <dt>我的角色</dt><dd>團隊共同維護的後台，其中權限與角色管理、風控紀錄查詢這幾支是我主筆（各佔該檔九成上下）。另外參與第三方開獎結果的對接。</dd>
+        <dt>成果</dt><dd>營運中；權限改為角色制，帳號與可執行的操作分離，調整權限不必逐一改帳號。</dd>
+      </dl>
+      <dl class="brief l-en">
+        <dt>What it's for</dt><dd>The console operations and support staff work in: who may do what (roles and permissions), risk queries, reports and maintenance mode.</dd>
+        <dt>My part</dt><dd>A back-office the team maintains together; permission and role management and the risk-record queries are mine (around ninety percent of those files). I also took part in the third-party draw-result integration.</dd>
+        <dt>Outcome</dt><dd>In production; permissions became role-based, separating an account from the operations it may run, so changing access no longer means editing accounts one by one.</dd>
+      </dl>
+      <details>
+        <summary><span class="l-zh">技術重點（4 點）</span><span class="l-en">Technical detail (4)</span></summary>
+        <div class="dbody">
+          <ul class="l-zh">
+            <li>權限拆成兩組 CRUD：一組管角色定義，一組管管理員帳號綁哪個角色。兩者分離之後，新增一種操作只要調角色，不用動到帳號。</li>
+            <li>Controller 只做轉譯，邏輯全在建構式注入的服務介面裡；每個操作有自己的請求與回應型別，不共用大雜燴 DTO。</li>
+            <li>回應物件一律<strong>先建成失敗狀態</strong>，只有確認成功才改寫。忘記設錯誤碼時會回失敗，而不是回一個看起來成功的空殼。</li>
+            <li>風控紀錄提供兩個查詢維度：同一 IP 的多帳號，以及異常下注額。營運要的是「先看到可疑的」，不是把所有紀錄倒出來。</li>
+          </ul>
+          <ul class="l-en">
+            <li>Permissions split into two sets of CRUD endpoints: one defines roles, the other binds an admin account to a role. Once separated, adding an operation means adjusting a role rather than touching accounts.</li>
+            <li>Controllers only translate; the logic sits behind service interfaces injected via the constructor, and every operation has its own request and response types instead of one catch-all DTO.</li>
+            <li>Response objects are <strong>constructed in a failed state</strong> and only rewritten once success is confirmed — so a forgotten error code returns a failure, not a hollow object that looks like success.</li>
+            <li>Risk records are queryable along two axes: multiple accounts sharing an IP, and unusual stake amounts. Operations need the suspicious cases surfaced, not every record dumped out.</li>
           </ul>
         </div>
       </details>
@@ -703,12 +773,12 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
       <div class="stack"><span>.NET 10</span><span>Redis</span><span>Kubernetes</span><span>xUnit</span></div>
       <dl class="brief l-zh">
         <dt>做什麼用的</dt><dd>原本只能裝在單台電腦上的程式，改成可以同時部署在多台伺服器的服務，並解掉「同一張桌被兩台機器同時接管」會造成重複下注的風險。</dd>
-        <dt>我的角色</dt><dd>主程式與測試由我獨立設計實作；共用函式庫由團隊共同維護。</dd>
+        <dt>我的角色</dt><dd>主程式與測試由我獨立設計實作；共用函式庫由團隊共同維護。被取代的那一版 WPF 桌台端也是我寫的，所以是同一個桌台端我做了兩代。</dd>
         <dt>成果</dt><dd>可多機部署且不會重複接管，排除重複下注的金流風險。</dd>
       </dl>
       <dl class="brief l-en">
         <dt>What it's for</dt><dd>A program that could only run on one machine, turned into a service that can run on several servers at once — without two of them taking over the same table and charging a bet twice.</dd>
-        <dt>My part</dt><dd>I designed and wrote the main program and its tests on my own; the shared libraries are maintained by the team.</dd>
+        <dt>My part</dt><dd>I designed and wrote the main program and its tests on my own; the shared libraries are maintained by the team. I had also written the WPF console it replaced, so this is the same table client built twice.</dd>
         <dt>Outcome</dt><dd>Runs on multiple servers with no duplicate takeover, removing the double-bet risk.</dd>
       </dl>
       <details>
