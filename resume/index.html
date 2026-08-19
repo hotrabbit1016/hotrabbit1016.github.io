@@ -701,14 +701,14 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
       </div>
       <div class="stack"><span>.NET</span><span>WPF</span><span>MVVM</span><span>OBS</span></div>
       <dl class="brief l-zh">
-        <dt>做什麼用的</dt><dd>荷官在現場操作每一局的程式：開局、輸入開牌結果、確認後送出，並與直播畫面連動。</dd>
+        <dt>做什麼用的</dt><dd>現場人員操作每一局的程式：開局、輸入本局結果、確認後送出，並與直播畫面連動。真人桌台是荷官在用，彈珠賽事是裁判在用。</dd>
         <dt>我的角色</dt><dd>桌台端程式的主要作者——其中一代的主畫面與核心邏輯九成以上由我實作。桌台服務端是團隊共同開發，我負責其中的狀態查詢與部分桌台端介面。</dd>
-        <dt>成果</dt><dd>現場實際使用；開牌結果必須經過二次確認才成立，單一次輸入不會直接決定一局。</dd>
+        <dt>成果</dt><dd>現場實際使用；本局結果必須經過二次確認才成立，單一次輸入不會直接決定一局。</dd>
       </dl>
       <dl class="brief l-en">
-        <dt>What it's for</dt><dd>The program dealers use on the floor for each round: open it, enter the revealed result, confirm, submit — kept in step with the live stream.</dd>
+        <dt>What it's for</dt><dd>The program the operator on the floor uses for each round: open it, enter the result, confirm, submit — kept in step with the live stream. On live tables that operator is the dealer; for marble races it's the referee.</dd>
         <dt>My part</dt><dd>Main author of the console itself — for one generation I wrote over ninety percent of the main view and core logic. The table service behind it was built by the team; I worked on its state queries and part of the console-facing API.</dd>
-        <dt>Outcome</dt><dd>Used on the floor; a revealed result only stands after a second confirmation, so a single entry never decides a round on its own.</dd>
+        <dt>Outcome</dt><dd>Used on the floor; a result only stands after a second confirmation, so a single entry never decides a round on its own.</dd>
       </dl>
       <details>
         <summary><span class="l-zh">技術重點（4 點）</span><span class="l-en">Technical detail (4)</span></summary>
@@ -717,13 +717,13 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
             <li>現場輸入的結果與確認後的結果<strong>分成兩個獨立欄位</strong>存放，確認動作才有比對的對象；若共用一個欄位，第二次確認就只是覆寫自己。</li>
             <li>每開新局都把確認結果重設為空，避免上一局的確認狀態殘留下來影響下一局。</li>
             <li>結果解析走 factory 依遊戲種類分派，解析失敗時把整個畫面狀態記進 log 再回報失敗，不會拿一個半成品的結果往下送。</li>
-            <li>開牌送出後逐層檢查回應：連線失敗與業務錯誤碼分開處理、各自記錄，不會靜靜當成成功。任一路直播來源斷線也會反映到操作介面上。</li>
+            <li>結果送出後逐層檢查回應：連線失敗與業務錯誤碼分開處理、各自記錄，不會靜靜當成成功。任一路直播來源斷線也會反映到操作介面上。</li>
           </ul>
           <ul class="l-en">
             <li>The entered result and the confirmed result are held in <strong>two separate fields</strong>, so confirmation has something to compare against. Sharing one field would make the second check merely overwrite itself.</li>
             <li>Opening a new round resets the confirmed result, so last round's confirmation can't carry over into the next one.</li>
             <li>Parsing goes through a factory that dispatches on game type; on a parse failure the whole view state is logged and the call reports failure rather than passing a half-formed result on.</li>
-            <li>After submitting, the response is checked in layers — transport failure and business error codes are handled and logged separately, never quietly treated as success. A dropped stream source also surfaces in the console.</li>
+            <li>After the result is submitted, the response is checked in layers — transport failure and business error codes are handled and logged separately, never quietly treated as success. A dropped stream source also surfaces in the console.</li>
           </ul>
         </div>
       </details>
@@ -974,7 +974,7 @@ consumer group → ClickHouse operation_logs</code></pre>
 
   <section id="integration">
     <h2><span class="l-zh">軟硬整合</span><span class="l-en">Hardware &amp; Systems Integration</span></h2>
-    <p class="sechint"><span class="l-zh">電機系的訓練在這裡才真正派上用場。同一個專案裡要處理 SPI bus 上的 bit、會遺失的 RF 訊號，還有一支要讓現場人員看得懂的監控介面。</span><span class="l-en">This is where an electrical engineering background actually earns its keep — bits on an SPI bus, RF packets that go missing, and a monitoring UI that people on site have to understand, all inside one project.</span></p>
+    <p class="sechint"><span class="l-zh">同一個專案裡要處理 SPI bus 上的 bit、會遺失的 RF 訊號，還有一支要讓現場人員看得懂的監控介面。</span><span class="l-en">Bits on an SPI bus, RF packets that go missing, and a monitoring UI that people on site have to understand — all inside one project.</span></p>
 
     <article class="proj">
       <div class="proj-top">
