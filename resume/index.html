@@ -35,8 +35,7 @@
   "jobTitle": "Backend Engineer",
   "description": "Backend engineer with five years of experience on online entertainment platforms, spanning distributed services, hardware control and computer vision.",
   "knowsAbout": ["C#", ".NET", "Go", "Python", "Redis", "ClickHouse", "Kubernetes", "SignalR", "RabbitMQ", "Distributed Systems", "YOLO", "Computer Vision", "Embedded Systems"],
-  "alumniOf": { "@type": "CollegeOrUniversity", "name": "National Chung Hsing University" },
-  "sameAs": ["https://github.com/hotrabbit1016"]
+  "alumniOf": { "@type": "CollegeOrUniversity", "name": "National Chung Hsing University" }
 }
 </script>
 
@@ -328,16 +327,13 @@
   }
 
   /* ---------- about meta (學歷/語言) ---------- */
-  .meta { margin-top: 20px; border-top: 1px solid var(--line); padding-top: 15px; }
-  .meta-row { display: flex; gap: 15px; align-items: baseline; margin-bottom: 6px; }
-  .meta-row:last-child { margin-bottom: 0; }
-  .meta-k {
-    color: var(--faint); font-size: .76rem; letter-spacing: 1.6px; text-transform: uppercase;
-    font-weight: 700; min-width: 74px; flex: none;
+  /* 兩欄 grid：欄寬跟著最長的標籤走，中英文各自計算，不用猜 min-width */
+  .meta {
+    display: grid; grid-template-columns: max-content 1fr;
+    gap: 7px 16px; align-items: baseline; margin: 22px 0 0;
   }
-  .meta-v { color: var(--soft); font-size: .95rem; }
-  /* 學歷：只比周邊文字深一階，不加字重、不加底線 */
-  .meta-v .edu { color: var(--ink); }
+  .meta dt { color: var(--faint); font-size: .82rem; font-weight: 600; }
+  .meta dd { margin: 0; color: var(--soft); font-size: .95rem; }
 
   /* ---------- footer ---------- */
   footer {
@@ -406,11 +402,7 @@
       <span class="chip">SignalR</span><span class="chip">RabbitMQ</span><span class="chip">YOLO</span>
     </div>
     <div class="cta">
-      <a class="btn btn-primary" href="https://github.com/hotrabbit1016" rel="me noopener">
-        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.07-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A7.995 7.995 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
-        GitHub
-      </a>
-      <a class="btn btn-ghost" href="resume.pdf" download>
+      <a class="btn btn-primary" href="resume.pdf" download>
         <span class="l-zh">下載履歷 PDF</span><span class="l-en">Download résumé</span>
       </a>
     </div>
@@ -421,20 +413,20 @@
     <div class="l-zh" style="max-width:76ch">
       <p>5 年後端開發，都在線上娛樂平台。主力是 C#/.NET，寫過玩家下注、結算、營運後台這類典型的 API 與即時推播服務；另外也用 Go 做過稽核資料管道，用 Python 做實體賽道的硬體控制與 AI 影像判定。</p>
       <p>比較不一樣的地方是我的工作同時橫跨軟硬兩端。一端是雲上的分散式服務，另一端是會真的壞掉的實體設備與不穩定的 AI 推論。這讓我很習慣處理「外部訊號不可信」的問題，也讓我在寫服務時比較在意失效路徑，而不只是正常流程。</p>
-      <p>這個網站是因為我的公開 GitHub 看不出我在做什麼——五年的專業作品都在公司的私有 GitLab 上，外人看不到。所以這裡放的不是程式碼，是那些程式碼背後的設計決策與取捨。</p>
-      <div class="meta">
-        <div class="meta-row"><span class="meta-k">學歷</span><span class="meta-v"><span class="edu">國立中興大學</span>　電機工程學系</span></div>
-        <div class="meta-row"><span class="meta-k">語言</span><span class="meta-v">中文（母語）、英文（TOEIC 770）</span></div>
-      </div>
+      <p>這個網站的存在是因為我五年的專業作品都在公司的私有 GitLab 上，外人看不到。所以這裡放的不是程式碼，是那些程式碼背後的設計決策與取捨。</p>
+      <dl class="meta">
+        <dt>學歷</dt><dd>國立中興大學　電機工程學系</dd>
+        <dt>語言</dt><dd>中文（母語）、英文（TOEIC 770）</dd>
+      </dl>
     </div>
     <div class="l-en" style="max-width:76ch">
       <p>Five years of backend development, all of it on online entertainment platforms. Mostly C#/.NET — player betting, settlement, operations back-office: the usual mix of APIs and real-time push. I've also built an audit data pipeline in Go, and used Python for physical track control and AI-based result judging.</p>
       <p>What's less usual is that my work spans both sides. One end is distributed services in the cloud; the other is physical equipment that genuinely breaks, and inference that is never quite reliable. I've got used to treating external signals as untrustworthy, and I pay more attention to failure paths than to happy paths.</p>
-      <p>I built this site because my public GitHub says nothing about what I actually do — five years of professional work sits in a company GitLab nobody outside can see. So what's here isn't code; it's the design decisions and trade-offs behind it.</p>
-      <div class="meta">
-        <div class="meta-row"><span class="meta-k">Education</span><span class="meta-v"><span class="edu">National Chung Hsing University</span> — Electrical Engineering</span></div>
-        <div class="meta-row"><span class="meta-k">Languages</span><span class="meta-v">Mandarin (native), English (TOEIC 770)</span></div>
-      </div>
+      <p>This site exists because five years of my professional work sits in a company GitLab nobody outside can see. So what's here isn't code; it's the design decisions and trade-offs behind it.</p>
+      <dl class="meta">
+        <dt>Education</dt><dd>National Chung Hsing University — Electrical Engineering</dd>
+        <dt>Languages</dt><dd>Mandarin (native), English (TOEIC 770)</dd>
+      </dl>
     </div>
   </section>
 
@@ -868,13 +860,12 @@ consumer group → ClickHouse operation_logs</code></pre>
 
 <footer>
   <div class="flinks">
-    <a href="https://github.com/hotrabbit1016" rel="me noopener">GitHub</a>
     <a href="resume.pdf" download><span class="l-zh">履歷 PDF</span><span class="l-en">Résumé PDF</span></a>
     <a href="#top"><span class="l-zh">回到頂端</span><span class="l-en">Back to top</span></a>
   </div>
   <div>
-    <span class="l-zh">吳承儒 · 有興趣合作的話，請透過 GitHub 與我聯絡</span>
-    <span class="l-en">Jack Wu · If you'd like to talk, reach me through GitHub</span>
+    <span class="l-zh">吳承儒 · 後端工程師</span>
+    <span class="l-en">Jack Wu · Backend Engineer</span>
   </div>
 </footer>
 
