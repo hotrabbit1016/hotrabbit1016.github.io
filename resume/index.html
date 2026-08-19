@@ -36,8 +36,7 @@
   "description": "Backend engineer with five years of experience on online entertainment platforms, spanning distributed services, hardware control and computer vision.",
   "knowsAbout": ["C#", ".NET", "Go", "Python", "Redis", "ClickHouse", "Kubernetes", "SignalR", "RabbitMQ", "Distributed Systems", "YOLO", "Computer Vision", "Embedded Systems"],
   "alumniOf": { "@type": "CollegeOrUniversity", "name": "National Chung Hsing University" },
-  "sameAs": ["https://github.com/hotrabbit1016"],
-  "address": { "@type": "PostalAddress", "addressLocality": "Hsinchu", "addressCountry": "TW" }
+  "sameAs": ["https://github.com/hotrabbit1016"]
 }
 </script>
 
@@ -421,12 +420,11 @@
     <h2><span class="l-zh">關於</span><span class="l-en">About</span></h2>
     <div class="l-zh" style="max-width:76ch">
       <p>5 年後端開發，都在線上娛樂平台。主力是 C#/.NET，寫過玩家下注、結算、營運後台這類典型的 API 與即時推播服務；另外也用 Go 做過稽核資料管道，用 Python 做實體賽道的硬體控制與 AI 影像判定。</p>
-      <p>比較不一樣的地方是我的工作同時橫跨軟硬兩端。一端是雲上的分散式服務，另一端是會真的壞掉的實體設備與不穩定的 AI 推論。這讓我很習慣處理「外部訊號不可信」的問題，也讓我在寫服務時比較在意失效路徑而不只是快樂路徑。</p>
+      <p>比較不一樣的地方是我的工作同時橫跨軟硬兩端。一端是雲上的分散式服務，另一端是會真的壞掉的實體設備與不穩定的 AI 推論。這讓我很習慣處理「外部訊號不可信」的問題，也讓我在寫服務時比較在意失效路徑，而不只是正常流程。</p>
       <p>這個網站是因為我的公開 GitHub 看不出我在做什麼——五年的專業作品都在公司的私有 GitLab 上，外人看不到。所以這裡放的不是程式碼，是那些程式碼背後的設計決策與取捨。</p>
       <div class="meta">
         <div class="meta-row"><span class="meta-k">學歷</span><span class="meta-v"><span class="edu">國立中興大學</span>　電機工程學系</span></div>
         <div class="meta-row"><span class="meta-k">語言</span><span class="meta-v">中文（母語）、英文（TOEIC 770）</span></div>
-        <div class="meta-row"><span class="meta-k">所在地</span><span class="meta-v">新竹市</span></div>
       </div>
     </div>
     <div class="l-en" style="max-width:76ch">
@@ -436,7 +434,6 @@
       <div class="meta">
         <div class="meta-row"><span class="meta-k">Education</span><span class="meta-v"><span class="edu">National Chung Hsing University</span> — Electrical Engineering</span></div>
         <div class="meta-row"><span class="meta-k">Languages</span><span class="meta-v">Mandarin (native), English (TOEIC 770)</span></div>
-        <div class="meta-row"><span class="meta-k">Based in</span><span class="meta-v">Hsinchu, Taiwan</span></div>
       </div>
     </div>
   </section>
@@ -729,7 +726,7 @@ worker running           → renew; on failure stop the worker</code></pre>
         <li>Middleware 負責 HTTP 層語意（角色、選單、操作類型），Service 層負責變更前後的狀態快照，兩條路徑匯流到同一個 Stream 再合併寫入。</li>
         <li>把 OperationType 與 Menu 做成實作 <code>encoding.TextUnmarshaler</code> 的封閉型別。一份實作同時擋住 Gin form binding 與 Redis Stream 的髒資料，非法值直接 400，而不是靜默回一個空結果。</li>
         <li>查詢區間的界線踩到時區問題：QA 回報同一天查得到、但凌晨那幾個小時被擋掉。根因是前端以當地日界回推天數、後端跑 UTC，兩邊差了將近一天。最後決定後端不引入業務時區，只做寬鬆的 backstop 並多留一天緩衝吸收時差，精準界線交前端把關。</li>
-        <li>快照一開始記 base enum 跟裸 ID，後來全改成角色名與資源名。稽核紀錄的讀者是稽核人員，記 <code>role=3</code> 對他們沒有意義。</li>
+        <li>快照一開始存的是 enum 的數值與資源 ID，後來全改成角色名與資源名。稽核紀錄的讀者是稽核人員，記 <code>role=3</code> 對他們沒有意義。</li>
       </ul>
       <ul class="l-en">
         <li>The faster option was to extend the existing audit_logs table. I built a separate operation_logs table instead — roughly double the effort, in exchange for keeping business meaning fully apart from raw HTTP logs and leaving the existing pipeline untouched.</li>
@@ -737,7 +734,7 @@ worker running           → renew; on failure stop the worker</code></pre>
         <li>Middleware supplies the HTTP-level meaning (role, menu, operation type); the service layer supplies before/after state snapshots. Both paths meet in the same stream and are merged on write.</li>
         <li>OperationType and Menu are closed types implementing <code>encoding.TextUnmarshaler</code>. One implementation guards both Gin form binding and the stream consumer, so an invalid value returns 400 instead of quietly yielding an empty result set.</li>
         <li>The query window ran into a timezone problem: QA could query a given day, but the early-morning hours of it were rejected. The frontend counted back from local midnight while the backend ran on UTC — nearly a full day apart. I kept business timezones out of the backend, left it a loose backstop with an extra day of slack, and let the frontend enforce the precise boundary.</li>
-        <li>Snapshots first recorded base enums and bare IDs. I changed all of them to role and resource names — the people reading an audit trail are auditors, and <code>role=3</code> means nothing to them.</li>
+        <li>Snapshots first stored raw enum values and resource IDs. I changed all of them to role and resource names — the people reading an audit trail are auditors, and <code>role=3</code> means nothing to them.</li>
       </ul>
 
       <details>
@@ -834,10 +831,10 @@ consumer group → ClickHouse operation_logs</code></pre>
               <thead><tr><th>機制</th><th>防的是什麼</th></tr></thead>
               <tbody>
                 <tr><td>指數退避重試</td><td>RF 干擾與封包遺失</td></tr>
-                <tr><td>port 重新初始化的斷路器（強制 2 秒冷卻）</td><td>USB 連續斷線引發 reinit 風暴，進而級聯崩潰</td></tr>
+                <tr><td>port 重新初始化的斷路器（強制 2 秒冷卻）</td><td>USB 連續斷線引發 reinit 風暴，進而連鎖崩潰</td></tr>
                 <tr><td>明確拉低 DTR/RTS，不依賴特定晶片行為</td><td>USB-to-serial 模組被控制線 toggle 重置</td></tr>
                 <tr><td>閒置時每秒探測 CTS</td><td>USB autosuspend 讓裝置睡著</td></tr>
-                <tr><td><code>atexit</code> 收尾，關閉前清除控制線</td><td>重啟後留下 zombie handle</td></tr>
+                <tr><td><code>atexit</code> 收尾，關閉前清除控制線</td><td>重啟後留下 未釋放的 handle</td></tr>
                 <tr><td>write timeout</td><td>裝置 TX buffer 卡住時無限阻塞</td></tr>
               </tbody>
             </table></div>
@@ -853,7 +850,7 @@ consumer group → ClickHouse operation_logs</code></pre>
                 <tr><td>Circuit breaker on port re-init (2-second cooldown)</td><td>Repeated USB drops causing a re-init storm, then a cascading failure</td></tr>
                 <tr><td>DTR/RTS driven low explicitly, no reliance on chip behaviour</td><td>USB-to-serial modules being reset by control-line toggling</td></tr>
                 <tr><td>CTS probed once a second while idle</td><td>USB autosuspend putting the device to sleep</td></tr>
-                <tr><td><code>atexit</code> cleanup, control lines cleared before close</td><td>Zombie handles left behind after a restart</td></tr>
+                <tr><td><code>atexit</code> cleanup, control lines cleared before close</td><td>Handles left unreleased after a restart</td></tr>
                 <tr><td>Write timeout</td><td>Blocking forever when the device TX buffer stalls</td></tr>
               </tbody>
             </table></div>
@@ -876,8 +873,8 @@ consumer group → ClickHouse operation_logs</code></pre>
     <a href="#top"><span class="l-zh">回到頂端</span><span class="l-en">Back to top</span></a>
   </div>
   <div>
-    <span class="l-zh">吳承儒 · 新竹 · 有興趣合作的話，請透過 GitHub 與我聯絡</span>
-    <span class="l-en">Jack Wu · Hsinchu, Taiwan · If you'd like to talk, reach me through GitHub</span>
+    <span class="l-zh">吳承儒 · 有興趣合作的話，請透過 GitHub 與我聯絡</span>
+    <span class="l-en">Jack Wu · If you'd like to talk, reach me through GitHub</span>
   </div>
 </footer>
 
