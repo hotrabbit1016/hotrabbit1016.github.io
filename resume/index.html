@@ -544,10 +544,10 @@
 
       <ul class="l-zh">
         <li>以 Roboflow 標註並訓練 YOLO 模型，把每顆球訓練成獨立 class，排名系統就能直接用 class 辨識球體，繞過多物件追蹤的 ID switch 問題。</li>
-        <li>落球判定做成四狀態機。關鍵決定是所有閾值都用秒、不用幀數——YOLO 推論的 fps 會隨負載浮動，拿幀數當基準遲早會漂掉。</li>
-        <li>二段時間確認用來容忍偶發的漏偵測，存活時間門檻濾掉開局瞬間的雜訊誤判，另有 stale 機制清除幽靈軌跡。</li>
+        <li>落球判定做成四狀態機。關鍵決定是所有 threshold 都用秒、不用 frame 數——YOLO 推論的 fps 會隨負載浮動，拿 frame 數當基準遲早會漂掉。</li>
+        <li>二段時間確認用來容忍偶發的漏偵測，存活時間 threshold 濾掉開局瞬間的雜訊誤判，另有 stale 機制清除 ghost track。</li>
         <li>排名依據取「最後一次被偵測到的時間」而不是確認落球的時刻，確認延遲才不會影響排名的公平性。</li>
-        <li>對外以 FastAPI 提供賽果查詢，現場操作介面用 PyQt5；推論放在獨立執行緒，避免卡住 UI。</li>
+        <li>對外以 FastAPI 提供賽果查詢，現場操作介面用 PyQt5；推論放在獨立 thread，避免卡住 UI。</li>
       </ul>
       <ul class="l-en">
         <li>Labelled and trained a YOLO model in Roboflow, with each ball as its own class. The ranking system can then identify a ball directly by class, sidestepping the ID-switch problem in multi-object tracking.</li>
@@ -558,25 +558,25 @@
       </ul>
 
       <details>
-        <summary><span class="l-zh">狀態機與五個閾值</span><span class="l-en">The state machine and its five thresholds</span></summary>
+        <summary><span class="l-zh">狀態機與五個 threshold</span><span class="l-en">The state machine and its five thresholds</span></summary>
         <div class="dbody">
           <div class="l-zh">
             <pre><code>ACTIVE &#9472;&#9472;越過判定線&#9472;&#9472;&#9654; PENDING &#9472;&#9472;消失一段時間&#9472;&#9472;&#9654; CONFIRMING
                                                       &#9474;
                           再消失一段時間 &#8594; 確認落球 &#9472;&#9472;&#9654; DROPPED
 
-ACTIVE &#9472;&#9472;消失過久&#9472;&#9472;&#9654; 清除（幽靈軌跡）</code></pre>
+ACTIVE &#9472;&#9472;消失過久&#9472;&#9472;&#9654; 清除（ghost track）</code></pre>
             <div class="tablewrap"><table>
-              <thead><tr><th>閾值</th><th>防的是什麼</th></tr></thead>
+              <thead><tr><th>Threshold</th><th>防的是什麼</th></tr></thead>
               <tbody>
                 <tr><td>判定線位置</td><td>只有越線的球才進入落球判定流程</td></tr>
                 <tr><td>消失時間（進 CONFIRMING）</td><td>容忍 YOLO 偶發漏偵測，消失一下不算落球</td></tr>
                 <tr><td>確認時間</td><td>二段確認，再等一段時間才判定成立</td></tr>
-                <tr><td>存活時間門檻</td><td>過濾開局瞬間的誤判，雜訊不會佔到名次</td></tr>
-                <tr><td>stale 時間</td><td>清除長時間沒再出現的幽靈軌跡</td></tr>
+                <tr><td>存活時間 threshold</td><td>過濾開局瞬間的誤判，雜訊不會佔到名次</td></tr>
+                <tr><td>stale 時間</td><td>清除長時間沒再出現的 ghost track</td></tr>
               </tbody>
             </table></div>
-            <p>這套判定邏輯的前提是「模型一定會錯」。與其追求更高的辨識率，不如讓下游邏輯能吸收錯誤——漏偵測用時間容忍，誤判用存活門檻濾掉，兩種失效方式分開處理。</p>
+            <p>這套判定邏輯的前提是「模型一定會錯」。與其追求更高的辨識率，不如讓下游邏輯能吸收錯誤——漏偵測用時間容忍，誤判用存活 threshold 濾掉，兩種失效方式分開處理。</p>
           </div>
           <div class="l-en">
             <pre><code>ACTIVE &#9472;&#9472;crosses the line&#9472;&#9472;&#9654; PENDING &#9472;&#9472;gone a while&#9472;&#9472;&#9654; CONFIRMING
@@ -653,7 +653,7 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
         <li>以 Redis + Lua script 實作桌台租約。用 Lua 而不是 GET-then-SET，是為了消掉 check-then-act 之間的 race——同一張桌被兩個 Pod 同時接管會造成重複下注，那是金流事故。</li>
         <li>Supervisor–Worker 調度：每桌一個 worker 與獨立 DI scope，單桌異常不影響其他桌。續租失敗就主動停掉 worker，寧可短暫沒人服務，也不能兩個 Pod 同時操作同一張桌。</li>
         <li>桌台生命週期改用 State Pattern，狀態分派集中到單一 factory，未處理到的狀態一律導向錯誤復原分支。</li>
-        <li>補上覆蓋 8 個桌台狀態與調度核心的單元測試，並把時間相關邏輯改走 <code>TimeProvider</code>，倒數與掃描迴圈才能用假時鐘快進測試。</li>
+        <li>補上覆蓋 8 個桌台狀態與調度核心的 unit test，並把時間相關邏輯改走 <code>TimeProvider</code>，倒數與掃描迴圈才能用 fake clock 快進測試。</li>
         <li>清掉版控裡的明文密碼與連線字串，改由 K8s Secret 注入。</li>
       </ul>
       <ul class="l-en">
@@ -723,10 +723,10 @@ worker running           → renew; on failure stop the worker</code></pre>
       <ul class="l-zh">
         <li>選型時放棄「擴充既有 audit_logs」這個比較快的做法，改建獨立的 operation_logs 表。工時大約多一倍，換到的是業務語意跟 HTTP raw log 徹底分開，而且完全不動既有管道。</li>
         <li>寫入走 Redis Stream 加 Consumer Group 再落 ClickHouse，稽核不拖慢主請求；ClickHouse 用 MergeTree 按日分區、TTL 自動過期。</li>
-        <li>Middleware 負責 HTTP 層語意（角色、選單、操作類型），Service 層負責變更前後的狀態快照，兩條路徑匯流到同一個 Stream 再合併寫入。</li>
+        <li>Middleware 負責 HTTP 層語意（角色、選單、操作類型），Service 層負責變更前後的狀態 snapshot，兩條路徑匯流到同一個 Stream 再合併寫入。</li>
         <li>把 OperationType 與 Menu 做成實作 <code>encoding.TextUnmarshaler</code> 的封閉型別。一份實作同時擋住 Gin form binding 與 Redis Stream 的髒資料，無效的值直接回 400，而不是悄悄回一個空結果。</li>
         <li>查詢區間的界線踩到時區問題：QA 回報同一天查得到、但凌晨那幾個小時被擋掉。原因是前端以當地當天的午夜為基準往回推算、後端跑 UTC，兩邊差了將近一天。最後決定後端不引入業務時區，只做寬鬆的 backstop 並多留一天緩衝吸收時差，精準界線交前端把關。</li>
-        <li>快照一開始存的是 enum 的數值與資源 ID，後來全改成角色名與資源名。稽核紀錄的讀者是稽核人員，記 <code>role=3</code> 對他們沒有意義。</li>
+        <li>snapshot 一開始存的是 enum 的數值與資源 ID，後來全改成角色名與資源名。稽核紀錄的讀者是稽核人員，記 <code>role=3</code> 對他們沒有意義。</li>
       </ul>
       <ul class="l-en">
         <li>The faster option was to extend the existing audit_logs table. I built a separate operation_logs table instead — roughly double the effort, in exchange for keeping business meaning fully apart from raw HTTP logs and leaving the existing pipeline untouched.</li>
@@ -754,7 +754,7 @@ Redis Stream ──── Service 層 CUD 方法
    │                 操作後查詢 → after_state
    ↓
 Consumer Group → ClickHouse operation_logs</code></pre>
-            <p>Middleware 拿不到業務快照，Service 層拿不到 HTTP context，所以拆兩條路徑各自蒐集，再於 Stream 匯流。</p>
+            <p>Middleware 拿不到業務 snapshot，Service 層拿不到 HTTP context，所以拆兩條路徑各自蒐集，再於 Stream 匯流。</p>
             <h4>為什麼時區界線交給前端</h4>
             <p>需求是「可查最近 N 天」。後端跑 UTC，前端在 UTC+8 以當地當天 00:00 往回推算，兩者最多差將近一天，結果邊界那天的凌晨時段會被後端誤擋——這是 QA 實際回報的 bug。</p>
             <p>要在後端做精準判斷，就得把業務時區帶進後端邏輯。我選擇不這樣做：後端只做寬鬆的 backstop、多留一天緩衝吸收落差，精準的使用者體驗界線由前端負責。代價是後端實際可查的範圍比需求多一天，但換到的是後端保持時區無關。</p>
@@ -799,7 +799,7 @@ consumer group → ClickHouse operation_logs</code></pre>
 
   <section id="integration">
     <h2><span class="l-zh">軟硬整合</span><span class="l-en">Hardware &amp; Systems Integration</span></h2>
-    <p class="sechint"><span class="l-zh">電機系的訓練在這裡才真正派上用場。同一個專案裡要處理 SPI 匯流排上的位元、會遺失的 RF 訊號，還有一支要讓現場人員看得懂的監控介面。</span><span class="l-en">This is where an electrical engineering background actually earns its keep — bits on an SPI bus, RF packets that go missing, and a monitoring UI that people on site have to understand, all inside one project.</span></p>
+    <p class="sechint"><span class="l-zh">電機系的訓練在這裡才真正派上用場。同一個專案裡要處理 SPI bus 上的 bit、會遺失的 RF 訊號，還有一支要讓現場人員看得懂的監控介面。</span><span class="l-en">This is where an electrical engineering background actually earns its keep — bits on an SPI bus, RF packets that go missing, and a monitoring UI that people on site have to understand, all inside one project.</span></p>
 
     <article class="proj">
       <div class="proj-top">
@@ -830,8 +830,8 @@ consumer group → ClickHouse operation_logs</code></pre>
             <div class="tablewrap"><table>
               <thead><tr><th>機制</th><th>防的是什麼</th></tr></thead>
               <tbody>
-                <tr><td>指數退避重試</td><td>RF 干擾與封包遺失</td></tr>
-                <tr><td>port 重新初始化的斷路器（強制 2 秒冷卻）</td><td>USB 連續斷線引發 reinit 風暴，進而連鎖崩潰</td></tr>
+                <tr><td>exponential backoff 重試</td><td>RF 干擾與封包遺失</td></tr>
+                <tr><td>port 重新初始化的 circuit breaker（強制 2 秒冷卻）</td><td>USB 連續斷線引發 reinit 風暴，進而連鎖崩潰</td></tr>
                 <tr><td>明確拉低 DTR/RTS，不依賴特定晶片行為</td><td>USB-to-serial 模組被控制線 toggle 重置</td></tr>
                 <tr><td>閒置時每秒探測 CTS</td><td>USB autosuspend 讓裝置睡著</td></tr>
                 <tr><td><code>atexit</code> 收尾，關閉前清除控制線</td><td>重啟後留下 未釋放的 handle</td></tr>
