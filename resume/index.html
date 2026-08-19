@@ -221,7 +221,13 @@
     background: var(--chip); border: 1px solid var(--line); color: var(--faint);
     border-radius: 4px; padding: 1px 8px; font-size: .78rem; white-space: nowrap;
   }
-  .proj > .lead { color: var(--soft); margin-bottom: 12px; max-width: 76ch; }
+  /* 專案摘要：給非技術讀者的三行 */
+  .brief {
+    display: grid; grid-template-columns: max-content 1fr;
+    gap: 7px 16px; align-items: baseline; margin: 0 0 15px; max-width: 76ch;
+  }
+  .brief dt { color: var(--faint); font-size: .8rem; font-weight: 600; white-space: nowrap; }
+  .brief dd { margin: 0; color: var(--soft); }
   ul { margin: 0 0 13px; padding-left: 21px; }
   li { margin-bottom: 8px; color: var(--soft); }
   li:last-child { margin-bottom: 0; }
@@ -239,6 +245,7 @@
     content: "▸"; transition: transform .18s ease; display: inline-block; font-size: .9em;
   }
   details[open] > summary::before { transform: rotate(90deg); }
+  details + details { margin-top: 8px; }
   details > div, details > .dbody { padding-top: 13px; }
   details h4 {
     margin: 16px 0 7px; font-size: .89rem; letter-spacing: .6px; color: var(--ink);
@@ -354,11 +361,20 @@
     .hero { padding-top: 46px; }
   }
 
+  @media (max-width: 560px) {
+    .brief { grid-template-columns: 1fr; gap: 0; }
+    .brief dt { margin-top: 9px; }
+    .brief dt:first-child { margin-top: 0; }
+  }
+
   @media print {
     .topbar, .cta, footer .flinks { display: none; }
     body { background: #fff; color: #000; font-size: 10.5pt; }
+    /* 列印時展開所有 details。新版 Chrome 用 content-visibility 隱藏收起的內容，
+       單靠覆寫子元素的 display 已經無效，所以兩招並用（另有 beforeprint 的 JS 保險）。 */
     details { display: block; }
     details > .dbody, details > div { display: block !important; }
+    details > *:not(summary) { content-visibility: visible !important; }
     .proj { break-inside: avoid; box-shadow: none; }
     a { color: #000; text-decoration: none; }
   }
@@ -497,7 +513,16 @@
         <span class="proj-when">2024 &ndash; 2026</span>
       </div>
       <div class="stack"><span>Python</span><span>YOLO</span><span>Roboflow</span><span>PyTorch</span><span>OpenCV</span><span>ONNX</span><span>FastAPI</span><span>PyQt5</span></div>
-      <p class="lead"><span class="l-zh">用影像辨識即時判定彈珠賽事的落球排名，取代人工判讀。已上線運行。</span><span class="l-en">Real-time ranking for marble races from video, replacing manual reading of the result. In production.</span></p>
+      <dl class="brief l-zh">
+        <dt>做什麼用的</dt><dd>實體彈珠賽事結束後要判定落球名次，原本靠現場人工判讀，改成系統從影像即時自動判定。</dd>
+        <dt>我的角色</dt><dd>獨立開發：模型訓練、判定邏輯、對外查詢介面與現場操作介面。</dd>
+        <dt>成果</dt><dd>已上線運行，取代人工判讀。</dd>
+      </dl>
+      <dl class="brief l-en">
+        <dt>What it's for</dt><dd>Marble races need a finishing order. It used to be read off the video by hand; now the system judges it from the feed in real time.</dd>
+        <dt>My part</dt><dd>Sole developer: model training, the judging logic, the query API and the on-site interface.</dd>
+        <dt>Outcome</dt><dd>In production, replacing the manual reading.</dd>
+      </dl>
 
       <figure class="mock">
         <div class="mock-ui" role="img"
@@ -534,20 +559,25 @@
         </figcaption>
       </figure>
 
-      <ul class="l-zh">
-        <li>以 Roboflow 標註並訓練 YOLO 模型，把每顆球訓練成獨立 class，排名系統就能直接用 class 辨識球體，繞過多物件追蹤的 ID switch 問題。</li>
-        <li>落球判定做成四狀態機。關鍵決定是所有 threshold 都用秒、不用 frame 數——YOLO 推論的 fps 會隨負載浮動，拿 frame 數當基準遲早會漂掉。</li>
-        <li>二段時間確認用來容忍偶發的漏偵測，存活時間 threshold 濾掉開局瞬間的雜訊誤判，另有 stale 機制清除 ghost track。</li>
-        <li>排名依據取「最後一次被偵測到的時間」而不是確認落球的時刻，確認延遲才不會影響排名的公平性。</li>
-        <li>對外以 FastAPI 提供賽果查詢，現場操作介面用 PyQt5；推論放在獨立 thread，避免卡住 UI。</li>
-      </ul>
-      <ul class="l-en">
-        <li>Labelled and trained a YOLO model in Roboflow, with each ball as its own class. The ranking system can then identify a ball directly by class, sidestepping the ID-switch problem in multi-object tracking.</li>
-        <li>Drop detection is a four-state machine. The key decision was to express every threshold in seconds rather than frames &mdash; inference fps drifts with load, so a frame-based threshold will eventually misjudge.</li>
-        <li>A two-stage time confirmation absorbs occasional missed detections, a survival threshold filters out noise at the start of a round, and a stale rule clears ghost tracks.</li>
-        <li>Ranking uses the time a ball was last seen, not the moment the drop was confirmed, so confirmation latency doesn't distort the result.</li>
-        <li>Results are served over FastAPI, with a PyQt5 interface for staff on site. Inference runs on its own thread so the UI stays responsive.</li>
-      </ul>
+      <details>
+        <summary><span class="l-zh">技術重點（5 點）</span><span class="l-en">Technical detail (5)</span></summary>
+        <div class="dbody">
+          <ul class="l-zh">
+            <li>以 Roboflow 標註並訓練 YOLO 模型，把每顆球訓練成獨立 class，排名系統就能直接用 class 辨識球體，繞過多物件追蹤的 ID switch 問題。</li>
+            <li>落球判定做成四狀態機。關鍵決定是所有 threshold 都用秒、不用 frame 數——YOLO 推論的 fps 會隨負載浮動，拿 frame 數當基準遲早會漂掉。</li>
+            <li>二段時間確認用來容忍偶發的漏偵測，存活時間 threshold 濾掉開局瞬間的雜訊誤判，另有 stale 機制清除 ghost track。</li>
+            <li>排名依據取「最後一次被偵測到的時間」而不是確認落球的時刻，確認延遲才不會影響排名的公平性。</li>
+            <li>對外以 FastAPI 提供賽果查詢，現場操作介面用 PyQt5；推論放在獨立 thread，避免卡住 UI。</li>
+          </ul>
+          <ul class="l-en">
+            <li>Labelled and trained a YOLO model in Roboflow, with each ball as its own class. The ranking system can then identify a ball directly by class, sidestepping the ID-switch problem in multi-object tracking.</li>
+            <li>Drop detection is a four-state machine. The key decision was to express every threshold in seconds rather than frames &mdash; inference fps drifts with load, so a frame-based threshold will eventually misjudge.</li>
+            <li>A two-stage time confirmation absorbs occasional missed detections, a survival threshold filters out noise at the start of a round, and a stale rule clears ghost tracks.</li>
+            <li>Ranking uses the time a ball was last seen, not the moment the drop was confirmed, so confirmation latency doesn't distort the result.</li>
+            <li>Results are served over FastAPI, with a PyQt5 interface for staff on site. Inference runs on its own thread so the UI stays responsive.</li>
+          </ul>
+        </div>
+      </details>
 
       <details>
         <summary><span class="l-zh">狀態機與五個 threshold</span><span class="l-en">The state machine and its five thresholds</span></summary>
@@ -598,15 +628,29 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
         <span class="proj-when">2022 &ndash; 2024</span>
       </div>
       <div class="stack"><span>Python</span><span>TensorFlow</span><span>OpenCV</span></div>
-      <p class="lead"><span class="l-zh">真人棋牌桌的牌面視覺辨識，取代原本的條碼掃描流程。這是我做影像辨識的起點，後來彈珠賽事那套判定邏輯也是從這裡累積出來的經驗。</span><span class="l-en">Card recognition for live card tables, replacing a barcode-scanning workflow. This was where my computer-vision work started, and the judging logic I later built for the marble races grew out of it.</span></p>
-      <ul class="l-zh">
-        <li>以 TensorFlow 訓練棋牌辨識模型，讓系統直接從影像判讀牌面，牌組不再需要依賴條碼。</li>
-        <li>辨識結果進入賽局流程後，仍保留現場人工確認這一關，模型判斷不會單獨決定一局的結果。</li>
-      </ul>
-      <ul class="l-en">
-        <li>Trained a TensorFlow model to read cards straight from video, so the decks no longer had to carry barcodes.</li>
-        <li>A recognised result still passes through human confirmation on site — the model's judgement never decides a round on its own.</li>
-      </ul>
+      <dl class="brief l-zh">
+        <dt>做什麼用的</dt><dd>真人棋牌桌原本靠條碼掃描辨識牌面，改成直接從影像判讀，牌組不必再貼條碼。這也是我做影像辨識的起點。</dd>
+        <dt>我的角色</dt><dd>負責模型訓練與辨識流程。</dd>
+        <dt>成果</dt><dd>取代條碼掃描流程；辨識結果仍須現場人工確認才算成立。</dd>
+      </dl>
+      <dl class="brief l-en">
+        <dt>What it's for</dt><dd>Live card tables used barcode scanning to identify cards; this reads them straight from video instead, so the decks no longer need barcodes. It was also where I started with computer vision.</dd>
+        <dt>My part</dt><dd>Model training and the recognition flow.</dd>
+        <dt>Outcome</dt><dd>Replaced the barcode step; a recognised result still needs human confirmation on site before it stands.</dd>
+      </dl>
+      <details>
+        <summary><span class="l-zh">技術重點（2 點）</span><span class="l-en">Technical detail (2)</span></summary>
+        <div class="dbody">
+          <ul class="l-zh">
+            <li>以 TensorFlow 訓練棋牌辨識模型，讓系統直接從影像判讀牌面，牌組不再需要依賴條碼。</li>
+            <li>辨識結果進入賽局流程後，仍保留現場人工確認這一關，模型判斷不會單獨決定一局的結果。</li>
+          </ul>
+          <ul class="l-en">
+            <li>Trained a TensorFlow model to read cards straight from video, so the decks no longer had to carry barcodes.</li>
+            <li>A recognised result still passes through human confirmation on site — the model's judgement never decides a round on its own.</li>
+          </ul>
+        </div>
+      </details>
     </article>
 
   </section>
@@ -621,17 +665,31 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
         <span class="proj-when">2022 – 2026</span>
       </div>
       <div class="stack"><span>.NET</span><span>SignalR</span><span>RabbitMQ</span><span>Redis</span><span>EF Core</span><span>MySQL</span></div>
-      <p class="lead"><span class="l-zh">三個服務串起玩家端到營運端的完整流程，我負責其中的交易流程、即時推播與後台功能。</span><span class="l-en">Three services connecting the player side to the operations side. I worked on the transaction flows, the real-time push, and the back-office features.</span></p>
-      <ul class="l-zh">
-        <li><strong>PlayerGameServer</strong>——玩家下注與取消下注的交易流程，結算後以 SignalR 即時推播通知；跨服務的狀態變更走 MQ 事件處理。</li>
-        <li><strong>桌台營運後台</strong>——營運與客服端的管理後台，包含權限稽核、局結果更正流程，以及第三方開獎結果的驗證機制；管理員登入以 Otp.NET 加上二階段驗證。</li>
-        <li><strong>桌台現場管理服務</strong>——荷官與攝影棚端的 SignalR Hub，負責下達賽局流程的指令。開牌結果要經過 AI 辨識與現場人工雙重確認才算成立。</li>
-      </ul>
-      <ul class="l-en">
-        <li><strong>PlayerGameServer</strong> — the bet and bet-cancellation transaction flow, with settlement pushed to players over SignalR; cross-service state changes go through MQ events.</li>
-        <li><strong>Operations back-office</strong> — the admin console for operations and customer support: permission auditing, a correction flow for round results, and verification of third-party draw results. Admin login is backed by two-factor via Otp.NET.</li>
-        <li><strong>On-site table management</strong> — the SignalR hub for dealers and the studio, issuing round-flow commands. A revealed result only stands once AI recognition and a human on site both confirm it.</li>
-      </ul>
+      <dl class="brief l-zh">
+        <dt>做什麼用的</dt><dd>玩家下注與結算、營運與客服後台、現場桌台管理，三塊串成從玩家端到營運端的完整流程。</dd>
+        <dt>我的角色</dt><dd>團隊專案，我負責交易流程、即時推播與後台功能。</dd>
+        <dt>成果</dt><dd>營運中的正式服務，五年間持續開發與維護。</dd>
+      </dl>
+      <dl class="brief l-en">
+        <dt>What it's for</dt><dd>Player betting and settlement, the back-office for operations and support, and on-site table management — three pieces forming the path from the player to the operator.</dd>
+        <dt>My part</dt><dd>A team project; I worked on the transaction flows, the real-time push and the back-office features.</dd>
+        <dt>Outcome</dt><dd>A live production service, developed and maintained across five years.</dd>
+      </dl>
+      <details>
+        <summary><span class="l-zh">技術重點（3 點）</span><span class="l-en">Technical detail (3)</span></summary>
+        <div class="dbody">
+          <ul class="l-zh">
+            <li><strong>PlayerGameServer</strong>——玩家下注與取消下注的交易流程，結算後以 SignalR 即時推播通知；跨服務的狀態變更走 MQ 事件處理。</li>
+            <li><strong>桌台營運後台</strong>——營運與客服端的管理後台，包含權限稽核、局結果更正流程，以及第三方開獎結果的驗證機制；管理員登入以 Otp.NET 加上二階段驗證。</li>
+            <li><strong>桌台現場管理服務</strong>——荷官與攝影棚端的 SignalR Hub，負責下達賽局流程的指令。開牌結果要經過 AI 辨識與現場人工雙重確認才算成立。</li>
+          </ul>
+          <ul class="l-en">
+            <li><strong>PlayerGameServer</strong> — the bet and bet-cancellation transaction flow, with settlement pushed to players over SignalR; cross-service state changes go through MQ events.</li>
+            <li><strong>Operations back-office</strong> — the admin console for operations and customer support: permission auditing, a correction flow for round results, and verification of third-party draw results. Admin login is backed by two-factor via Otp.NET.</li>
+            <li><strong>On-site table management</strong> — the SignalR hub for dealers and the studio, issuing round-flow commands. A revealed result only stands once AI recognition and a human on site both confirm it.</li>
+          </ul>
+        </div>
+      </details>
     </article>
 
     <article class="proj">
@@ -640,21 +698,35 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
         <span class="proj-when">2025 – 2026</span>
       </div>
       <div class="stack"><span>.NET 10</span><span>Redis</span><span>Kubernetes</span><span>xUnit</span></div>
-      <p class="lead"><span class="l-zh">把原本的 WPF 桌面程式改成可容器化的 Console 服務，並解掉多 Pod 部署時同一張桌被重複接管的問題。主程式與測試由我獨立設計與實作，共用函式庫則是團隊共同維護。</span><span class="l-en">Turned a WPF desktop application into a containerisable console service, and fixed the problem of one table being taken over by two pods at once. I designed and wrote the main application and its tests; the shared libraries are maintained by the team.</span></p>
-      <ul class="l-zh">
-        <li>以 Redis + Lua script 實作桌台租約。用 Lua 而不是 GET-then-SET，是為了消掉 check-then-act 之間的 race——同一張桌被兩個 Pod 同時接管會造成重複下注，那是金流事故。</li>
-        <li>Supervisor–Worker 調度：每桌一個 worker 與獨立 DI scope，單桌異常不影響其他桌。續租失敗就主動停掉 worker，寧可短暫沒人服務，也不能兩個 Pod 同時操作同一張桌。</li>
-        <li>桌台生命週期改用 State Pattern，狀態分派集中到單一 factory，未處理到的狀態一律導向錯誤復原分支。</li>
-        <li>補上覆蓋 8 個桌台狀態與調度核心的 unit test，並把時間相關邏輯改走 <code>TimeProvider</code>，倒數與掃描迴圈才能用 fake clock 快進測試。</li>
-        <li>清掉版控裡的明文密碼與連線字串，改由 K8s Secret 注入。</li>
-      </ul>
-      <ul class="l-en">
-        <li>Table leases are implemented with Redis plus Lua scripts. Lua rather than GET-then-SET, because the gap between check and act is a real race — two pods driving the same table means duplicate bets, which is a money incident.</li>
-        <li>Supervisor–worker scheduling: one worker and one DI scope per table, so a fault on one table doesn't touch the others. If renewal fails the worker is stopped deliberately — a table briefly unattended is better than two pods acting on it.</li>
-        <li>The table lifecycle moved to a state pattern, with dispatch collapsed into a single factory and any unhandled state falling through to error recovery.</li>
-        <li>Added unit tests covering the eight table states and the scheduling core, and moved time-dependent logic onto <code>TimeProvider</code> so countdowns and scan loops can be fast-forwarded with a fake clock.</li>
-        <li>Removed plaintext passwords and connection strings from version control; they now come from Kubernetes secrets.</li>
-      </ul>
+      <dl class="brief l-zh">
+        <dt>做什麼用的</dt><dd>原本只能裝在單台電腦上的程式，改成可以同時部署在多台伺服器的服務，並解掉「同一張桌被兩台機器同時接管」會造成重複下注的風險。</dd>
+        <dt>我的角色</dt><dd>主程式與測試由我獨立設計實作；共用函式庫由團隊共同維護。</dd>
+        <dt>成果</dt><dd>可多機部署且不會重複接管，排除重複下注的金流風險。</dd>
+      </dl>
+      <dl class="brief l-en">
+        <dt>What it's for</dt><dd>A program that could only run on one machine, turned into a service that can run on several servers at once — without two of them taking over the same table and charging a bet twice.</dd>
+        <dt>My part</dt><dd>I designed and wrote the main program and its tests on my own; the shared libraries are maintained by the team.</dd>
+        <dt>Outcome</dt><dd>Runs on multiple servers with no duplicate takeover, removing the double-bet risk.</dd>
+      </dl>
+      <details>
+        <summary><span class="l-zh">技術重點（5 點）</span><span class="l-en">Technical detail (5)</span></summary>
+        <div class="dbody">
+          <ul class="l-zh">
+            <li>以 Redis + Lua script 實作桌台租約。用 Lua 而不是 GET-then-SET，是為了消掉 check-then-act 之間的 race——同一張桌被兩個 Pod 同時接管會造成重複下注，那是金流事故。</li>
+            <li>Supervisor–Worker 調度：每桌一個 worker 與獨立 DI scope，單桌異常不影響其他桌。續租失敗就主動停掉 worker，寧可短暫沒人服務，也不能兩個 Pod 同時操作同一張桌。</li>
+            <li>桌台生命週期改用 State Pattern，狀態分派集中到單一 factory，未處理到的狀態一律導向錯誤復原分支。</li>
+            <li>補上覆蓋 8 個桌台狀態與調度核心的 unit test，並把時間相關邏輯改走 <code>TimeProvider</code>，倒數與掃描迴圈才能用 fake clock 快進測試。</li>
+            <li>清掉版控裡的明文密碼與連線字串，改由 K8s Secret 注入。</li>
+          </ul>
+          <ul class="l-en">
+            <li>Table leases are implemented with Redis plus Lua scripts. Lua rather than GET-then-SET, because the gap between check and act is a real race — two pods driving the same table means duplicate bets, which is a money incident.</li>
+            <li>Supervisor–worker scheduling: one worker and one DI scope per table, so a fault on one table doesn't touch the others. If renewal fails the worker is stopped deliberately — a table briefly unattended is better than two pods acting on it.</li>
+            <li>The table lifecycle moved to a state pattern, with dispatch collapsed into a single factory and any unhandled state falling through to error recovery.</li>
+            <li>Added unit tests covering the eight table states and the scheduling core, and moved time-dependent logic onto <code>TimeProvider</code> so countdowns and scan loops can be fast-forwarded with a fake clock.</li>
+            <li>Removed plaintext passwords and connection strings from version control; they now come from Kubernetes secrets.</li>
+          </ul>
+        </div>
+      </details>
 
       <details>
         <summary><span class="l-zh">租約與調度的實作細節</span><span class="l-en">How the lease and scheduling work</span></summary>
@@ -711,23 +783,37 @@ worker running           → renew; on failure stop the worker</code></pre>
         <span class="proj-when">2026</span>
       </div>
       <div class="stack"><span>Go</span><span>ClickHouse</span><span>Redis Stream</span><span>Gin</span><span>Uber Fx</span></div>
-      <p class="lead"><span class="l-zh">多租戶聊天平台的稽核紀錄功能，從方案選型、設計文件到上線由我獨立完成。</span><span class="l-en">Audit logging for a multi-tenant chat platform — option analysis, design documents and delivery, done solo.</span></p>
-      <ul class="l-zh">
-        <li>選型時放棄「擴充既有 audit_logs」這個比較快的做法，改建獨立的 operation_logs 表。工時大約多一倍，換到的是業務語意跟 HTTP raw log 徹底分開，而且完全不動既有管道。</li>
-        <li>寫入走 Redis Stream 加 Consumer Group 再落 ClickHouse，稽核不拖慢主請求；ClickHouse 用 MergeTree 按日分區、TTL 自動過期。</li>
-        <li>Middleware 負責 HTTP 層語意（角色、選單、操作類型），Service 層負責變更前後的狀態 snapshot，兩條路徑匯流到同一個 Stream 再合併寫入。</li>
-        <li>把 OperationType 與 Menu 做成實作 <code>encoding.TextUnmarshaler</code> 的封閉型別。一份實作同時擋住 Gin form binding 與 Redis Stream 的髒資料，無效的值直接回 400，而不是悄悄回一個空結果。</li>
-        <li>查詢區間的界線踩到時區問題：QA 回報同一天查得到、但凌晨那幾個小時被擋掉。原因是前端以當地當天的午夜為基準往回推算、後端跑 UTC，兩邊差了將近一天。最後決定後端不引入業務時區，只做寬鬆的 backstop 並多留一天緩衝吸收時差，精準界線交前端把關。</li>
-        <li>snapshot 一開始存的是 enum 的數值與資源 ID，後來全改成角色名與資源名。稽核紀錄的讀者是稽核人員，記 <code>role=3</code> 對他們沒有意義。</li>
-      </ul>
-      <ul class="l-en">
-        <li>The faster option was to extend the existing audit_logs table. I built a separate operation_logs table instead — roughly double the effort, in exchange for keeping business meaning fully apart from raw HTTP logs and leaving the existing pipeline untouched.</li>
-        <li>Writes go through a Redis stream and a consumer group before landing in ClickHouse, so auditing never slows the main request. The table is MergeTree, partitioned by day, with a TTL for expiry.</li>
-        <li>Middleware supplies the HTTP-level meaning (role, menu, operation type); the service layer supplies before/after state snapshots. Both paths meet in the same stream and are merged on write.</li>
-        <li>OperationType and Menu are closed types implementing <code>encoding.TextUnmarshaler</code>. One implementation guards both Gin form binding and the stream consumer, so an invalid value returns 400 instead of quietly yielding an empty result set.</li>
-        <li>The query window ran into a timezone problem: QA could query a given day, but the early-morning hours of it were rejected. The frontend counted back from local midnight while the backend ran on UTC — nearly a full day apart. I kept business timezones out of the backend, left it a loose backstop with an extra day of slack, and let the frontend enforce the precise boundary.</li>
-        <li>Snapshots first stored raw enum values and resource IDs. I changed all of them to role and resource names — the people reading an audit trail are auditors, and <code>role=3</code> means nothing to them.</li>
-      </ul>
+      <dl class="brief l-zh">
+        <dt>做什麼用的</dt><dd>讓平台查得到「誰在什麼時候改了什麼」，供稽核與客服追查。</dd>
+        <dt>我的角色</dt><dd>從方案評估、設計文件到上線由我獨立完成。</dd>
+        <dt>成果</dt><dd>已上線；紀錄以稽核人員讀得懂的名稱呈現，且不影響原本操作的速度。</dd>
+      </dl>
+      <dl class="brief l-en">
+        <dt>What it's for</dt><dd>So the platform can answer "who changed what, and when" for auditors and support staff.</dd>
+        <dt>My part</dt><dd>Mine end to end: evaluating the options, the design document and the release.</dd>
+        <dt>Outcome</dt><dd>In production; entries read as names auditors recognise, and the logging doesn't slow the original operation down.</dd>
+      </dl>
+      <details>
+        <summary><span class="l-zh">技術重點（6 點）</span><span class="l-en">Technical detail (6)</span></summary>
+        <div class="dbody">
+          <ul class="l-zh">
+            <li>選型時放棄「擴充既有 audit_logs」這個比較快的做法，改建獨立的 operation_logs 表。工時大約多一倍，換到的是業務語意跟 HTTP raw log 徹底分開，而且完全不動既有管道。</li>
+            <li>寫入走 Redis Stream 加 Consumer Group 再落 ClickHouse，稽核不拖慢主請求；ClickHouse 用 MergeTree 按日分區、TTL 自動過期。</li>
+            <li>Middleware 負責 HTTP 層語意（角色、選單、操作類型），Service 層負責變更前後的狀態 snapshot，兩條路徑匯流到同一個 Stream 再合併寫入。</li>
+            <li>把 OperationType 與 Menu 做成實作 <code>encoding.TextUnmarshaler</code> 的封閉型別。一份實作同時擋住 Gin form binding 與 Redis Stream 的髒資料，無效的值直接回 400，而不是悄悄回一個空結果。</li>
+            <li>查詢區間的界線踩到時區問題：QA 回報同一天查得到、但凌晨那幾個小時被擋掉。原因是前端以當地當天的午夜為基準往回推算、後端跑 UTC，兩邊差了將近一天。最後決定後端不引入業務時區，只做寬鬆的 backstop 並多留一天緩衝吸收時差，精準界線交前端把關。</li>
+            <li>snapshot 一開始存的是 enum 的數值與資源 ID，後來全改成角色名與資源名。稽核紀錄的讀者是稽核人員，記 <code>role=3</code> 對他們沒有意義。</li>
+          </ul>
+          <ul class="l-en">
+            <li>The faster option was to extend the existing audit_logs table. I built a separate operation_logs table instead — roughly double the effort, in exchange for keeping business meaning fully apart from raw HTTP logs and leaving the existing pipeline untouched.</li>
+            <li>Writes go through a Redis stream and a consumer group before landing in ClickHouse, so auditing never slows the main request. The table is MergeTree, partitioned by day, with a TTL for expiry.</li>
+            <li>Middleware supplies the HTTP-level meaning (role, menu, operation type); the service layer supplies before/after state snapshots. Both paths meet in the same stream and are merged on write.</li>
+            <li>OperationType and Menu are closed types implementing <code>encoding.TextUnmarshaler</code>. One implementation guards both Gin form binding and the stream consumer, so an invalid value returns 400 instead of quietly yielding an empty result set.</li>
+            <li>The query window ran into a timezone problem: QA could query a given day, but the early-morning hours of it were rejected. The frontend counted back from local midnight while the backend ran on UTC — nearly a full day apart. I kept business timezones out of the backend, left it a loose backstop with an extra day of slack, and let the frontend enforce the precise boundary.</li>
+            <li>Snapshots first stored raw enum values and resource IDs. I changed all of them to role and resource names — the people reading an audit trail are auditors, and <code>role=3</code> means nothing to them.</li>
+          </ul>
+        </div>
+      </details>
 
       <details>
         <summary><span class="l-zh">架構與那個時區決策</span><span class="l-en">Architecture, and that timezone call</span></summary>
@@ -784,7 +870,31 @@ consumer group → ClickHouse operation_logs</code></pre>
         <span class="proj-when">2026</span>
       </div>
       <div class="stack"><span>Python</span><span>Docker</span><span>Helm</span><span>GitLab CI</span><span>ArgoCD</span></div>
-      <p class="lead"><span class="l-zh">從零做到 K8s 常駐的內部工具，讓後端與 QA 在拿不到廠商測試環境時也能驗證 webhook 對接。刻意只用標準庫寫，QA 不必裝任何套件；自帶精簡 Helm chart 與三階段 CI pipeline。部署前把憑證從 K8s Secret 改成由使用者在網頁自填、存各自瀏覽器，並在 README 寫明這個工具沒有身份驗證機制、只能放測試環境憑證。</span><span class="l-en">An internal tool taken from nothing to a running Kubernetes deployment, so backend and QA could verify a webhook integration without access to the vendor's test environment. Written against the standard library only, so QA installs nothing; it ships its own small Helm chart and a three-stage CI pipeline. Before deploying I moved the credentials out of a Kubernetes secret and into the user's own browser, and wrote plainly in the README that the tool has no authentication and should only ever hold test credentials.</span></p>
+      <dl class="brief l-zh">
+        <dt>做什麼用的</dt><dd>跟外部廠商對接時拿不到對方的測試環境，這個工具讓後端與 QA 自己模擬對方送來的通知來驗證。</dd>
+        <dt>我的角色</dt><dd>從零獨立開發到部署。</dd>
+        <dt>成果</dt><dd>QA 不必安裝任何軟體就能使用；上線前調整憑證存放方式，並在說明文件揭露安全限制。</dd>
+      </dl>
+      <dl class="brief l-en">
+        <dt>What it's for</dt><dd>Integrating with an outside vendor meant no access to their test environment, so this tool lets backend and QA simulate the vendor’s callbacks themselves.</dd>
+        <dt>My part</dt><dd>Built and deployed from scratch, on my own.</dd>
+        <dt>Outcome</dt><dd>QA can use it without installing anything; before release I changed how credentials are stored and documented the security limits.</dd>
+      </dl>
+      <details>
+        <summary><span class="l-zh">技術重點（3 點）</span><span class="l-en">Technical detail (3)</span></summary>
+        <div class="dbody">
+          <ul class="l-zh">
+            <li>刻意只用 Python 標準庫寫，QA 不必安裝任何套件就能跑。</li>
+            <li>自帶精簡 Helm chart 與三階段 CI pipeline，從零做到 K8s 常駐。</li>
+            <li>部署前把憑證從 K8s Secret 改成由使用者在網頁自填、存各自瀏覽器，並在 README 寫明這個工具沒有身份驗證機制、只能放測試環境憑證。</li>
+          </ul>
+          <ul class="l-en">
+            <li>Written against the Python standard library only, so QA installs nothing to run it.</li>
+            <li>Ships its own small Helm chart and a three-stage CI pipeline — from nothing to a running Kubernetes deployment.</li>
+            <li>Before deploying I moved credentials out of a Kubernetes secret and into the user's own browser, and wrote plainly in the README that the tool has no authentication and should only ever hold test credentials.</li>
+          </ul>
+        </div>
+      </details>
     </article>
 
   </section>
@@ -799,21 +909,35 @@ consumer group → ClickHouse operation_logs</code></pre>
         <span class="proj-when">2024 – 2026</span>
       </div>
       <div class="stack"><span>Python</span><span>SPI</span><span>UART/RF</span><span>Raspberry Pi</span><span>Flask</span><span>OpenTelemetry</span></div>
-      <p class="lead"><span class="l-zh">控制 8 條實體賽道（含一條實體測試賽道）的自動化系統，從硬體驅動到 Web 監控介面由我獨立開發。除了控制軟體，也寫韌體、跟外部廠商一起討論電路板設計、做基礎焊接。</span><span class="l-en">The automation system driving eight physical tracks (one of them a physical test track), built solo from the hardware drivers up to the web monitor. Alongside the control software I wrote firmware, worked with an external vendor on the board design, and did the basic soldering.</span></p>
-      <ul class="l-zh">
-        <li>硬體抽象層以 SPI 驅動 MCP23S17 I/O Expander，讀取最多 28 路光學感測器，並自動偵測新舊兩代感測板，讓同一份程式碼吃兩種硬體。</li>
-        <li>RF 閘門驅動是最難的一塊，實體環境什麼都會壞，所以疊了六層防禦（展開看細節）。</li>
-        <li>賽道流程用 Strategy 加 Factory，8 條賽道各有自己的開賽條件與結束判定，新增一條只要加一個 flow 並註冊，不動主控迴圈。</li>
-        <li>偵測不到硬體時自動退回模擬模式，開發者在沒有 SPI 的 Mac 上也能跑完整流程。</li>
-        <li>依賽事事件切換 OBS 場景，把遊戲邏輯與直播導播串起來。三支程式分別以 systemd 常駐，監控介面掛掉不會影響賽道控制。</li>
-      </ul>
-      <ul class="l-en">
-        <li>The hardware layer drives an MCP23S17 I/O expander over SPI to read up to 28 optical sensors, and detects which of two sensor-board generations is present so one codebase serves both.</li>
-        <li>The RF gate driver was the hard part. In a physical setting everything fails eventually, so it ended up with six layers of defence (details below).</li>
-        <li>Track flows use strategy plus factory: each of the eight tracks has its own start conditions and finish rules, and adding one means adding a flow and registering it, without touching the main loop.</li>
-        <li>When no hardware is detected it falls back to a simulation mode, so a developer on a Mac with no SPI can still run the whole flow.</li>
-        <li>OBS scenes switch on race events, tying game logic to the broadcast. Three processes run under systemd, so losing the monitor UI doesn't affect track control.</li>
-      </ul>
+      <dl class="brief l-zh">
+        <dt>做什麼用的</dt><dd>控制 8 條實體彈珠賽道的自動化系統，涵蓋感測器讀取、閘門開關、賽事流程與直播畫面切換。</dd>
+        <dt>我的角色</dt><dd>控制軟體與監控介面獨立開發；另外也寫韌體、與外部廠商討論電路板設計、做基礎焊接。</dd>
+        <dt>成果</dt><dd>8 條賽道（含 1 條測試賽道）實際運作；硬體出狀況時系統能自行恢復。</dd>
+      </dl>
+      <dl class="brief l-en">
+        <dt>What it's for</dt><dd>The automation behind 8 physical marble tracks: reading sensors, driving the gates, running the race flow and switching the live-stream scenes.</dd>
+        <dt>My part</dt><dd>Sole developer of the control software and monitoring UI; I also wrote firmware, discussed board design with an outside vendor, and did basic soldering.</dd>
+        <dt>Outcome</dt><dd>8 tracks (one of them a test track) in real operation; the system recovers on its own when the hardware misbehaves.</dd>
+      </dl>
+      <details>
+        <summary><span class="l-zh">技術重點（5 點）</span><span class="l-en">Technical detail (5)</span></summary>
+        <div class="dbody">
+          <ul class="l-zh">
+            <li>硬體抽象層以 SPI 驅動 MCP23S17 I/O Expander，讀取最多 28 路光學感測器，並自動偵測新舊兩代感測板，讓同一份程式碼吃兩種硬體。</li>
+            <li>RF 閘門驅動是最難的一塊，實體環境什麼都會壞，所以疊了六層防禦（展開看細節）。</li>
+            <li>賽道流程用 Strategy 加 Factory，8 條賽道各有自己的開賽條件與結束判定，新增一條只要加一個 flow 並註冊，不動主控迴圈。</li>
+            <li>偵測不到硬體時自動退回模擬模式，開發者在沒有 SPI 的 Mac 上也能跑完整流程。</li>
+            <li>依賽事事件切換 OBS 場景，把遊戲邏輯與直播導播串起來。三支程式分別以 systemd 常駐，監控介面掛掉不會影響賽道控制。</li>
+          </ul>
+          <ul class="l-en">
+            <li>The hardware layer drives an MCP23S17 I/O expander over SPI to read up to 28 optical sensors, and detects which of two sensor-board generations is present so one codebase serves both.</li>
+            <li>The RF gate driver was the hard part. In a physical setting everything fails eventually, so it ended up with six layers of defence (details below).</li>
+            <li>Track flows use strategy plus factory: each of the eight tracks has its own start conditions and finish rules, and adding one means adding a flow and registering it, without touching the main loop.</li>
+            <li>When no hardware is detected it falls back to a simulation mode, so a developer on a Mac with no SPI can still run the whole flow.</li>
+            <li>OBS scenes switch on race events, tying game logic to the broadcast. Three processes run under systemd, so losing the monitor UI doesn't affect track control.</li>
+          </ul>
+        </div>
+      </details>
 
       <details>
         <summary><span class="l-zh">RF 驅動的六層防禦，以及各自防什麼</span><span class="l-en">Six layers in the RF driver, and what each one is for</span></summary>
@@ -872,6 +996,15 @@ consumer group → ClickHouse operation_logs</code></pre>
 <script>
 (function () {
   var html = document.documentElement;
+
+  // ----- 列印前展開所有 details，列印後還原 -----
+  function eachDetails(fn) { Array.prototype.forEach.call(document.querySelectorAll('details'), fn); }
+  window.addEventListener('beforeprint', function () {
+    eachDetails(function (d) { d.dataset.wasOpen = d.open ? '1' : '0'; d.open = true; });
+  });
+  window.addEventListener('afterprint', function () {
+    eachDetails(function (d) { d.open = d.dataset.wasOpen === '1'; });
+  });
 
   // ----- language -----
   var langBtn = document.getElementById('langBtn');
