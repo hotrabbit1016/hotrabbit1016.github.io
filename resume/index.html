@@ -563,7 +563,7 @@
       </figure>
 
       <details>
-        <summary><span class="l-zh">技術重點（5 點）</span><span class="l-en">Technical detail (5)</span></summary>
+        <summary><span class="l-zh">技術重點</span><span class="l-en">Technical detail</span></summary>
         <div class="dbody">
           <ul class="l-zh">
             <li>以 Roboflow 標註並訓練 YOLO 模型，把每顆球訓練成獨立 class，排名系統就能直接用 class 辨識球體，繞過多物件追蹤的 ID switch 問題。</li>
@@ -642,7 +642,7 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
         <dt>Outcome</dt><dd>Replaced the barcode step; a recognised result still needs human confirmation on site before it stands.</dd>
       </dl>
       <details>
-        <summary><span class="l-zh">技術重點（2 點）</span><span class="l-en">Technical detail (2)</span></summary>
+        <summary><span class="l-zh">技術重點</span><span class="l-en">Technical detail</span></summary>
         <div class="dbody">
           <ul class="l-zh">
             <li>以 TensorFlow 訓練棋牌辨識模型，讓系統直接從影像判讀牌面，牌組不再需要依賴條碼。</li>
@@ -679,7 +679,7 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
         <dt>Outcome</dt><dd>A live production service, maintained for about four years.</dd>
       </dl>
       <details>
-        <summary><span class="l-zh">技術重點（2 點）</span><span class="l-en">Technical detail (2)</span></summary>
+        <summary><span class="l-zh">技術重點</span><span class="l-en">Technical detail</span></summary>
         <div class="dbody">
           <ul class="l-zh">
             <li>下注與取消下注走交易流程，結算完成後以 SignalR 即時推播通知玩家端。</li>
@@ -711,7 +711,7 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
         <dt>Outcome</dt><dd>Used on the floor; a result only stands after a second confirmation, so a single entry never decides a round on its own.</dd>
       </dl>
       <details>
-        <summary><span class="l-zh">技術重點（4 點）</span><span class="l-en">Technical detail (4)</span></summary>
+        <summary><span class="l-zh">技術重點</span><span class="l-en">Technical detail</span></summary>
         <div class="dbody">
           <ul class="l-zh">
             <li>現場輸入的結果與確認後的結果<strong>分成兩個獨立欄位</strong>存放，確認動作才有比對的對象；若共用一個欄位，第二次確認就只是覆寫自己。</li>
@@ -747,7 +747,7 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
         <dt>Outcome</dt><dd>In production; permissions became role-based, separating an account from the operations it may run, so changing access no longer means editing accounts one by one.</dd>
       </dl>
       <details>
-        <summary><span class="l-zh">技術重點（4 點）</span><span class="l-en">Technical detail (4)</span></summary>
+        <summary><span class="l-zh">技術重點</span><span class="l-en">Technical detail</span></summary>
         <div class="dbody">
           <ul class="l-zh">
             <li>權限拆成兩組 CRUD：一組管角色定義，一組管管理員帳號綁哪個角色。兩者分離之後，新增一種操作只要調角色，不用動到帳號。</li>
@@ -782,7 +782,7 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
         <dt>Outcome</dt><dd>Runs on multiple servers with no duplicate takeover, removing the double-bet risk.</dd>
       </dl>
       <details>
-        <summary><span class="l-zh">技術重點（5 點）</span><span class="l-en">Technical detail (5)</span></summary>
+        <summary><span class="l-zh">技術重點</span><span class="l-en">Technical detail</span></summary>
         <div class="dbody">
           <ul class="l-zh">
             <li>以 Redis + Lua script 實作桌台租約。用 Lua 而不是 GET-then-SET，是為了消掉 check-then-act 之間的 race——同一張桌被兩個 Pod 同時接管會造成重複下注，那是金流事故。</li>
@@ -867,7 +867,7 @@ worker running           → renew; on failure stop the worker</code></pre>
         <dt>Outcome</dt><dd>In production; entries read as names auditors recognise, and the logging doesn't slow the original operation down.</dd>
       </dl>
       <details>
-        <summary><span class="l-zh">技術重點（6 點）</span><span class="l-en">Technical detail (6)</span></summary>
+        <summary><span class="l-zh">技術重點</span><span class="l-en">Technical detail</span></summary>
         <div class="dbody">
           <ul class="l-zh">
             <li>選型時放棄「擴充既有 audit_logs」這個比較快的做法，改建獨立的 operation_logs 表。工時大約多一倍，換到的是業務語意跟 HTTP raw log 徹底分開，而且完全不動既有管道。</li>
@@ -954,7 +954,7 @@ consumer group → ClickHouse operation_logs</code></pre>
         <dt>Outcome</dt><dd>QA can use it without installing anything; before release I changed how credentials are stored and documented the security limits.</dd>
       </dl>
       <details>
-        <summary><span class="l-zh">技術重點（3 點）</span><span class="l-en">Technical detail (3)</span></summary>
+        <summary><span class="l-zh">技術重點</span><span class="l-en">Technical detail</span></summary>
         <div class="dbody">
           <ul class="l-zh">
             <li>刻意只用 Python 標準庫寫，QA 不必安裝任何套件就能跑。</li>
@@ -993,7 +993,7 @@ consumer group → ClickHouse operation_logs</code></pre>
         <dt>Outcome</dt><dd>8 tracks (one of them a test track) in real operation; the system recovers on its own when the hardware misbehaves.</dd>
       </dl>
       <details>
-        <summary><span class="l-zh">技術重點（5 點）</span><span class="l-en">Technical detail (5)</span></summary>
+        <summary><span class="l-zh">技術重點</span><span class="l-en">Technical detail</span></summary>
         <div class="dbody">
           <ul class="l-zh">
             <li>硬體抽象層以 SPI 驅動 MCP23S17 I/O Expander，讀取最多 28 路光學感測器，並自動偵測新舊兩代感測板，讓同一份程式碼吃兩種硬體。</li>
