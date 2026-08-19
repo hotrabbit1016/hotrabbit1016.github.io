@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-mode="drill">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>面試準備筆記</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='13' fill='%23234a6d'/><text x='32' y='45' font-size='30' font-family='Helvetica,Arial,sans-serif' font-weight='700' fill='%23ffffff' text-anchor='middle'>Q</text></svg>">
+<style>
+  :root {
+    --bg: #fbfbfc; --panel: #ffffff; --ink: #16191d; --soft: #4d555f; --faint: #8b929b;
+    --line: #e2e5ea; --chip: #f0f3f6; --accent: #234a6d; --accent-soft: #eaf1f7;
+    --code-bg: #f5f7f9; --warn: #8a5a12; --warn-soft: #fdf5e6; --warn-line: #e8c98a;
+    --ok: #1f6b4a; --ok-soft: #eaf5ef; --shadow: 0 1px 2px rgba(20,25,35,.05), 0 8px 24px rgba(20,25,35,.04);
+  }
+  html[data-theme="dark"] {
+    --bg: #0f1216; --panel: #161b21; --ink: #e9edf2; --soft: #b3bcc7; --faint: #7f8894;
+    --line: #262d36; --chip: #1d242b; --accent: #7fb2df; --accent-soft: #17222c;
+    --code-bg: #12171c; --warn: #e0b464; --warn-soft: #241d10; --warn-line: #4a3a1c;
+    --ok: #6cc39a; --ok-soft: #12211a; --shadow: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) {
+      --bg: #0f1216; --panel: #161b21; --ink: #e9edf2; --soft: #b3bcc7; --faint: #7f8894;
+      --line: #262d36; --chip: #1d242b; --accent: #7fb2df; --accent-soft: #17222c;
+      --code-bg: #12171c; --warn: #e0b464; --warn-soft: #241d10; --warn-line: #4a3a1c;
+      --ok: #6cc39a; --ok-soft: #12211a; --shadow: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--soft);
+    font: 16px/1.72 -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC",
+          "PingFang TC", "Microsoft JhengHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 { color: var(--ink); }
+  code {
+    background: var(--code-bg); border: 1px solid var(--line); border-radius: 4px;
+    padding: .5px 5px; font-size: .86em; overflow-wrap: anywhere;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  /* ---------- 工具列 ---------- */
+  .bar {
+    position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, var(--panel) 92%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+  }
+  .bar-in {
+    max-width: 1240px; margin: 0 auto; padding: 9px 20px;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .brand { font-weight: 700; color: var(--ink); font-size: .95rem; white-space: nowrap; }
+  .brand span { color: var(--faint); font-weight: 400; }
+  .seg { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .seg button {
+    border: 0; background: var(--panel); color: var(--faint); cursor: pointer;
+    padding: 6px 13px; font: inherit; font-size: .84rem; white-space: nowrap;
+  }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: #fff; font-weight: 600; }
+  .tbtn {
+    border: 1px solid var(--line); background: var(--panel); color: var(--faint);
+    border-radius: 8px; padding: 6px 11px; cursor: pointer; font: inherit; font-size: .84rem;
+    white-space: nowrap;
+  }
+  .tbtn:hover { color: var(--ink); border-color: var(--accent); }
+  .tbtn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); font-weight: 600; }
+  .search {
+    flex: 1; min-width: 130px; border: 1px solid var(--line); background: var(--panel);
+    color: var(--ink); border-radius: 8px; padding: 6px 11px; font: inherit; font-size: .88rem;
+  }
+  .search:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .prog { display: flex; align-items: center; gap: 8px; font-size: .8rem; color: var(--faint); white-space: nowrap; }
+  .prog-track { width: 92px; height: 6px; background: var(--chip); border-radius: 99px; overflow: hidden; }
+  .prog-fill { height: 100%; width: 0; background: var(--ok); transition: width .25s ease; }
+
+  /* ---------- 版面 ---------- */
+  .layout { max-width: 1240px; margin: 0 auto; padding: 0 20px 90px; display: flex; gap: 34px; }
+  .side { width: 216px; flex: none; position: sticky; top: 62px; align-self: flex-start; padding-top: 26px; }
+  .side a {
+    display: flex; justify-content: space-between; gap: 8px; align-items: baseline;
+    color: var(--soft); text-decoration: none; font-size: .88rem;
+    padding: 5px 9px; border-radius: 6px;
+  }
+  .side a:hover { background: var(--chip); color: var(--ink); }
+  .side a b { color: var(--faint); font-size: .74rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .side a.done b { color: var(--ok); }
+  main { flex: 1; min-width: 0; padding-top: 26px; }
+
+  .lede { max-width: 74ch; margin-bottom: 30px; }
+  .lede h1 { font-size: 1.5rem; margin: 0 0 10px; letter-spacing: .5px; }
+  .lede p { margin: 0 0 10px; }
+  .hint {
+    background: var(--accent-soft); border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0; padding: 11px 15px; font-size: .92rem; margin: 16px 0 0;
+  }
+  kbd {
+    background: var(--panel); border: 1px solid var(--line); border-bottom-width: 2px;
+    border-radius: 5px; padding: 0 5px; font-size: .8em; color: var(--ink);
+    font-family: ui-monospace, Menlo, monospace;
+  }
+
+  h2.sec {
+    font-size: .95rem; letter-spacing: 2.2px; text-transform: uppercase; color: var(--accent);
+    margin: 42px 0 16px; font-weight: 700; display: flex; align-items: center; gap: 12px;
+    scroll-margin-top: 66px;
+  }
+  h2.sec::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  h2.sec em { font-style: normal; color: var(--faint); font-size: .82rem; letter-spacing: 1px; font-weight: 600; }
+
+  /* ---------- 題卡 ---------- */
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    margin-bottom: 13px; box-shadow: var(--shadow); overflow: hidden;
+    scroll-margin-top: 70px;
+  }
+  .card.focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .q {
+    display: flex; gap: 12px; align-items: flex-start; padding: 15px 18px; cursor: pointer;
+  }
+  .q:hover { background: color-mix(in srgb, var(--chip) 55%, transparent); }
+  .q-txt { flex: 1; color: var(--ink); font-weight: 600; font-size: 1.02rem; line-height: 1.55; }
+  .q-tag {
+    flex: none; font-size: .68rem; letter-spacing: .5px; color: var(--faint);
+    border: 1px solid var(--line); border-radius: 99px; padding: 1px 8px; margin-top: 4px;
+  }
+  .mark {
+    flex: none; border: 1px solid var(--line); background: var(--panel); color: var(--faint);
+    border-radius: 99px; width: 26px; height: 26px; cursor: pointer; font-size: .78rem;
+    margin-top: 2px; line-height: 1;
+  }
+  .mark[data-s="2"] { background: var(--warn-soft); border-color: var(--warn-line); color: var(--warn); }
+  .mark[data-s="3"] { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+  .body { display: none; padding: 0 18px 18px; }
+  .card.open .body { display: block; }
+  html[data-mode="read"] .body { display: block; }
+
+  .why {
+    background: var(--accent-soft); border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0; padding: 10px 14px; margin: 0 0 15px; font-size: .93rem;
+  }
+  .why b { color: var(--accent); display: block; font-size: .72rem; letter-spacing: 1.4px; margin-bottom: 3px; }
+  .lbl {
+    font-size: .72rem; letter-spacing: 1.4px; color: var(--faint); font-weight: 700;
+    margin: 0 0 7px;
+  }
+  ol.skel { margin: 0 0 16px; padding-left: 22px; }
+  ol.skel li { margin-bottom: 7px; }
+  ol.skel li::marker { color: var(--accent); font-weight: 700; }
+  ul.fact { margin: 0 0 16px; padding: 11px 15px 11px 30px; list-style: disc;
+    background: var(--code-bg); border: 1px solid var(--line); border-radius: 9px; font-size: .92rem; }
+  ul.fact li { margin-bottom: 5px; }
+  ul.fact li:last-child { margin-bottom: 0; }
+  .prec {
+    border: 1px solid var(--warn-line); background: var(--warn-soft);
+    border-radius: 9px; padding: 11px 15px; font-size: .92rem;
+  }
+  .prec .lbl { color: var(--warn); }
+  .prec p { margin: 0 0 7px; }
+  .prec p:last-child { margin-bottom: 0; }
+  .body > :last-child { margin-bottom: 0; }
+
+  .plain { max-width: 76ch; }
+  .plain h3 { font-size: 1.02rem; margin: 22px 0 8px; }
+  .plain ul { padding-left: 22px; }
+  .plain li { margin-bottom: 6px; }
+  .empty { color: var(--faint); padding: 30px 0; }
+
+  /* ---------- 抽題 ---------- */
+  .drill {
+    position: fixed; inset: 0; z-index: 60; background: var(--bg);
+    display: none; flex-direction: column; padding: 24px;
+  }
+  .drill.on { display: flex; }
+  .drill-top { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+  .drill-mid { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .drill-q { max-width: 40ch; font-size: clamp(1.3rem, 4vw, 2rem); color: var(--ink); font-weight: 700; line-height: 1.5; text-align: center; }
+  .drill-bot { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .drill-ans { max-width: 70ch; margin: 0 auto; width: 100%; }
+
+  @media (max-width: 860px) {
+    .side { display: none; }
+    .layout { padding: 0 15px 70px; gap: 0; }
+    .bar-in { padding: 8px 15px; gap: 7px; }
+    .prog-track { width: 60px; }
+    body { font-size: 15.5px; }
+  }
+
+  @media print {
+    .bar, .side, .drill { display: none !important; }
+    body { background: #fff; color: #000; font-size: 10.5pt; }
+    .body { display: block !important; }
+    .card { break-inside: avoid; box-shadow: none; border-color: #ccc; }
+    .layout { display: block; padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-in">
+    <span class="brand">面試準備筆記 <span>吳承儒</span></span>
+    <div class="seg" role="group" aria-label="模式">
+      <button id="mDrill" type="button" aria-pressed="true">練習</button>
+      <button id="mRead" type="button" aria-pressed="false">閱讀</button>
+    </div>
+    <input class="search" id="q" type="search" placeholder="搜尋題目或素材　／" aria-label="搜尋">
+    <button class="tbtn" id="fWeak" type="button" aria-pressed="false">只看還不熟</button>
+    <button class="tbtn" id="rand" type="button">抽題</button>
+    <div class="prog" title="已掌握 / 總題數">
+      <div class="prog-track"><div class="prog-fill" id="pf"></div></div>
+      <span id="pt">0 / 0</span>
+    </div>
+    <button class="tbtn" id="theme" type="button" aria-label="切換深淺色">◐</button>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="side" id="side" aria-label="章節"></nav>
+  <main>
+    <div class="lede">
+      <h1>面試準備筆記</h1>
+      <p>這是我自己的面試準備筆記——把每個專案背後的技術決策整理成「被問到時該怎麼講」。內容全部對得上我實際寫過的程式碼。</p>
+      <p><strong>刻意不寫逐字稿。</strong>每題只給答題骨架與可用的具體素材，實際講的時候要用自己的話——背稿聽起來就是背稿，而且一被追問就會崩。</p>
+      <div class="hint">
+        <strong>練習模式</strong>（預設）只顯示題目，先自己想過再點開對照，落差才記得住。<br>
+        鍵盤：<kbd>/</kbd> 搜尋　<kbd>j</kbd> <kbd>k</kbd> 上下題　<kbd>空白</kbd> 展開　<kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> 標記未練／還不熟／已掌握　<kbd>r</kbd> 抽題
+      </div>
+    </div>
+    <div id="app"></div>
+  </main>
+</div>
+
+<div class="drill" id="drillBox" aria-hidden="true">
+  <div class="drill-top">
+    <span class="prog" id="drillTag"></span>
+    <div style="display:flex;gap:8px">
+      <button class="tbtn" id="dShow" type="button">看答法</button>
+      <button class="tbtn" id="dNext" type="button">下一題</button>
+      <button class="tbtn" id="dClose" type="button">結束</button>
+    </div>
+  </div>
+  <div class="drill-mid"><div id="dq" class="drill-q"></div></div>
+  <div class="drill-ans" id="da"></div>
+  <div class="drill-bot" id="dmark"></div>
+</div>
+
+<script>
+const SECTIONS = [
+  ['open',    '開場'],
+  ['proj',    '專案敘事'],
+  ['be',      '後端深掘'],
+  ['ai',      'AI 應用'],
+  ['hw',      '軟硬整合'],
+  ['career',  '經歷與轉職'],
+  ['behav',   '行為題'],
+  ['ask',     '反問面試官'],
+  ['check',   '臨場檢查表'],
+  ['red',     '紅旗'],
+];
+
+const DATA = [
+
+/* ================= 開場 ================= */
+{ s:'open', tag:'必考', q:'請簡單自我介紹一下。（60 秒版）',
+  why:'這題不是在問經歷，是在問「你知不知道重點是什麼」。講超過兩分鐘、從大學開始講的人，會被判斷為不會抓重點。',
+  skel:[
+    '一句定位：五年後端，都在線上娛樂平台，主力 C#/.NET。',
+    '一句差異：工作橫跨軟硬兩端——一端是雲上的分散式服務，另一端是會真的壞掉的實體設備與不穩定的 AI 推論。',
+    '一句最近做的事：挑一個跟這個職缺最相關的專案，只講「解決什麼問題」，不講技術細節。',
+    '一句收尾把球丟回去：「細節我可以就您比較關心的那塊展開。」'
+  ],
+  fact:[
+    '主力 C#/.NET，另外用 Go 做過稽核資料管道、Python 做硬體控制與影像判定。',
+    '同一個桌台端我做過兩代：先是 WPF 桌面程式，後來重構成可多機部署的服務。'
+  ],
+  prec:['不要背這四句。抓住順序就好：定位 → 差異 → 近況 → 交回主導權。',
+        '「橫跨軟硬兩端」是你最好的一句話，但只講一次。重複第二次就變成推銷。'] },
+
+{ s:'open', tag:'必考', q:'可以講詳細一點嗎？（3 分鐘版）',
+  why:'對方給你更多時間，代表他想聽敘事而不是清單。這時候要有時間軸與轉折，不是把專案念一輪。',
+  skel:[
+    '時間軸分三段講：前期做報表轉檔與桌台狀態處理 → 中期玩家端下注與營運後台 → 近期分散式重構、稽核管道、硬體與 AI。',
+    '每段講「當時遇到什麼問題所以學了什麼」，不要只講做了什麼。',
+    '中間放一個具體轉折：「同一個桌台端我做了兩代，第二次是因為單機部署撐不住，所以重新設計成可多機部署。」',
+    '收尾說明為什麼投這個職缺——把你的軌跡跟對方的需求接起來。'
+  ],
+  fact:[
+    '五年同一個團隊、同一條產品線，前後掛在三個法人底下（詳見「經歷與轉職」章）。',
+    '從 .NET Framework 世代做到 .NET 10 + Kubernetes，經歷過一次完整的技術世代轉換。'
+  ],
+  prec:['「經歷過一次技術世代轉換」對面試官很有價值——代表你不是只會在既有框架裡加功能。',
+        '不要在自我介紹裡就講公司解散。等對方問離職原因再講。'] },
+
+/* ================= 專案敘事 ================= */
+{ s:'proj', tag:'主打', q:'挑一個你最有代表性的專案講一下。',
+  why:'看你怎麼定義「代表性」。選一個技術含量高、你角色清楚、而且有取捨可以講的專案，勝過選一個規模最大的。',
+  skel:[
+    '選「桌台客戶端重構」。問題：原本是只能裝在單台電腦上的 WPF 程式，要改成可以多機部署。',
+    '真正的難點不是容器化，是「同一張桌被兩台機器同時接管」會造成重複下注——那是金流事故。',
+    '解法：Redis + Lua 實作桌台租約，每桌一個 worker，續租失敗就主動停掉。',
+    '結果與取捨：寧可短暫沒人服務，也不能兩個 Pod 同時操作同一張桌。'
+  ],
+  fact:[
+    '主程式與測試由我獨立設計實作；共用函式庫是團隊共同維護——這條界線要主動講。',
+    '被取代的那一版 WPF 桌台端也是我寫的，主畫面與核心邏輯九成以上出自我手。',
+    '補上覆蓋桌台狀態與調度核心的單元測試，時間相關邏輯改走 TimeProvider 才能用假時鐘快進測試。'
+  ],
+  prec:['主動說出「共用函式庫是團隊維護的」會加分；被追問才說會扣分。',
+        '不要說「我負責整個專案」。說「主程式與測試是我獨立做的」，更精確也更可信。'] },
+
+{ s:'proj', tag:'主打', q:'你做過從零開始設計的東西嗎？',
+  why:'問的是有沒有「從需求到上線」的完整經驗，而不是只在既有系統上加功能。',
+  skel:[
+    '選「聊天平台操作稽核」。從方案評估、設計文件到上線由我獨立完成。',
+    '最值得講的是選型：我放棄了比較快的做法（擴充既有 audit_logs），改建獨立的 operation_logs。',
+    '理由：既有的是 HTTP raw log，稽核要的是業務語意。混在一起長期維護成本更高，而且動既有管道有上線風險。',
+    '工時多了大約一倍，這個代價是我主動提出、由 PM 拍板的。'
+  ],
+  fact:[
+    '寫入走 Redis Stream + Consumer Group 再落 ClickHouse，稽核不拖慢主請求。',
+    'ClickHouse 用 MergeTree 按日分區、TTL 自動過期。',
+    'Middleware 負責 HTTP 層語意（角色、選單、操作類型），Service 層負責變更前後的狀態快照，兩條路徑匯流到同一個 Stream 再合併寫入。'
+  ],
+  prec:['「我選了比較慢的方案」這件事要講得有底氣——那是判斷力，不是效率問題。',
+        '記得補一句「最後是 PM 拍板」。展現你知道技術決策要有 owner，不是工程師自己說了算。'] },
+
+{ s:'proj', tag:'差異化', q:'你有做過硬體相關的東西？可以講一下嗎？',
+  why:'這是你的差異點。對方問這題通常是真的有興趣，或是職缺本身沾到硬體。要能講出「軟體人不知道的坑」。',
+  skel:[
+    '控制 8 條實體賽道的自動化系統，從硬體驅動到 Web 監控介面由我獨立開發。',
+    '最難的是 RF 閘門驅動——實體環境什麼都會壞，最後疊了六層防禦。',
+    '挑一到兩層講具體的：USB autosuspend 會讓模組睡著，所以閒置時每秒探測 CTS；連續斷線會引發重新初始化風暴，所以斷路器強制冷卻。',
+    '收尾：這段經驗讓我在寫純軟體服務時也更在意失效路徑。'
+  ],
+  fact:[
+    'SPI 驅動 MCP23S17 I/O Expander，讀取最多 28 路光學感測器。',
+    '自動偵測新舊兩代感測板：舊板一顆晶片 12 路、新板兩顆 28 路，兩顆硬體位址都是 0，靠獨立的 chip select 區分。',
+    '偵測不到硬體時自動退回模擬模式，開發者在沒有 SPI 的 Mac 上也能跑完整流程。',
+    '除了控制軟體也寫韌體、跟外部廠商討論電路板設計、做基礎焊接。'
+  ],
+  prec:['六層防禦不要一次全講完，會變成念清單。先講兩層，看對方反應再深入。',
+        '「每一層都對應一個實際踩過的狀況，不是預先想像的」——這句話比列出六層更有說服力。'] },
+
+{ s:'proj', tag:'AI', q:'你的 AI 專案做了什麼？',
+  why:'AI 職缺問這題是想分辨你是「會跑教學」還是「能讓不可靠的模型在真實環境穩定運作」。後者才是應用工程師。',
+  skel:[
+    '用影像辨識即時判定賽事的落球排名，取代人工判讀，已上線運行。',
+    '重點不是模型，是判定邏輯：我一開始就假設模型會錯，所以整套邏輯是為了吸收錯誤而設計的。',
+    '舉一個具體設計：所有閾值都用秒而不用 frame 數，因為推論的 fps 會隨負載浮動，用 frame 當基準遲早會漂掉。',
+    '再舉一個：把每顆球訓練成獨立 class，排名直接用 class 辨識，繞過多物件追蹤的 ID switch 問題。'
+  ],
+  fact:[
+    '落球判定是四狀態機：ACTIVE → PENDING → CONFIRMING → DROPPED，另有 stale 機制清除 ghost track。',
+    '排名依據取「最後一次被偵測到的時間」而不是確認落球的時刻，確認延遲才不會影響公平性。',
+    '以 Roboflow 標註並訓練 YOLO；對外用 FastAPI 提供賽果查詢，現場介面用 PyQt5，推論放獨立 thread 避免卡住 UI。'
+  ],
+  prec:['「我假設模型一定會錯」是這個專案最強的一句話，開場就講。',
+        '不要主動吹準確率。準確率那題有專門的答法，見 AI 應用章。'] },
+
+/* ================= 後端深掘 ================= */
+{ s:'be', tag:'高機率', q:'為什麼用 Lua script，不用 Redis 的 SET NX？',
+  why:'考你是否真的理解 race condition，而不是照抄分散式鎖的教學。',
+  skel:[
+    '續租與釋放都必須「先確認 owner 是自己」才能動作。',
+    '如果拆成 GET 再 SET／DEL，兩個動作之間有空窗——可能覆寫掉別人剛搶到的租約。',
+    'Lua 讓判斷與寫入變成一個原子操作，消掉 check-then-act 的 race。',
+    'SET NX 只解決「搶」，解決不了「續」與「放」。'
+  ],
+  fact:[
+    'Key 是 table-client:lease:{遊戲類型}:{桌號}，value 存 podId，每張桌各自有一個 owner 標記。',
+    '三段 script：acquire（value 已是自己就續期、key 不存在就 SET PX 搶下、其他情況回 0 不搶別人）、renew（owner 相符才 pexpire）、release（owner 相符才 del）。'
+  ],
+  prec:['講「原子操作」不夠，要講清楚「不原子會發生什麼」——覆寫別人的租約。',
+        '如果對方提到 Redlock，誠實說你用的是單一 Redis 的租約而非 Redlock，並說明為什麼那個規模夠用。'] },
+
+{ s:'be', tag:'高機率', q:'續租失敗就直接停掉 worker，不會太激進嗎？',
+  why:'這是在測你能不能為自己的取捨辯護。答「不會」是錯的，答「會，但另一邊代價更大」才對。',
+  skel:[
+    '會，短時間內那張桌沒人服務——這個代價我知道。',
+    '但另一邊的代價是兩個 Pod 同時操作同一張桌 → 重複下注 → 金流事故。',
+    '租約失效代表這張桌的所有權可能已經被別人拿走，繼續操作的風險遠高於短暫停擺。',
+    '這是刻意選的方向，不是沒想到。'
+  ],
+  fact:[
+    'Supervisor 每輪掃描：worker 存在但沒在跑就回收舊實例；不存在就搶租約，搶到才建 worker；建立失敗要 rollback（dispose scope + 釋放租約）。',
+    '關閉時統一釋放所有 worker、scope 與租約，支援 graceful shutdown。'
+  ],
+  prec:['先承認代價再講理由。直接說「不激進」會顯得沒想過。',
+        '「金流事故」這個詞要講出來——它讓對方立刻理解你在權衡什麼。'] },
+
+{ s:'be', tag:'設計題', q:'你怎麼設計那個狀態機？為什麼用 State Pattern？',
+  why:'看你是否理解「集中分派 + fail-safe」的價值，而不是為了用設計模式而用。',
+  skel:[
+    '桌台生命週期原本散在各處判斷，改成 State Pattern 之後狀態分派集中到單一 factory。',
+    '整個系統只有這一處 switch，新增狀態只要改一個地方。',
+    '關鍵是 fail-safe：未處理到的狀態一律導向錯誤復原分支，而不是默默什麼都不做。',
+    '狀態共 10 種，factory 明確處理其中 7 種，其餘連同未定義值都落進錯誤復原。'
+  ],
+  fact:['10 種狀態、明確處理 7 種——這個數字我回程式碼查過，不要記成 9 種。'],
+  prec:['「其餘一律導向錯誤復原」是重點。很多人的 switch 是 default: break，那才是 bug 的來源。',
+        '如果對方問「為什麼不全部處理」：因為剩下的狀態在這個服務的職責範圍外，明確落進復原比假裝處理更安全。'] },
+
+{ s:'be', tag:'測試', q:'你的測試怎麼寫？時間相關的邏輯怎麼測？',
+  why:'會問這題的團隊通常真的在意測試。答得出「可控時鐘」代表你寫過會被測的程式。',
+  skel:[
+    '把時間相關邏輯改走可注入的時間來源（.NET 的 TimeProvider）。',
+    '倒數與掃描迴圈就能用假時鐘快進，不必真的 sleep 等它。',
+    '測試因此變快也變穩定——不會因為機器慢就偶發失敗。',
+    '涵蓋範圍是桌台狀態與調度核心，測試部分是我獨立寫的。'
+  ],
+  fact:['同一個能力我在 Python 那邊也用過：閾值全部用秒表示，就能在測試裡直接餵時間戳。'],
+  prec:['如果對方問覆蓋率數字，誠實說沒有在追覆蓋率指標，重點放在「哪些路徑一定要測」。',
+        '不要說「有寫測試」就停。講出「因為可控時鐘所以能測倒數」才是實質答案。'] },
+
+{ s:'be', tag:'選型', q:'為什麼選 ClickHouse？為什麼不用現有的 MySQL？',
+  why:'考選型理由。答「因為它快」會被追問到死；答得出資料特性與存取模式才是對的。',
+  skel:[
+    '稽核紀錄是寫多讀少、只追加不更新、查詢以時間範圍與少數欄位過濾為主。',
+    '這個形狀適合列式儲存，MergeTree 按日分區之後，查某個時間範圍不用掃全表。',
+    '而且有 TTL 自動過期，稽核紀錄的保留期限不用自己寫清理排程。',
+    '同時它跟主要業務資料庫分開，稽核寫入不會影響交易。'
+  ],
+  fact:['寫入路徑：Redis Stream + Consumer Group → ClickHouse，稽核不拖慢主請求。'],
+  prec:['要能講出 ClickHouse 的代價：不適合頻繁更新、單筆查詢不是它的強項。只講優點會顯得沒實際用過。'] },
+
+{ s:'be', tag:'高機率', q:'明知道方案 A 只要 6 天，為什麼選 9.5 天的 B？',
+  why:'測你的判斷依據是「省時間」還是「長期成本」。也在看你能不能說服人。',
+  skel:[
+    '職責分離：既有的 audit_logs 是 HTTP raw log，稽核紀錄要的是業務語意。',
+    '混在一起長期維護成本更高，而且要動既有管道就有上線風險。',
+    '多花的工時換到的是「完全不動既有系統」。',
+    '最後是 PM 拍板選 B——我提出取捨，決策有 owner。'
+  ],
+  fact:['工時數字（6 天 vs 9.5 天）刻意沒寫在履歷上，但面試講出來很有說服力，代表你真的記得細節。'],
+  prec:['不要講成「我堅持做對的事」。講成「我把兩個選項的代價攤開，讓有決策權的人選」。'] },
+
+{ s:'be', tag:'難題', q:'那個時區的 bug 是怎麼發生的？你怎麼解？',
+  why:'這題是在看你會不會把問題推給別人，以及能不能講清楚一個跨層的根本原因。',
+  skel:[
+    '現象：QA 回報同一天查得到，但凌晨那幾個小時被擋掉。',
+    '原因：前端以當地當天的午夜為基準往回推算天數，後端跑 UTC，兩邊最多差將近一天。',
+    '我的決定是後端不引入業務時區，只做寬鬆的 backstop、多留一天緩衝吸收落差，精準界線交前端把關。',
+    '代價：後端實際可查範圍比需求多一天。換到的是後端保持時區無關。'
+  ],
+  fact:['這是 QA 實際回報的 bug，不是我假設的情境。'],
+  prec:['重點在「我選擇不把業務時區帶進後端」這個判斷，不是在「前端算錯了」。把責任講成別人的錯會扣分。',
+        '如果對方認為後端就該處理時區，別硬辯——說明你的取捨背景，並承認在不同系統邊界下可以有別的選擇。'] },
+
+{ s:'be', tag:'設計題', q:'你怎麼處理外部傳進來的髒資料？',
+  why:'看你是「在每個入口寫 if」還是「用型別把不合法的值擋在外面」。',
+  skel:[
+    '把操作類型與選單做成實作 encoding.TextUnmarshaler 的封閉型別。',
+    '一份實作同時擋住 Gin 的 form binding 與 Redis Stream 的資料——不用在兩個地方各寫一次驗證。',
+    '不合法的值直接回 400，而不是悄悄回一個空結果。',
+    '「靜靜回空結果」是最難查的 bug，因為呼叫端看起來成功。'
+  ],
+  fact:['同樣的思路在 C# 那邊是「回應物件一律先建成失敗狀態，只有確認成功才改寫」——忘記設錯誤碼時會回失敗，而不是看起來成功的空殼。'],
+  prec:['這題可以延伸到「防禦要放在邊界」，是很好的加分點。但不要講成教條，要連著那個 400 的例子講。'] },
+
+{ s:'be', tag:'設計題', q:'權限系統你怎麼設計的？',
+  why:'權限是後端的經典題。看你有沒有做到「帳號與可執行操作解耦」。',
+  skel:[
+    '拆成兩組 CRUD：一組管角色定義，一組管管理員帳號綁哪個角色。',
+    '分離之後，新增一種操作只要調角色，不用逐一改帳號。',
+    'Controller 只做轉譯，邏輯全在建構式注入的服務介面裡。',
+    '每個操作有自己的請求與回應型別，不共用一個大雜燴 DTO。'
+  ],
+  fact:[
+    '這兩支 controller 是我主筆的（在一個團隊共同維護的後台裡）。',
+    '同一個後台我也寫了風控紀錄查詢，提供兩個維度：同一 IP 的多帳號、異常下注額。'
+  ],
+  prec:['要主動說明這是「團隊共同維護的後台，其中權限與風控這幾支是我主筆」。範圍講清楚比講大加分。'] },
+
+{ s:'be', tag:'架構', q:'服務之間怎麼通訊？為什麼不直接呼叫？',
+  why:'看你理不理解同步呼叫的耦合成本。',
+  skel:[
+    '跨服務的狀態變更走 MQ 事件，不直接呼叫。',
+    '直接呼叫的話，下游掛掉會拖住上游，而且要處理重試與逾時。',
+    '走事件之後服務之間不互相等待，各自照自己的節奏消化。',
+    '需要即時回饋給使用者的部分才用 SignalR 推播。'
+  ],
+  fact:['玩家端：下注與取消下注走交易流程，結算完成後以 SignalR 推播通知；跨服務狀態變更走 MQ。'],
+  prec:['要能講出事件驅動的代價：最終一致、除錯變難、需要處理重複投遞。只講好處會顯得紙上談兵。'] },
+
+{ s:'be', tag:'實務', q:'你怎麼管理設定與機密資料？',
+  why:'看基本工程衛生。版控裡有明文密碼是很常見的實務缺陷。',
+  skel:[
+    '重構時把版控裡的明文密碼與連線字串清掉，改由 K8s Secret 注入。',
+    '另一個內部工具的做法不一樣：憑證改成使用者在網頁自填、存各自瀏覽器。',
+    '原因是那個工具沒有身分驗證機制，把憑證放在伺服器端反而更危險。',
+    '而且我在 README 明寫這個限制——只能放測試環境憑證。'
+  ],
+  fact:['那個工具是 webhook 對接模擬器，刻意只用標準庫寫，QA 不必安裝任何套件。'],
+  prec:['「我在 README 寫明工具沒有身分驗證」這件事要講。主動揭露自己作品的安全限制，是資深度的訊號。'] },
+
+{ s:'be', tag:'一般', q:'資料庫索引怎麼下？遇過慢查詢嗎？',
+  why:'標準後端題。就算你的專案沒有極端效能問題，也要能講出思路。',
+  skel:[
+    '先看查詢的過濾條件與排序欄位，索引順序要對得上實際的 WHERE 與 ORDER BY。',
+    '複合索引的最左前綴原則；只在需要的欄位上建，索引本身有寫入成本。',
+    '誠實說：我遇到的規模，主要是靠資料分區與分開儲存來處理，而不是極端的索引調校。',
+    '稽核資料就是走這條路——按日分區 + TTL，而不是在單一大表上加索引。'
+  ],
+  fact:['如果被問到具體案例，用 ClickHouse 按日分區那個例子——那是真實做過的設計決策。'],
+  prec:['不要假裝有大規模調校經驗。承認規模，然後把話題轉到你真的做過的架構決策。'] },
+
+{ s:'be', tag:'一般', q:'交易（transaction）你怎麼處理？跨服務的一致性呢？',
+  why:'看你知不知道單機交易與分散式一致性是兩件事。',
+  skel:[
+    '單一服務內：下注與取消下注走資料庫交易，保證單筆操作的原子性。',
+    '跨服務：不用分散式交易，改用事件驅動達到最終一致。',
+    '關鍵資源用租約保護——同一張桌只能有一個 owner，避免兩邊同時寫。',
+    '誠實說：我沒有實作過 Saga 或兩階段提交，我的做法是用租約把「同時操作」擋在源頭。'
+  ],
+  fact:['租約 + 續租失敗即停止的設計，本質上是用「所有權」取代「分散式鎖定交易」。'],
+  prec:['沒做過的東西直接說沒做過，然後講你實際用什麼取代。假裝懂 Saga 一被追問就破。'] },
+
+{ s:'be', tag:'實務', q:'你的服務怎麼部署？有做 CI/CD 嗎？',
+  why:'看你是不是只寫程式、部署交給別人。',
+  skel:[
+    '容器化 + Kubernetes 部署，用 Helm 管理設定，GitLab CI 跑 pipeline，ArgoCD 做部署。',
+    '有一個工具是我從零做到 K8s 常駐的，自帶 Helm chart 與三階段 CI pipeline。',
+    '硬體那邊的部署方式不同：三支程式各自以 systemd 常駐，監控介面掛掉不會影響賽道控制。',
+    '故障隔離是刻意的設計，不是剛好分開。'
+  ],
+  fact:['技術棧：Docker、Kubernetes、Helm、GitLab CI、ArgoCD、Istio、OpenTelemetry。'],
+  prec:['把 Istio 和 OpenTelemetry 講成「團隊在用、我有接觸」比講成「我負責」安全。被追問細節時會差很多。'] },
+
+{ s:'be', tag:'可觀測性', q:'線上出問題你怎麼查？',
+  why:'看你有沒有真的維運過。只會說「看 log」是不夠的。',
+  skel:[
+    '先確認影響範圍：是單一桌台還是全部、是某個時段還是持續。',
+    '看結構化 log 與追蹤——每桌一個 worker 與獨立 scope，所以能把某張桌的行為單獨抽出來看。',
+    '硬體那邊多一層：狀態不一致時查快取端點，比對服務記的狀態與現場實際狀態。',
+    '真實案例：QA 回報凌晨查不到資料，我從「同一天不同時段結果不同」推回時區差異。'
+  ],
+  fact:['桌台端有專門的記憶體／快取狀態查詢端點，用於排查「服務記的狀態跟畫面不一致」。'],
+  prec:['講一個真實的排查故事勝過講方法論。時區那個案例最完整——現象、假設、驗證、根本原因都有。'] },
+
+{ s:'be', tag:'進階', q:'如果現在讓你重做一次，你會改什麼？',
+  why:'這題篩「有沒有反省能力」。答「沒什麼要改的」直接扣分。',
+  skel:[
+    '桌台端與服務端的耦合：偵測必須先從桌面介面啟動，API 才能標記 session。當時是為了現場操作有單一入口，但這讓自動化測試很難做。',
+    '稽核紀錄的粒度我一開始記了 enum 數值與資源 ID，後來全改成角色名與資源名——這件事該一開始就想到讀者是誰。',
+    '硬體那邊的六層防禦是一層一層踩出來的，如果重做會先寫模擬環境再寫驅動。',
+    '共通的一點：我當時比較晚才建立「先想失效路徑」的習慣。'
+  ],
+  fact:['role=3 對稽核人員沒有意義——這是真實的修正過程，不是編出來的反省。'],
+  prec:['選真的做錯的事，不要選假謙虛（「我應該寫更多測試」這種）。',
+        '每個反省後面接「後來我怎麼做」，才不會變成單純自我批評。'] },
+
+{ s:'be', tag:'進階', q:'你怎麼看技術債？遇到過怎麼處理？',
+  why:'看你能不能區分「該還的債」與「還不該碰的債」。',
+  skel:[
+    '桌台端從 WPF 改成可容器化服務，本身就是還一筆大的技術債。',
+    '但我選擇不動既有的稽核管道——那也是債，可是動它的風險大於收益。',
+    '判斷標準是：這筆債會不會擋住接下來要做的事。會擋的就還，不擋的就記錄下來。',
+    '版控裡的明文密碼屬於「一定要立刻還」的那種，因為它是風險不是成本。'
+  ],
+  fact:['同一個人在同一個系統裡，一邊做大重構、一邊刻意不動另一塊——這個對比很能說明判斷力。'],
+  prec:['不要把技術債講成「前人留下的爛攤子」。你自己也留過（那個桌台端耦合），承認會更可信。'] },
+
+{ s:'be', tag:'延伸', q:'你熟 Go 還是 C#？兩個差異你怎麼看？',
+  why:'考你是不是只會一種語言的思維。也在看你會不會踩「貶低另一個語言」的陷阱。',
+  skel:[
+    '主力是 C#，Go 是為了稽核那個專案學的，做完一整個服務從設計到上線。',
+    'C# 的生態與型別系統成熟，DI 與非同步寫起來順；Go 的優勢是部署簡單、併發模型直觀。',
+    '一個具體差異：Go 沒有 enum，我用實作 TextUnmarshaler 的封閉型別去補這件事，這在 C# 是語言直接給的。',
+    '選語言看團隊與場景，我沒有偏好到會影響判斷的程度。'
+  ],
+  fact:['Go 那邊用了 Gin、Ent、Uber Fx（DI 容器）。'],
+  prec:['「Go 沒有 enum 所以我用封閉型別補」這種具體觀察，比講「各有優缺點」有價值得多。'] },
+
+{ s:'be', tag:'延伸', q:'你會怎麼設計一個 API？',
+  why:'開放題，看你的預設習慣。',
+  skel:[
+    '先定義資源與操作邊界，每個操作有自己的請求與回應型別，不共用大雜燴 DTO。',
+    '回應要有明確的錯誤碼，而且預設是失敗——成功才改寫。',
+    '不合法的輸入在邊界就擋掉並回 4xx，不要往下傳。',
+    '把跨服務的副作用抽成事件，讓 API 本身保持可預期。'
+  ],
+  fact:['這四點都是我實際在用的習慣，不是背來的原則——每一點都對應到一個踩過的坑。'],
+  prec:['如果對方是 REST 純度控，別跟他辯論。說明你的實務環境（內部服務、POST 為主）並保持開放。'] },
+
+/* ================= AI 應用 ================= */
+{ s:'ai', tag:'必考', q:'你的模型準確率多少？',
+  why:'這題會篩掉一堆人。編數字的下一題就爆；答「不知道」顯得不專業。要誠實 + 轉向你真正的強項。',
+  skel:[
+    '誠實說：沒有做正式的量測，我沒有可以引用的數字。',
+    '立刻接上原因與對策：因為我一開始就假設 YOLO 會漏偵測也會誤判，所以判定邏輯本身就是設計來吸收不確定性的。',
+    '舉證：二段時間確認容忍漏偵測、存活門檻濾掉開局雜訊、閾值用秒不用 frame。',
+    '結果：目前已上線正常運行，取代人工判讀。'
+  ],
+  fact:[
+    '模型的 confidence 門檻設在 0.8。',
+    '五個時間相關的閾值各自防一種失效模式（見下一題）。'
+  ],
+  prec:['千萬不要編數字。這題編了，下一題「你怎麼量的、資料集多大、怎麼切分」就會爆。',
+        '「沒量測」在應用工程師的職缺不是致命傷；「不知道自己沒量測」才是。要表現出你清楚這個缺口。',
+        '如果對方追問「那你怎麼知道它夠好」——答：現場已上線運行，人工判讀被取代，這是實際的驗收；但我同意缺少離線量測，那是我下一步會補的。'] },
+
+{ s:'ai', tag:'核心', q:'那五個閾值分別在防什麼？',
+  why:'這題答得好，就證明你不是照抄教學。每個數字對應一個真實失效模式，這是最有說服力的內容。',
+  skel:[
+    '判定線位置：只有越線的球才進入落球判定流程。',
+    '消失時間：容忍 YOLO 偶發漏偵測——球消失一下不算落球。',
+    '確認時間：二段確認，再等一段時間才判定成立。',
+    '存活時間門檻：過濾開局瞬間的誤判，雜訊不會佔到名次。',
+    'stale 時間：清除長時間沒再出現的 ghost track。'
+  ],
+  fact:['關鍵設計：全部用秒，不用 frame 數。因為推論 fps 會隨負載浮動。'],
+  prec:['不要只念五個名字，每個都要接「防的是什麼」。名字是實作，失效模式才是設計。'] },
+
+{ s:'ai', tag:'核心', q:'為什麼不用多物件追蹤？',
+  why:'考你知不知道 MOT 的經典問題，以及能不能用系統設計繞過演算法難題。',
+  skel:[
+    '多物件追蹤會有 ID switch——兩顆球靠近再分開，ID 可能對調，排名就錯了。',
+    '我的做法是把每顆球訓練成獨立的 class。',
+    '排名系統直接用 class 辨識球體，根本不需要維護追蹤 ID。',
+    '代價：換球或增加球數就要重新標註訓練。這是刻意接受的取捨——賽事的球是固定的。'
+  ],
+  fact:['排名依據取「最後一次被偵測到的時間」而不是確認落球的時刻，確認延遲才不會影響公平性。'],
+  prec:['一定要主動講代價（要重新訓練）。只講「我繞過了 ID switch」會被追問到這裡，主動說更好。'] },
+
+{ s:'ai', tag:'部署', q:'模型怎麼部署？推論效能怎麼處理？',
+  why:'應用工程師的核心：模型能不能穩定跑在真實環境裡。',
+  skel:[
+    '推論放在獨立 thread，避免卡住現場操作介面。',
+    '模型同時支援 PyTorch 與 ONNX 兩種格式，測試各自都有。',
+    '對外用 FastAPI 提供賽果查詢，現場操作介面用 PyQt5，兩邊都讀同一個判定結果。',
+    '影像有錄影保留機制，賽果有爭議時可以回溯——這是營運需求，不是技術偏好。'
+  ],
+  fact:['錄影保留 7 天，超過自動刪除。'],
+  prec:['「保留 7 天供爭議回溯」這種營運考量，會讓面試官相信你做的是產品而不是 demo。'] },
+
+{ s:'ai', tag:'資料', q:'訓練資料怎麼來的？怎麼標註？',
+  why:'看你有沒有碰過資料流程，還是只拿別人的 dataset 跑。',
+  skel:[
+    '用 Roboflow 標註與訓練，資料來自實際賽道的錄影。',
+    '每顆球是獨立 class，所以標註時要逐球分類，不是只框「球」這個類別。',
+    '誠實說：權重與資料集沒有進版控，這是當時的缺口。',
+    '如果重做，我會把資料集版本與模型版本綁在一起管理。'
+  ],
+  fact:['資料來源是實際營運中的賽道錄影，不是公開資料集。'],
+  prec:['「沒進版控」主動說出來，並接上「如果重做會怎麼做」。這比被追問出來好太多。'] },
+
+{ s:'ai', tag:'思路', q:'如果模型判錯了，系統會怎樣？',
+  why:'這題是應用工程師的分水嶺。看你有沒有把「模型會錯」納入設計。',
+  skel:[
+    '設計前提就是模型會錯，所以錯誤有兩種各自被吸收的路徑。',
+    '漏偵測（false negative）：用時間容忍——消失一下不算落球，二段確認才成立。',
+    '誤判（false positive）：用存活時間門檻濾掉——剛出現就消失的不計入排名。',
+    '另外有 stale 機制清掉不再出現的軌跡，避免幽靈資料累積。'
+  ],
+  fact:['兩種失效模式分開處理，是因為它們需要的補償方向相反：一個要「等久一點」，一個要「看久一點才算」。'],
+  prec:['「兩種失效模式分開處理」這句話是這題的核心。很多人只會處理其中一種。'] },
+
+{ s:'ai', tag:'延伸', q:'你也做過真人棋牌的辨識？跟這個有什麼不同？',
+  why:'看你的技術軌跡是否連貫、有沒有從前一個專案學到東西。',
+  skel:[
+    '那是我做影像辨識的起點，用 TensorFlow 訓練，取代原本的條碼掃描流程。',
+    '差別在於那邊有現場人工確認這一關，模型判斷不會單獨決定一局結果。',
+    '後來彈珠那套判定邏輯，就是從「模型不能單獨決定結果」這個經驗長出來的。',
+    '誠實說：那個專案比較早、我手上的細節有限。'
+  ],
+  fact:['真人棋牌那邊：辨識結果進入賽局流程後仍保留現場人工確認。'],
+  prec:['細節記不清的專案不要硬撐。講清楚「這是起點、經驗延續到後面」的價值，然後把話題帶回彈珠那個。'] },
+
+{ s:'ai', tag:'延伸', q:'你會怎麼評估一個 AI 功能該不該做？',
+  why:'AI 應用職缺常問的判斷題。看你會不會為了做 AI 而做 AI。',
+  skel:[
+    '先問這件事現在怎麼做、成本多少、錯了的代價多大。',
+    '影像判定那個案例：原本靠人工判讀，人力成本高且會累——這是適合的場景。',
+    '關鍵是「錯了的代價」可以被系統吸收：判定有二段確認、有錄影可回溯。',
+    '如果錯一次的代價無法補救，我會傾向不用模型單獨決定，而是當輔助。'
+  ],
+  fact:['真人棋牌那邊就是這樣處理的——AI 辨識加上現場人工確認。'],
+  prec:['「錯了的代價能不能被吸收」是很成熟的判斷框架，這題可以直接把你跟只會調模型的人區隔開。'] },
+
+/* ================= 軟硬整合 ================= */
+{ s:'hw', tag:'核心', q:'RF 那六層防禦分別是什麼？',
+  why:'看你是不是真的在實體環境除過錯。這種細節編不出來。',
+  skel:[
+    '指數退避重試——防 RF 干擾與封包遺失。',
+    'port 重新初始化的 circuit breaker，強制冷卻——防連續斷線引發重新初始化風暴、進而連鎖崩潰。',
+    '明確拉低 DTR/RTS，不依賴特定晶片行為——防 USB-to-serial 模組被控制線 toggle 重置。',
+    '閒置時每秒探測 CTS——防 USB autosuspend 讓裝置睡著。',
+    'atexit 收尾、關閉前清除控制線——防重啟後留下未釋放的 handle。',
+    'write timeout——防裝置 TX buffer 卡住時無限阻塞。'
+  ],
+  fact:['冷卻時間 2 秒。重試次數是可設定的參數，5 秒是延遲上限——不要說成「最多重試 5 次」。'],
+  prec:['一次講六層會像念清單。先講兩層具體的（autosuspend、reinit 風暴），讓對方問，再往下。',
+        '收尾一定要說「每一層都對應一個實際踩過的狀況，不是預先想像的」。'] },
+
+{ s:'hw', tag:'設計', q:'新舊兩代硬體怎麼相容？',
+  why:'看你怎麼處理「同一份程式碼要吃不同硬體」這種真實約束。',
+  skel:[
+    '舊板一顆晶片 12 路感測器，新板兩顆共 28 路。',
+    '難點：兩顆晶片的硬體位址都是 0，只能靠獨立的 chip select 區分。',
+    '做法：程式先建第一顆，再嘗試建第二顆並記錄是否存在，感測器數量上限隨偵測結果決定。',
+    '結果：舊賽道不需要維護另一個分支，同一份程式碼兩種硬體都吃。'
+  ],
+  fact:['SPI 驅動 MCP23S17 I/O Expander。'],
+  prec:['「不需要維護另一個分支」是這題的價值所在——講出維護成本的節省，不只是技術做法。'] },
+
+{ s:'hw', tag:'實務', q:'沒有硬體的時候怎麼開發？',
+  why:'看你有沒有考慮開發流程，還是每次都要接著實機才能寫。',
+  skel:[
+    '偵測不到硬體時自動退回模擬模式。',
+    '開發者在沒有 SPI 的 Mac 上也能跑完整流程。',
+    '這讓賽道流程的邏輯可以跟硬體驅動分開開發與驗證。',
+    '同一個思路在後端是可控時鐘——把外部依賴變成可替換的。'
+  ],
+  fact:['另有一條實體測試賽道，8 條賽道裡有一條是專門用來測的。'],
+  prec:['把「模擬模式」和後端的「可控時鐘」連起來講，會顯得你有一致的工程觀，不是兩套不相干的技巧。'] },
+
+{ s:'hw', tag:'架構', q:'賽道流程怎麼組織？加一條新賽道要改多少？',
+  why:'看擴充性設計。',
+  skel:[
+    '賽道流程用 Strategy 加 Factory，每條賽道各有自己的開賽條件與結束判定。',
+    '新增一條只要加一個 flow 並註冊，不動主控迴圈。',
+    '目前 8 條賽道接線，flow 實作檔有 9 個——其中一個是沒有被 factory 註冊的死碼。',
+    '這件事是我後來清查才發現的，也是為什麼我現在會習慣檢查註冊表與實作是否一致。'
+  ],
+  fact:['9 個 flow 檔 / 8 條接線。這個數字我回程式碼查過——不要說成 10 種流程。'],
+  prec:['主動講出「有一個死碼」比被問出來好。而且它自然帶出一個真實的工程習慣。'] },
+
+{ s:'hw', tag:'實務', q:'這套系統怎麼部署跟維運？',
+  why:'實體設備的維運跟雲端不同，看你有沒有處理過。',
+  skel:[
+    '三支程式各自以 systemd 常駐：賽道控制、監控介面、還有直播相關。',
+    '刻意分開是為了故障隔離——監控介面掛掉不會影響賽道控制。',
+    '依賽事事件切換 OBS 場景，把遊戲邏輯與直播導播串起來。',
+    '硬體不穩時系統能自行恢復，這是六層防禦的目的。'
+  ],
+  fact:['技術棧：Python、SPI、UART/RF、Raspberry Pi、Flask、OpenTelemetry。'],
+  prec:['「故障隔離是刻意設計的」要強調。分成三支程式看起來只是實作細節，講出理由才是設計。'] },
+
+{ s:'hw', tag:'範圍', q:'你也寫韌體？做到什麼程度？',
+  why:'這題是在確認你的硬體經驗的深度，避免高估。',
+  skel:[
+    '寫韌體、跟外部廠商一起討論電路板設計、做基礎焊接。',
+    '誠實界定：電路板是廠商設計，我參與討論與需求確認，不是我畫的。',
+    '焊接是基礎程度——接線、換元件，不是精密工作。',
+    '我的核心價值在「軟體與硬體之間那一層」，不是純硬體設計。'
+  ],
+  fact:['實際做過：SPI 驅動撰寫、感測板兩代相容、RF 模組的可靠性處理。'],
+  prec:['這題一定要主動設界線。把自己講成硬體工程師，遇到真的硬體面試官會很難看。',
+        '「我的價值在軟硬之間那一層」是最準確也最有賣點的定位。'] },
+
+/* ================= 經歷與轉職 ================= */
+{ s:'career', tag:'必考', q:'你五年怎麼換過三家公司？',
+  why:'對方在評估穩定性。這題答不好，前面的技術分數會被打折。',
+  skel:[
+    '實際上只換過一次經營者。',
+    '前兩段是同一位實際經營者旗下的兩間公司，人員、辦公室與系統都沒有變動，我只是前後掛在不同法人底下。',
+    '2024 年那次才是真的換經營者，而且整個團隊連同產品線一起移轉。',
+    '五年下來都是同一批人、同一套系統。'
+  ],
+  fact:['我在程式碼裡的 email 有五個，依序對應到不同法人——這剛好可以佐證任職是連續的。'],
+  prec:['講「兩間獨立法人、登記負責人不同、實際經營者與團隊相同」——這個版本精準且對得上勞保紀錄。',
+        '不要說「同一家公司」（是兩間獨立法人）、不要說「公司改名」（不是事實）、不要說「一直在同一家」（勞保是三段投保）。',
+        '對方查勞保會看到三段投保，所以說法必須跟紀錄一致。'] },
+
+{ s:'career', tag:'必考', q:'為什麼離開現在這家公司？',
+  why:'看離職原因是否合理、有沒有抱怨傾向。',
+  skel:[
+    '公司要解散，屬於非自願離職。',
+    '講事實就好，不需要修飾，也不用替公司解釋。',
+    '接著把話題帶向前看：所以我在找下一個能繼續做後端、而且有硬體或 AI 整合機會的環境。',
+    '如果對方問細節，簡短說明營運調整，不要評論前東家。'
+  ],
+  fact:['非自願離職會有離職證明，這對你是有利的——不是你不想做。'],
+  prec:['「公司要解散」是最乾淨的離職原因，講得平穩就好。',
+        '絕對不要抱怨前公司、老闆或同事。這是面試最常見的自殺行為。'] },
+
+{ s:'career', tag:'高機率', q:'履歷寫 2024/01 開始，但正式聘用是 07？那半年在做什麼？',
+  why:'時間軸有落差時對方一定會問。答不出來會被懷疑造假。',
+  skel:[
+    '那半年是經營者交接期，團隊照常在做同一套系統。',
+    '7 月才完成正式聘用手續。',
+    '工作沒有中斷——而且那段是整段經歷裡產出最密集的時期。',
+    '如果需要，程式碼的提交紀錄可以佐證那半年的產出。'
+  ],
+  fact:['2024 年 1 月起就有大量提交紀錄，遠早於正式聘用日。'],
+  prec:['主動說「提交紀錄可以佐證」很有力，但不要真的把 git 記錄拿出來——那是前公司的資產。'] },
+
+{ s:'career', tag:'高機率', q:'你之前的產業跟一般軟體公司差滿多，為什麼想轉？適應得來嗎？',
+  why:'一般軟體公司會擔心產業落差，也可能有主管對這個產業有成見。',
+  skel:[
+    '把技術問題與產業脫鉤：分散式租約、稽核資料管道、即時推播，這些問題在金流、電商、物流一樣存在。',
+    '娛樂平台的特點是「錯一次就是金流事故」，所以我對一致性與失效路徑的敏感度是被環境逼出來的。',
+    '而且那個環境同時有實體設備與 AI 推論，這個組合在一般軟體公司反而少見。',
+    '轉換的重點對我來說是領域知識要補，工程能力是可以帶走的。'
+  ],
+  fact:['桌台租約那個問題的本質是「同一個資源不能被兩個節點同時操作」——任何有金流的系統都會遇到。'],
+  prec:['不要替產業辯護，也不要貶低它。把焦點放在「問題的形狀是通用的」。',
+        '「錯一次就是金流事故」這句話能把產業經驗轉成優勢。'] },
+
+{ s:'career', tag:'常問', q:'你有帶人的經驗嗎？',
+  why:'確認職級預期。答錯會被歸到不對的位置。',
+  skel:[
+    '沒有正式帶人，我的職責是開發加需求理解。',
+    '但有幾件事接近：稽核那個專案我從方案評估、設計文件到上線獨立完成，包含跟 PM 溝通取捨。',
+    '硬體那邊要跟外部廠商協作電路板設計與需求確認。',
+    '我對帶人有興趣，但不會宣稱有經驗。'
+  ],
+  fact:['寫作備註裡刻意避開「專案負責人」「Tech Lead」「帶領團隊」這類用詞，就是為了不造成錯誤預期。'],
+  prec:['誠實說沒有，然後講「接近的經驗」。宣稱有帶人經驗但講不出人數與具體管理行為，會很難看。',
+        '如果對方要的是 Lead，這題就是關鍵——不如問清楚職缺對帶人的期待，再判斷合不合。'] },
+
+{ s:'career', tag:'常問', q:'你覺得自己算什麼職級？為什麼投這個職缺？',
+  why:'看自我認知是否準確。高估或低估都會出問題。',
+  skel:[
+    '五年經驗，做過從零到上線的完整專案，也做過既有系統的架構級重構。',
+    '技術廣度是我的強項：後端、硬體、AI 三個方向都有實作經驗。',
+    '缺口我清楚：沒有帶人經驗、沒有超大流量的調校經驗。',
+    '所以我投的是資深工程師的位置，而不是 Lead。'
+  ],
+  fact:['最強的三個證據：分散式租約設計、獨立完成的稽核資料管道、跨軟硬的整合經驗。'],
+  prec:['先講證據再講職級，順序不要反。',
+        '主動說出缺口不會扣分，反而是資深度的訊號——但只講兩個，不要變成自我否定大會。'] },
+
+{ s:'career', tag:'常問', q:'你未來三到五年想做什麼？',
+  why:'看你有沒有方向，以及這個方向跟公司的路線是否相容。',
+  skel:[
+    '想繼續深化系統設計，特別是分散式與資料流這塊。',
+    '同時不想放掉硬體與 AI 的整合——那是我的差異點，市場上少見。',
+    '中期希望能參與架構決策，而不只是實作。',
+    '把這個方向跟對方的產品接起來：詢問他們接下來的技術方向。'
+  ],
+  fact:['你的軌跡本身就有說服力：從單機桌面程式做到可多機部署的服務，是一條清楚的成長線。'],
+  prec:['不要說「想當主管」除非你真的想——會被追問管理觀點。',
+        '把答案收在一個問題上，讓對話繼續，比自己講完更好。'] },
+
+{ s:'career', tag:'可能問', q:'你期望的工作環境或團隊是什麼樣子？',
+  why:'看文化適配，也是在探你的紅線。',
+  skel:[
+    '有 code review 與版控紀律的團隊——我習慣有人看我的程式碼。',
+    '技術決策可以討論的環境：稽核那個專案我提出兩個方案的取捨，由 PM 拍板，這種流程我很習慣。',
+    '不排斥維運責任——我做過 systemd 常駐與 K8s 部署，知道寫完不等於做完。',
+    '反問對方：你們的 code review 與部署流程實際上怎麼運作？'
+  ],
+  fact:['你實際做過的流程：GitLab CI 三階段 pipeline、ArgoCD 部署、Helm 管理設定。'],
+  prec:['講具體的實務偏好（code review、版控），比講抽象的「open 的文化」有說服力。'] },
+
+/* ================= 行為題 ================= */
+{ s:'behav', tag:'必考', q:'講一次你跟同事或主管意見不同的經驗。',
+  why:'看衝突處理方式。重點不是誰對，是你怎麼推進到結論。',
+  skel:[
+    '情境：稽核紀錄的實作方式，有一個比較快的做法（擴充既有表）和一個比較慢但職責分離的做法。',
+    '我的行動：把兩個方案的工時與長期維護成本攤開，說明動既有管道的上線風險。',
+    '結果：由 PM 拍板選了比較慢的方案。',
+    '學到的：我的工作是把取捨講清楚，不是把自己的偏好變成結論。'
+  ],
+  fact:['多花的工時大約一倍，換到的是業務語意與 HTTP raw log 徹底分開、完全不動既有管道。'],
+  prec:['不要選一個「後來證明我對」的故事，那會顯得你在證明自己。選一個「流程正確」的故事。'] },
+
+{ s:'behav', tag:'必考', q:'講一次你失敗或犯錯的經驗。',
+  why:'看你敢不敢承認錯誤，以及有沒有從中建立習慣。',
+  skel:[
+    '情境：稽核紀錄一開始存的是 enum 的數值與資源 ID。',
+    '問題：紀錄的讀者是稽核人員，記 role=3 對他們完全沒有意義。',
+    '行動：後來全部改成角色名與資源名。',
+    '學到的：設計資料格式前要先確認讀者是誰。這件事後來影響我看所有輸出格式的方式。'
+  ],
+  fact:['另一個可用的例子：賽道流程有一個 flow 實作沒有被註冊，是死碼——後來我養成檢查註冊表與實作一致性的習慣。'],
+  prec:['選真的錯、而且已經修好的事。不要選「我太拚了」這種假失敗。',
+        '結尾一定要有「所以我現在會怎麼做」，否則只是自我批評。'] },
+
+{ s:'behav', tag:'常問', q:'你怎麼學新技術？舉個例子。',
+  why:'看學習能力與方法，尤其對要轉技術棧的職缺很重要。',
+  skel:[
+    '例子：Go 是為了稽核那個專案學的，直接從一個完整服務做起——設計、實作、上線。',
+    '方法是「用真的專案學」，而不是先讀完再開始。',
+    '過程中踩到的具體差異我記得住：Go 沒有 enum，所以我用實作 TextUnmarshaler 的封閉型別去補。',
+    '同時期也學了 ClickHouse 與 Redis Stream，都是因為那個專案需要。'
+  ],
+  fact:['那個專案從方案評估、設計文件到上線由我獨立完成，用的是當時對我來說全新的語言與資料庫。'],
+  prec:['「用真的專案學」要有具體踩坑細節支撐，否則聽起來像口號。那個 enum 的例子就很好。'] },
+
+{ s:'behav', tag:'常問', q:'遇到時間壓力大的情況你怎麼處理？',
+  why:'看你會不會為了趕時間犧牲不該犧牲的東西。',
+  skel:[
+    '先分辨哪些能砍、哪些不能。功能範圍可以談，資料正確性與金流安全不行。',
+    '例子：桌台重構時，我沒有為了趕時間跳過租約設計——那是整個重構的目的。',
+    '反過來，內部工具那邊我刻意只用標準庫寫、範圍壓到最小，因為它的目的是讓 QA 能自己驗證。',
+    '會主動同步進度與風險，不會到最後一天才說做不完。'
+  ],
+  fact:['內部工具從零做到 K8s 常駐大約十天，範圍控制是刻意的。'],
+  prec:['「哪些能砍哪些不能」的分界線要具體。空講「會排優先序」沒有說服力。'] },
+
+{ s:'behav', tag:'常問', q:'你怎麼跟非技術的人溝通？',
+  why:'很多後端職缺實際上要跟 PM、QA、營運對話。',
+  skel:[
+    '例子：稽核紀錄的讀者是稽核人員，所以我把 enum 數值改成他們看得懂的角色名。',
+    '例子：QA 回報凌晨查不到資料，我沒有直接說「前端算錯」，而是把兩邊的時間基準攤開讓大家理解落差。',
+    '硬體那邊要跟外部廠商討論電路板需求，那更需要把軟體端的限制翻譯成他們的語言。',
+    '原則是：講對方在意的後果，不是講我的實作。'
+  ],
+  fact:['「記 role=3 對稽核人員沒有意義」這句話本身就是溝通意識的證據。'],
+  prec:['這題最好用「我改了輸出格式讓對方看得懂」這種具體行為，而不是「我會用比喻解釋」。'] },
+
+{ s:'behav', tag:'常問', q:'講一個你做過最困難的技術決定。',
+  why:'看決策的品質與承擔意願。',
+  skel:[
+    '選「續租失敗就主動停掉 worker」。',
+    '困難點在於這個決定會造成可見的服務中斷——短時間內那張桌沒人服務。',
+    '但另一邊是兩個節點同時操作同一張桌造成重複下注，那是不可逆的金流事故。',
+    '我選了可見但可恢復的代價，而不是隱形但不可逆的風險。'
+  ],
+  fact:['這個取捨在程式裡是明確的：租約失效即停止服務並釋放資源，而不是繼續嘗試。'],
+  prec:['「可見但可恢復」對比「隱形但不可逆」是這題的核心句，值得記住。'] },
+
+];
+
+const PLAIN = {
+ask: `
+<h3>問技術與團隊（通用，優先問）</h3>
+<ul>
+  <li>團隊現在最想解決但還沒解決的技術問題是什麼？<em>——這題最能看出真實狀況。</em></li>
+  <li>code review 與部署流程實際上怎麼運作？誰有權限上線？</li>
+  <li>這個職缺是補人還是新增編制？前一位為什麼離開？</li>
+  <li>前三個月你會希望我完成什麼，才算上手？</li>
+  <li>系統目前最大的技術債是什麼？有計畫還嗎？</li>
+</ul>
+<h3>如果是中部的製造業或傳統產業</h3>
+<ul>
+  <li>軟體團隊跟硬體／產線團隊怎麼協作？誰定介面？</li>
+  <li>目前系統是自建還是外包維護？<em>——決定你進去是開發還是管廠商。</em></li>
+  <li>有沒有正在做的自動化或影像檢測專案？<em>——你的差異點在這裡。</em></li>
+</ul>
+<h3>如果是新創或小團隊</h3>
+<ul>
+  <li>目前後端幾個人？我進去之後負責的邊界在哪？</li>
+  <li>公司目前的資金狀況與跑道大概多久？<em>——你剛經歷過公司解散，這題你有資格問。</em></li>
+  <li>技術決策由誰決定？工程師的意見進得去嗎？</li>
+</ul>
+<h3>如果是大公司或制度完整的團隊</h3>
+<ul>
+  <li>職級體系怎麼定義？往上一級的具體標準是什麼？</li>
+  <li>跨團隊的相依怎麼處理？等別人排程的情況多嗎？</li>
+</ul>
+<div class="hint"><strong>不要問的：</strong>加班多不多（換成「團隊怎麼處理上線後的緊急狀況」）、可不可以遠端（等對方提或最後階段再問）、我有多少假（人資階段再問）。</div>
+`,
+check: `
+<h3>面試前 24 小時</h3>
+<ul>
+  <li>把「開場」兩題各念一次，計時。60 秒版真的要 60 秒。</li>
+  <li>挑三個專案，每個能講三分鐘不看筆記。</li>
+  <li>查對方公司：產品是什麼、用什麼技術棧、最近有什麼消息。準備一句「我看到你們⋯⋯」。</li>
+  <li>從反問清單挑三題，寫在紙上帶去。</li>
+  <li>把「還不熟」那幾題再過一輪。</li>
+</ul>
+<h3>當天</h3>
+<ul>
+  <li>帶紙本履歷兩份、紙筆。線上面試先測攝影機、麥克風、網路與背景。</li>
+  <li>白板題先問清楚需求與邊界再動筆，出聲思考。</li>
+  <li>不會的直接說不會，然後說你會怎麼查、怎麼推。<strong>硬掰是最大的扣分項。</strong></li>
+  <li>被問到數字不確定時說「我印象是⋯⋯但這個我需要確認」，不要給假數字。</li>
+  <li>記下對方提到的技術名詞與痛點——後續跟進信用得到。</li>
+</ul>
+<h3>結束後 48 小時</h3>
+<ul>
+  <li>寄一封簡短的感謝信，提一件面試中談到的具體技術點，證明你在聽。</li>
+  <li>寫下被問倒的題目，回來補進這份筆記。<strong>這是這份筆記真正變強的方式。</strong></li>
+  <li>記錄對方的薪資與職級訊息，不要憑印象。</li>
+</ul>
+`,
+red: `
+<p>面試是雙向的。你剛經歷過公司解散，這一輪要更小心地選。以下訊號出現時要追問，不要自己合理化。</p>
+<h3>制度與穩定性</h3>
+<ul>
+  <li><strong>試用期特別長或條件模糊</strong>——問清楚試用期的評估標準與薪資是否打折。</li>
+  <li><strong>閃避薪資結構</strong>——底薪與獎金比例、獎金的發放條件與歷史達成率，問不出來就是風險。</li>
+  <li><strong>對前一位離職原因含糊</strong>或這個位置反覆招人。</li>
+  <li><strong>資金與跑道問不出來</strong>（新創尤其）。</li>
+</ul>
+<h3>技術與工程文化</h3>
+<ul>
+  <li><strong>「我們沒什麼技術債」</strong>——不可能。代表他不知道或不願講。</li>
+  <li><strong>沒有 code review、沒有測試、部署靠手動</strong>且沒有改善計畫。</li>
+  <li><strong>問不出系統架構</strong>，只說「進來就知道」。</li>
+  <li><strong>一個人要負責的範圍無邊界</strong>——後端＋前端＋維運＋資料庫＋客服。</li>
+</ul>
+<h3>工作方式</h3>
+<ul>
+  <li><strong>把加班說成文化或熱情</strong>。</li>
+  <li><strong>面試過程不尊重時間</strong>——遲到很久、臨時改期、面試官明顯沒看履歷。</li>
+  <li><strong>要求你先做大量無償作業</strong>（小型 take-home 合理，做完整功能不合理）。</li>
+</ul>
+<div class="hint">出現一兩項不代表要放棄，但要換成具體問題問出來。<strong>對方的回答方式，比答案本身更能說明這家公司。</strong></div>
+`
+};
+</script>
+<script>
+(function () {
+  var html = document.documentElement;
+  var app = document.getElementById('app');
+  var side = document.getElementById('side');
+
+  /* ---------- 穩定 id：由題目文字算 hash，改動題目才會失效 ---------- */
+  function hash(str) {
+    var h = 5381, i = str.length;
+    while (i) h = (h * 33 ^ str.charCodeAt(--i)) >>> 0;
+    return h.toString(36);
+  }
+  DATA.forEach(function (d) { d.id = d.s + '-' + hash(d.q); });
+
+  /* ---------- 狀態 ---------- */
+  var KEY = 'hintme.v1';
+  var state = { marks: {}, mode: 'drill', weak: false, theme: null };
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (raw) state = Object.assign(state, JSON.parse(raw));
+  } catch (e) {}
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  /* ---------- 繪製 ---------- */
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+
+  function bodyHtml(d) {
+    var h = '';
+    if (d.why) h += '<div class="why"><b>他想確認什麼</b>' + d.why + '</div>';
+    if (d.skel && d.skel.length) {
+      h += '<p class="lbl">答題骨架</p><ol class="skel">';
+      d.skel.forEach(function (x) { h += '<li>' + x + '</li>'; });
+      h += '</ol>';
+    }
+    if (d.fact && d.fact.length) {
+      h += '<p class="lbl">你的素材</p><ul class="fact">';
+      d.fact.forEach(function (x) { h += '<li>' + x + '</li>'; });
+      h += '</ul>';
+    }
+    if (d.prec && d.prec.length) {
+      h += '<div class="prec"><p class="lbl">更精準的講法</p>';
+      d.prec.forEach(function (x) { h += '<p>' + x + '</p>'; });
+      h += '</div>';
+    }
+    return h;
+  }
+
+  function cardHtml(d) {
+    var m = state.marks[d.id] || 1;
+    var sym = m === 3 ? '✓' : (m === 2 ? '!' : '');
+    return '<article class="card" id="' + d.id + '" data-id="' + d.id + '">' +
+      '<div class="q">' +
+        '<button class="mark" data-s="' + m + '" type="button" title="未練 → 還不熟 → 已掌握">' + sym + '</button>' +
+        '<div class="q-txt">' + esc(d.q) + '</div>' +
+        '<span class="q-tag">' + esc(d.tag) + '</span>' +
+      '</div>' +
+      '<div class="body">' + bodyHtml(d) + '</div>' +
+    '</article>';
+  }
+
+  function matches(d, term) {
+    if (!term) return true;
+    var hay = [d.q, d.why, (d.skel || []).join(' '), (d.fact || []).join(' '), (d.prec || []).join(' ')].join(' ');
+    return hay.toLowerCase().indexOf(term) >= 0;
+  }
+
+  function render() {
+    var term = (document.getElementById('q').value || '').trim().toLowerCase();
+    var out = '', nav = '';
+    SECTIONS.forEach(function (sec) {
+      var key = sec[0], name = sec[1];
+      var items = DATA.filter(function (d) { return d.s === key; });
+      var shown = items.filter(function (d) {
+        if (!matches(d, term)) return false;
+        if (state.weak && (state.marks[d.id] || 1) === 3) return false;
+        return true;
+      });
+      var isPlain = !!PLAIN[key];
+      if (isPlain) {
+        if (state.weak || term) return;                 // 篩選或搜尋時隱藏純文字章節
+        out += '<h2 class="sec" id="s-' + key + '">' + name + '</h2>';
+        out += '<div class="plain">' + PLAIN[key] + '</div>';
+        nav += '<a href="#s-' + key + '">' + name + '</a>';
+        return;
+      }
+      if (!shown.length) return;
+      var done = items.filter(function (d) { return (state.marks[d.id] || 1) === 3; }).length;
+      out += '<h2 class="sec" id="s-' + key + '">' + name +
+             ' <em>' + done + ' / ' + items.length + '</em></h2>';
+      shown.forEach(function (d) { out += cardHtml(d); });
+      nav += '<a href="#s-' + key + '" class="' + (done === items.length ? 'done' : '') + '">' +
+             name + ' <b>' + done + '/' + items.length + '</b></a>';
+    });
+    app.innerHTML = out || '<p class="empty">沒有符合的題目。</p>';
+    side.innerHTML = nav;
+    progress();
+  }
+
+  function progress() {
+    var cards = DATA.filter(function (d) { return !PLAIN[d.s]; });
+    var done = cards.filter(function (d) { return (state.marks[d.id] || 1) === 3; }).length;
+    document.getElementById('pf').style.width = (100 * done / cards.length) + '%';
+    document.getElementById('pt').textContent = done + ' / ' + cards.length;
+  }
+
+  /* ---------- 互動 ---------- */
+  var focused = null;
+  function setFocus(el) {
+    if (focused) focused.classList.remove('focus');
+    focused = el;
+    if (el) { el.classList.add('focus'); el.scrollIntoView({ block: 'nearest' }); }
+  }
+
+  app.addEventListener('click', function (e) {
+    var mk = e.target.closest('.mark');
+    var card = e.target.closest('.card');
+    if (mk && card) {
+      var id = card.dataset.id;
+      var cur = state.marks[id] || 1;
+      var next = cur === 1 ? 2 : (cur === 2 ? 3 : 1);
+      state.marks[id] = next; save();
+      mk.dataset.s = next;
+      mk.textContent = next === 3 ? '✓' : (next === 2 ? '!' : '');
+      var secKey = id.split('-')[0];
+      var items = DATA.filter(function (d) { return d.s === secKey; });
+      var done = items.filter(function (d) { return (state.marks[d.id] || 1) === 3; }).length;
+      var em = document.querySelector('#s-' + secKey + ' em');
+      if (em) em.textContent = done + ' / ' + items.length;
+      var na = side.querySelector('a[href="#s-' + secKey + '"] b');
+      if (na) na.textContent = done + '/' + items.length;
+      progress();
+      if (state.weak && next === 3) render();
+      return;
+    }
+    if (e.target.closest('.q') && card) { card.classList.toggle('open'); setFocus(card); }
+  });
+
+  function setMode(m) {
+    state.mode = m; save();
+    html.setAttribute('data-mode', m);
+    document.getElementById('mDrill').setAttribute('aria-pressed', String(m === 'drill'));
+    document.getElementById('mRead').setAttribute('aria-pressed', String(m === 'read'));
+  }
+  document.getElementById('mDrill').onclick = function () { setMode('drill'); };
+  document.getElementById('mRead').onclick = function () { setMode('read'); };
+
+  var fw = document.getElementById('fWeak');
+  fw.onclick = function () {
+    state.weak = !state.weak; save();
+    fw.setAttribute('aria-pressed', String(state.weak));
+    render();
+  };
+
+  var qi = document.getElementById('q');
+  var t;
+  qi.addEventListener('input', function () { clearTimeout(t); t = setTimeout(render, 120); });
+
+  /* ---------- 主題 ---------- */
+  function setTheme(v) {
+    state.theme = v; save();
+    if (v) html.setAttribute('data-theme', v); else html.removeAttribute('data-theme');
+  }
+  document.getElementById('theme').onclick = function () {
+    var cur = html.getAttribute('data-theme');
+    var dark = cur === 'dark' || (!cur && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    setTheme(dark ? 'light' : 'dark');
+  };
+
+  /* ---------- 抽題 ---------- */
+  var box = document.getElementById('drillBox'), last = null;
+  function pick() {
+    var pool = DATA.filter(function (d) { return !PLAIN[d.s] && (state.marks[d.id] || 1) !== 3; });
+    if (!pool.length) pool = DATA.filter(function (d) { return !PLAIN[d.s]; });
+    if (pool.length > 1 && last) pool = pool.filter(function (d) { return d.id !== last; });
+    var d = pool[Math.floor(Math.random() * pool.length)];
+    last = d.id;
+    document.getElementById('dq').textContent = d.q;
+    document.getElementById('da').innerHTML = '';
+    document.getElementById('drillTag').textContent = d.tag + '　·　' +
+      (SECTIONS.filter(function (s) { return s[0] === d.s; })[0] || ['', ''])[1];
+    var dm = document.getElementById('dmark');
+    dm.innerHTML = '<button class="tbtn" data-m="2" type="button">標記還不熟</button>' +
+                   '<button class="tbtn" data-m="3" type="button">標記已掌握</button>';
+    dm.onclick = function (e) {
+      var b = e.target.closest('button[data-m]');
+      if (!b) return;
+      state.marks[d.id] = +b.dataset.m; save(); render(); pick();
+    };
+    document.getElementById('dShow').onclick = function () {
+      document.getElementById('da').innerHTML = bodyHtml(d);
+    };
+  }
+  function openDrill() { box.classList.add('on'); box.setAttribute('aria-hidden', 'false'); pick(); }
+  function closeDrill() { box.classList.remove('on'); box.setAttribute('aria-hidden', 'true'); }
+  document.getElementById('rand').onclick = openDrill;
+  document.getElementById('dNext').onclick = pick;
+  document.getElementById('dClose').onclick = closeDrill;
+
+  /* ---------- 鍵盤 ---------- */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { if (box.classList.contains('on')) closeDrill(); else qi.blur(); return; }
+    var typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+    if (e.key === '/' && !typing) { e.preventDefault(); qi.focus(); qi.select(); return; }
+    if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (box.classList.contains('on')) {
+      if (e.key === 'r' || e.key === 'n') { e.preventDefault(); pick(); }
+      if (e.key === ' ') { e.preventDefault(); document.getElementById('dShow').click(); }
+      return;
+    }
+    var cards = Array.prototype.slice.call(app.querySelectorAll('.card'));
+    if (!cards.length) return;
+    var i = focused ? cards.indexOf(focused) : -1;
+    if (e.key === 'j') { e.preventDefault(); setFocus(cards[Math.min(i + 1, cards.length - 1)]); }
+    else if (e.key === 'k') { e.preventDefault(); setFocus(cards[Math.max(i - 1, 0)]); }
+    else if (e.key === ' ') {
+      if (!focused) { setFocus(cards[0]); }
+      e.preventDefault(); focused.classList.toggle('open');
+    }
+    else if (e.key === 'r') { e.preventDefault(); openDrill(); }
+    else if (/^[123]$/.test(e.key) && focused) {
+      e.preventDefault();
+      state.marks[focused.dataset.id] = +e.key; save();
+      var m = focused.querySelector('.mark');
+      m.dataset.s = e.key;
+      m.textContent = e.key === '3' ? '✓' : (e.key === '2' ? '!' : '');
+      progress();
+      var keep = focused.dataset.id;
+      if (state.weak && e.key === '3') { render(); }
+      else {
+        var secKey = keep.split('-')[0];
+        var items = DATA.filter(function (d) { return d.s === secKey; });
+        var done = items.filter(function (d) { return (state.marks[d.id] || 1) === 3; }).length;
+        var em = document.querySelector('#s-' + secKey + ' em');
+        if (em) em.textContent = done + ' / ' + items.length;
+        var na = side.querySelector('a[href="#s-' + secKey + '"] b');
+        if (na) na.textContent = done + '/' + items.length;
+      }
+    }
+  });
+
+  /* ---------- 起始 ---------- */
+  if (state.theme) html.setAttribute('data-theme', state.theme);
+  setMode(state.mode || 'drill');
+  fw.setAttribute('aria-pressed', String(!!state.weak));
+  render();
+})();
+</script>
+</body>
+</html>

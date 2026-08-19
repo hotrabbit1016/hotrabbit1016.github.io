@@ -11,11 +11,18 @@
 | `resume/index.html` | 整個網站。內嵌 CSS 與 JS，**零外部請求**，沒有建置步驟 |
 | `resume/resume.pdf` | 履歷（公開版，不含 email 與電話） |
 | `resume/og.png` | 分享預覽圖（1200×630） |
+| `resume/hintme/index.html` | 面試準備筆記。單檔、內嵌 CSS/JS，練習進度存 `localStorage` |
 | `.nojekyll` | 跳過 GitHub 的 Jekyll 處理，部署較快 |
 
 網站放在子目錄是因為這個 repo 是 user site，Pages 只從網域根目錄提供服務，所以 `/resume/` 這個路徑靠的是資料夾結構，不是 Pages 設定。
 
 根目錄**刻意沒有 `index.html`** —— `https://hotrabbit1016.github.io` 直接回 404，不透露 `/resume/` 的存在。不要為了「看起來比較完整」而加回首頁或轉址。
+
+## 面試準備筆記
+
+`/resume/hintme/` 是自己用的面試練習頁，**主站刻意沒有任何連結指向它** —— 加了等於主動把面試官導過去。靠網址直接開。
+
+薪資談判的區間與底線**不在這個 repo 裡**（在本機 `resume_output/薪資談判.md`）。談判前把底線公開等於把牌翻給對方看，這一項不要搬上來。
 
 ## 這個網站不對外曝光
 
