@@ -447,7 +447,7 @@
       </div>
       <div class="card">
         <h3><span class="l-zh">即時與訊息</span><span class="l-en">Realtime &amp; Messaging</span></h3>
-        <p><span class="l-zh">SignalR（Hub 設計、重連治理）、WebSocket、RabbitMQ、NATS</span><span class="l-en">SignalR (hub design, reconnection), WebSocket, RabbitMQ, NATS</span></p>
+        <p><span class="l-zh">SignalR（Hub 設計、重連處理）、WebSocket、RabbitMQ、NATS</span><span class="l-en">SignalR (hub design, reconnection), WebSocket, RabbitMQ, NATS</span></p>
       </div>
       <div class="card">
         <h3><span class="l-zh">資料儲存</span><span class="l-en">Data Stores</span></h3>
@@ -569,10 +569,10 @@ ACTIVE &#9472;&#9472;消失過久&#9472;&#9472;&#9654; 清除（幽靈軌跡）<
             <div class="tablewrap"><table>
               <thead><tr><th>閾值</th><th>防的是什麼</th></tr></thead>
               <tbody>
-                <tr><td>判定線位置</td><td>只有越線的球才進入淘汰流程</td></tr>
+                <tr><td>判定線位置</td><td>只有越線的球才進入落球判定流程</td></tr>
                 <tr><td>消失時間（進 CONFIRMING）</td><td>容忍 YOLO 偶發漏偵測，消失一下不算落球</td></tr>
                 <tr><td>確認時間</td><td>二段確認，再等一段時間才判定成立</td></tr>
-                <tr><td>存活時間門檻</td><td>過濾開局瞬間的誤判，雜訊不佔排名</td></tr>
+                <tr><td>存活時間門檻</td><td>過濾開局瞬間的誤判，雜訊不會佔到名次</td></tr>
                 <tr><td>stale 時間</td><td>清除長時間沒再出現的幽靈軌跡</td></tr>
               </tbody>
             </table></div>
@@ -629,11 +629,11 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
         <span class="proj-when">2022 – 2026</span>
       </div>
       <div class="stack"><span>.NET</span><span>SignalR</span><span>RabbitMQ</span><span>Redis</span><span>EF Core</span><span>MySQL</span></div>
-      <p class="lead"><span class="l-zh">三個服務串起玩家端到營運端的鏈路，我負責其中的交易流程、即時推播與後台功能。</span><span class="l-en">Three services connecting the player side to the operations side. I worked on the transaction flows, the real-time push, and the back-office features.</span></p>
+      <p class="lead"><span class="l-zh">三個服務串起玩家端到營運端的完整流程，我負責其中的交易流程、即時推播與後台功能。</span><span class="l-en">Three services connecting the player side to the operations side. I worked on the transaction flows, the real-time push, and the back-office features.</span></p>
       <ul class="l-zh">
         <li><strong>PlayerGameServer</strong>——玩家下注與取消下注的交易流程，結算後以 SignalR 即時推播通知；跨服務的狀態變更走 MQ 事件處理。</li>
         <li><strong>桌台營運後台</strong>——營運與客服端的管理後台，包含權限稽核、局結果更正流程，以及第三方開獎結果的驗證機制；管理員登入以 Otp.NET 加上二階段驗證。</li>
-        <li><strong>桌台現場管理服務</strong>——荷官與攝影棚端的 SignalR Hub，負責賽局流程的指令下發。開牌結果要經過 AI 辨識與現場人工雙重確認才算成立。</li>
+        <li><strong>桌台現場管理服務</strong>——荷官與攝影棚端的 SignalR Hub，負責下達賽局流程的指令。開牌結果要經過 AI 辨識與現場人工雙重確認才算成立。</li>
       </ul>
       <ul class="l-en">
         <li><strong>PlayerGameServer</strong> — the bet and bet-cancellation transaction flow, with settlement pushed to players over SignalR; cross-service state changes go through MQ events.</li>
@@ -652,7 +652,7 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
       <ul class="l-zh">
         <li>以 Redis + Lua script 實作桌台租約。用 Lua 而不是 GET-then-SET，是為了消掉 check-then-act 之間的 race——同一張桌被兩個 Pod 同時接管會造成重複下注，那是金流事故。</li>
         <li>Supervisor–Worker 調度：每桌一個 worker 與獨立 DI scope，單桌異常不影響其他桌。續租失敗就主動停掉 worker，寧可短暫沒人服務，也不能兩個 Pod 同時操作同一張桌。</li>
-        <li>桌台生命週期改用 State Pattern，狀態分派收斂成單一 factory，未處理到的狀態一律落進錯誤復原。</li>
+        <li>桌台生命週期改用 State Pattern，狀態分派集中到單一 factory，未處理到的狀態一律導向錯誤復原分支。</li>
         <li>補上覆蓋 8 個桌台狀態與調度核心的單元測試，並把時間相關邏輯改走 <code>TimeProvider</code>，倒數與掃描迴圈才能用假時鐘快進測試。</li>
         <li>清掉版控裡的明文密碼與連線字串，改由 K8s Secret 注入。</li>
       </ul>
@@ -686,7 +686,7 @@ worker 不存在        → 搶租約；搶到才建 worker
 worker 存在          → 續租；失敗就停掉 worker</code></pre>
             <p>最後一條是刻意的取捨：租約失效代表這張桌的所有權可能已經被別人拿走，繼續操作的風險遠高於短暫停擺。關閉時統一釋放所有 worker、scope 與租約，支援 graceful shutdown。</p>
             <h4>狀態機</h4>
-            <p>桌台共 10 種狀態，factory 顯式處理其中 7 種，其餘連同未定義值一律落進錯誤復原分支。整個系統只有這一處 switch，新增狀態只要改一個地方。</p>
+            <p>桌台共 10 種狀態，factory 明確處理其中 7 種，其餘連同未定義值一律落進錯誤復原分支。整個系統只有這一處 switch，新增狀態只要改一個地方。</p>
           </div>
           <div class="l-en">
             <h4>The three Lua scripts</h4>
@@ -724,8 +724,8 @@ worker running           → renew; on failure stop the worker</code></pre>
         <li>選型時放棄「擴充既有 audit_logs」這個比較快的做法，改建獨立的 operation_logs 表。工時大約多一倍，換到的是業務語意跟 HTTP raw log 徹底分開，而且完全不動既有管道。</li>
         <li>寫入走 Redis Stream 加 Consumer Group 再落 ClickHouse，稽核不拖慢主請求；ClickHouse 用 MergeTree 按日分區、TTL 自動過期。</li>
         <li>Middleware 負責 HTTP 層語意（角色、選單、操作類型），Service 層負責變更前後的狀態快照，兩條路徑匯流到同一個 Stream 再合併寫入。</li>
-        <li>把 OperationType 與 Menu 做成實作 <code>encoding.TextUnmarshaler</code> 的封閉型別。一份實作同時擋住 Gin form binding 與 Redis Stream 的髒資料，非法值直接 400，而不是靜默回一個空結果。</li>
-        <li>查詢區間的界線踩到時區問題：QA 回報同一天查得到、但凌晨那幾個小時被擋掉。根因是前端以當地日界回推天數、後端跑 UTC，兩邊差了將近一天。最後決定後端不引入業務時區，只做寬鬆的 backstop 並多留一天緩衝吸收時差，精準界線交前端把關。</li>
+        <li>把 OperationType 與 Menu 做成實作 <code>encoding.TextUnmarshaler</code> 的封閉型別。一份實作同時擋住 Gin form binding 與 Redis Stream 的髒資料，無效的值直接回 400，而不是悄悄回一個空結果。</li>
+        <li>查詢區間的界線踩到時區問題：QA 回報同一天查得到、但凌晨那幾個小時被擋掉。原因是前端以當地當天的午夜為基準往回推算、後端跑 UTC，兩邊差了將近一天。最後決定後端不引入業務時區，只做寬鬆的 backstop 並多留一天緩衝吸收時差，精準界線交前端把關。</li>
         <li>快照一開始存的是 enum 的數值與資源 ID，後來全改成角色名與資源名。稽核紀錄的讀者是稽核人員，記 <code>role=3</code> 對他們沒有意義。</li>
       </ul>
       <ul class="l-en">
@@ -799,7 +799,7 @@ consumer group → ClickHouse operation_logs</code></pre>
 
   <section id="integration">
     <h2><span class="l-zh">軟硬整合</span><span class="l-en">Hardware &amp; Systems Integration</span></h2>
-    <p class="sechint"><span class="l-zh">電機系的訓練在這裡才真正派上用場。同一個專案裡要處理 SPI 匯流排上的位元、會掉包的 RF 封包，還有一支要讓現場人員看得懂的監控介面。</span><span class="l-en">This is where an electrical engineering background actually earns its keep — bits on an SPI bus, RF packets that go missing, and a monitoring UI that people on site have to understand, all inside one project.</span></p>
+    <p class="sechint"><span class="l-zh">電機系的訓練在這裡才真正派上用場。同一個專案裡要處理 SPI 匯流排上的位元、會遺失的 RF 訊號，還有一支要讓現場人員看得懂的監控介面。</span><span class="l-en">This is where an electrical engineering background actually earns its keep — bits on an SPI bus, RF packets that go missing, and a monitoring UI that people on site have to understand, all inside one project.</span></p>
 
     <article class="proj">
       <div class="proj-top">
@@ -813,7 +813,7 @@ consumer group → ClickHouse operation_logs</code></pre>
         <li>RF 閘門驅動是最難的一塊，實體環境什麼都會壞，所以疊了六層防禦（展開看細節）。</li>
         <li>賽道流程用 Strategy 加 Factory，8 條賽道各有自己的開賽條件與結束判定，新增一條只要加一個 flow 並註冊，不動主控迴圈。</li>
         <li>偵測不到硬體時自動退回模擬模式，開發者在沒有 SPI 的 Mac 上也能跑完整流程。</li>
-        <li>依賽事事件切換 OBS 場景，把遊戲邏輯與直播導播串起來。三個進程分別以 systemd 常駐，監控介面掛掉不會影響賽道控制。</li>
+        <li>依賽事事件切換 OBS 場景，把遊戲邏輯與直播導播串起來。三支程式分別以 systemd 常駐，監控介面掛掉不會影響賽道控制。</li>
       </ul>
       <ul class="l-en">
         <li>The hardware layer drives an MCP23S17 I/O expander over SPI to read up to 28 optical sensors, and detects which of two sensor-board generations is present so one codebase serves both.</li>
