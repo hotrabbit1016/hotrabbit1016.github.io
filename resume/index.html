@@ -433,8 +433,8 @@
     <span class="brand">吳承儒 <span style="color:var(--faint);font-weight:400">Jack Wu</span></span>
     <nav class="navlinks" aria-label="Sections">
       <a href="#about"><span class="l-zh">關於</span><span class="l-en">About</span></a>
-      <a href="#skills"><span class="l-zh">技術</span><span class="l-en">Skills</span></a>
       <a href="#experience"><span class="l-zh">經歷</span><span class="l-en">Experience</span></a>
+      <a href="#skills"><span class="l-zh">技術</span><span class="l-en">Skills</span></a>
       <a href="#backend"><span class="l-zh">後端</span><span class="l-en">Backend</span></a>
       <a href="#ai">AI</a>
       <a href="#integration"><span class="l-zh">軟硬整合</span><span class="l-en">Integration</span></a>
@@ -1136,7 +1136,10 @@ consumer group → ClickHouse operation_logs</code></pre>
   var html = document.documentElement;
   var copyBtns = Array.prototype.slice.call(document.querySelectorAll('.copy-btn'));
 
-  // Match the page's project order to the navigation: backend first, then AI.
+  // Match the page order to the navigation.
+  var skillsSection = document.getElementById('skills');
+  var experienceSection = document.getElementById('experience');
+  if (skillsSection && experienceSection) skillsSection.parentNode.insertBefore(experienceSection, skillsSection);
   var aiSection = document.getElementById('ai');
   var backendSection = document.getElementById('backend');
   if (aiSection && backendSection) aiSection.parentNode.insertBefore(backendSection, aiSection);
