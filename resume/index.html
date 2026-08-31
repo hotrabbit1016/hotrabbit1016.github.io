@@ -837,27 +837,27 @@ ACTIVE &#9472;&#9472;gone too long&#9472;&#9472;&#9654; cleared (ghost track)</c
       </div>
       <div class="stack"><span>.NET 10</span><span>Redis</span><span>Kubernetes</span><span>xUnit</span></div>
       <dl class="brief l-zh">
-        <dt>做什麼用的</dt><dd>原本只能裝在單台電腦上的程式，改成可以同時部署在多台伺服器的服務，並解掉「同一張桌被兩台機器同時接管」會造成重複下注的風險。</dd>
+        <dt>做什麼用的</dt><dd>原本只能裝在單台電腦上的程式，改成可以同時部署在多台伺服器的服務，並解掉「同一張桌被兩台機器同時接管」會造成桌台訊號被重複處理的風險。</dd>
         <dt>我的角色</dt><dd>主程式與測試由我獨立設計實作；共用函式庫由團隊共同維護。被取代的那一版 WPF 桌台端也是我寫的，所以是同一個桌台端我做了兩代。</dd>
-        <dt>成果</dt><dd>可多機部署且不會重複接管，排除重複下注的金流風險。</dd>
+        <dt>成果</dt><dd>可多機部署且不會重複接管，排除桌台訊號被重複處理的風險。</dd>
       </dl>
       <dl class="brief l-en">
-        <dt>What it's for</dt><dd>A program that could only run on one machine, turned into a service that can run on several servers at once — without two of them taking over the same table and charging a bet twice.</dd>
+        <dt>What it's for</dt><dd>A program that could only run on one machine, turned into a service that can run on several servers at once — without two of them taking over the same table and processing its signals twice.</dd>
         <dt>My part</dt><dd>I designed and wrote the main program and its tests on my own; the shared libraries are maintained by the team. I had also written the WPF console it replaced, so this is the same table client built twice.</dd>
-        <dt>Outcome</dt><dd>Runs on multiple servers with no duplicate takeover, removing the double-bet risk.</dd>
+        <dt>Outcome</dt><dd>Runs on multiple servers with no duplicate takeover, removing the risk of table signals being processed twice.</dd>
       </dl>
       <details>
         <summary><span class="l-zh">技術重點</span><span class="l-en">Technical detail</span></summary>
         <div class="dbody">
           <ul class="l-zh">
-            <li>以 Redis + Lua script 實作桌台租約。用 Lua 而不是 GET-then-SET，是為了消掉 check-then-act 之間的 race——同一張桌被兩個 Pod 同時接管會造成重複下注，那是金流事故。</li>
+            <li>以 Redis + Lua script 實作桌台租約。用 Lua 而不是 GET-then-SET，是為了消掉 check-then-act 之間的 race——同一張桌被兩個 Pod 同時接管，會讓桌台訊號被重複處理。</li>
             <li>Supervisor–Worker 調度：每桌一個 worker 與獨立 DI scope，單桌異常不影響其他桌。續租失敗就主動停掉 worker，寧可短暫沒人服務，也不能兩個 Pod 同時操作同一張桌。</li>
             <li>桌台生命週期改用 State Pattern，狀態分派集中到單一 factory，未處理到的狀態一律導向錯誤復原分支。</li>
             <li>補上覆蓋 8 個桌台狀態與調度核心的 unit test，並把時間相關邏輯改走 <code>TimeProvider</code>，倒數與掃描迴圈才能用 fake clock 快進測試。</li>
             <li>清掉版控裡的明文密碼與連線字串，改由 K8s Secret 注入。</li>
           </ul>
           <ul class="l-en">
-            <li>Table leases are implemented with Redis plus Lua scripts. Lua rather than GET-then-SET, because the gap between check and act is a real race — two pods driving the same table means duplicate bets, which is a money incident.</li>
+            <li>Table leases are implemented with Redis plus Lua scripts. Lua rather than GET-then-SET, because the gap between check and act is a real race — two pods driving the same table means its signals can be processed twice.</li>
             <li>Supervisor–worker scheduling: one worker and one DI scope per table, so a fault on one table doesn't touch the others. If renewal fails the worker is stopped deliberately — a table briefly unattended is better than two pods acting on it.</li>
             <li>The table lifecycle moved to a state pattern, with dispatch collapsed into a single factory and any unhandled state falling through to error recovery.</li>
             <li>Added unit tests covering the eight table states and the scheduling core, and moved time-dependent logic onto <code>TimeProvider</code> so countdowns and scan loops can be fast-forwarded with a fake clock.</li>
