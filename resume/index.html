@@ -108,6 +108,10 @@
     background: var(--accent); color: #fff; padding: 10px 16px; border-radius: 0 0 6px 0;
   }
   .skip:focus { left: 0; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
 
   a { color: var(--accent); }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
@@ -158,7 +162,35 @@
   }
   .hero .alt { color: var(--faint); font-size: 1rem; letter-spacing: 2px; margin-bottom: 18px; }
   .hero .role { font-size: 1.15rem; color: var(--accent); font-weight: 600; margin-bottom: 14px; }
-  .hero .pitch { font-size: 1.12rem; color: var(--soft); max-width: 63ch; margin-bottom: 26px; }
+  .hero .pitch { font-size: 1.12rem; color: var(--soft); max-width: 63ch; margin-bottom: 17px; }
+  .contact-list {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px;
+    margin: 0 0 24px; color: var(--soft); font-size: .93rem;
+  }
+  .contact-item { display: inline-flex; align-items: center; gap: 7px; min-width: 0; }
+  .contact-item + .contact-item { border-left: 1px solid var(--line); padding-left: 20px; }
+  .contact-icon { width: 16px; height: 16px; fill: var(--accent); flex: none; }
+  .contact-link {
+    color: var(--ink); text-decoration: none; text-underline-offset: 4px;
+    overflow-wrap: anywhere; user-select: text;
+  }
+  .contact-link:hover { color: var(--accent); text-decoration: underline; }
+  .copy-btn {
+    position: relative; display: inline-grid; place-items: center; width: 28px; height: 28px;
+    padding: 0; border: 0; border-radius: 5px; background: transparent; color: var(--faint);
+    cursor: pointer; font-family: inherit;
+  }
+  .copy-btn:hover, .copy-btn:focus-visible { color: var(--accent); background: var(--accent-soft); }
+  .copy-btn svg { width: 15px; height: 15px; fill: currentColor; }
+  .copy-btn .icon-check { display: none; }
+  .copy-btn.copied .icon-copy { display: none; }
+  .copy-btn.copied .icon-check { display: block; }
+  .copy-feedback {
+    position: absolute; left: calc(100% + 5px); top: 50%; transform: translateY(-50%);
+    color: var(--accent); font-size: .76rem; font-weight: 600; white-space: nowrap;
+    opacity: 0; pointer-events: none;
+  }
+  .copy-btn.copied .copy-feedback { opacity: 1; }
   .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 30px; }
   .chip {
     background: var(--chip); border: 1px solid var(--line); color: var(--soft);
@@ -172,9 +204,6 @@
   }
   .btn-primary { background: var(--accent); color: var(--bg); }
   .btn-primary:hover { opacity: .88; }
-  .btn-ghost { background: transparent; color: var(--accent); }
-  .btn-ghost:hover { background: var(--accent-soft); }
-  .btn svg { width: 17px; height: 17px; fill: currentColor; flex: none; }
 
   /* ---------- skills ---------- */
   .skillgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 13px; }
@@ -367,6 +396,8 @@
   }
 
   @media (max-width: 560px) {
+    .contact-list { display: grid; gap: 5px; }
+    .contact-item + .contact-item { border-left: 0; padding-left: 0; }
     .brief { grid-template-columns: 1fr; gap: 0; }
     .brief dt { margin-top: 9px; }
     .brief dt:first-child { margin-top: 0; }
@@ -417,6 +448,27 @@
       <span class="l-zh">五年線上娛樂平台後端。一端是雲上的分散式服務，另一端是會真的壞掉的實體硬體。</span>
       <span class="l-en">Five years of backend work on online entertainment platforms. One end is distributed services in the cloud; the other is physical hardware that genuinely breaks.</span>
     </p>
+    <div class="contact-list" aria-label="Contact information">
+      <div class="contact-item">
+        <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg>
+        <a class="contact-link" href="mailto:hotrabbit1016@gmail.com">hotrabbit1016@gmail.com</a>
+        <button class="copy-btn" type="button" data-copy="hotrabbit1016@gmail.com" data-label-zh="複製 Email" data-label-en="Copy email" aria-label="複製 Email">
+          <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 16H8V7h11v14Z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 16.2-4.2-4.2-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"/></svg>
+          <span class="copy-feedback" aria-hidden="true"><span class="l-zh">已複製</span><span class="l-en">Copied</span></span>
+        </button>
+      </div>
+      <div class="contact-item">
+        <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.46 15.46 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2Z"/></svg>
+        <a class="contact-link" href="tel:+886955684107">+886 955 684 107</a>
+        <button class="copy-btn" type="button" data-copy="+886 955 684 107" data-label-zh="複製電話" data-label-en="Copy phone number" aria-label="複製電話">
+          <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 16H8V7h11v14Z"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 16.2-4.2-4.2-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2Z"/></svg>
+          <span class="copy-feedback" aria-hidden="true"><span class="l-zh">已複製</span><span class="l-en">Copied</span></span>
+        </button>
+      </div>
+    </div>
+    <span class="sr-only" id="copyAnnouncement" aria-live="polite"></span>
     <div class="chips">
       <span class="chip">C# / .NET</span><span class="chip">Go</span><span class="chip">Python</span>
       <span class="chip">Redis</span><span class="chip">ClickHouse</span><span class="chip">Kubernetes</span>
@@ -425,14 +477,6 @@
     <div class="cta">
       <a class="btn btn-primary" href="resume.pdf" download>
         <span class="l-zh">下載履歷 PDF</span><span class="l-en">Download résumé</span>
-      </a>
-      <a class="btn btn-ghost" href="mailto:hotrabbit1016@gmail.com" aria-label="Email hotrabbit1016@gmail.com">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg>
-        hotrabbit1016@gmail.com
-      </a>
-      <a class="btn btn-ghost" href="tel:+886955684107" aria-label="Call +886 955 684 107">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.46 15.46 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2Z"/></svg>
-        +886 955 684 107
       </a>
     </div>
   </section>
@@ -1077,6 +1121,7 @@ consumer group → ClickHouse operation_logs</code></pre>
 <script>
 (function () {
   var html = document.documentElement;
+  var copyBtns = Array.prototype.slice.call(document.querySelectorAll('.copy-btn'));
 
   // ----- 列印前展開所有 details，列印後還原 -----
   function eachDetails(fn) { Array.prototype.forEach.call(document.querySelectorAll('details'), fn); }
@@ -1094,6 +1139,7 @@ consumer group → ClickHouse operation_logs</code></pre>
     html.setAttribute('lang', l === 'zh' ? 'zh-Hant' : 'en');
     langBtn.textContent = l === 'zh' ? 'EN' : '中';
     langBtn.setAttribute('aria-label', l === 'zh' ? 'Switch to English' : '切換為繁體中文');
+    copyBtns.forEach(function (btn) { btn.setAttribute('aria-label', btn.dataset[l === 'zh' ? 'labelZh' : 'labelEn']); });
     if (persist) { try { localStorage.setItem('lang', l); } catch (e) {} }
   }
   var urlLang = new URLSearchParams(location.search).get('lang');
@@ -1105,6 +1151,39 @@ consumer group → ClickHouse operation_logs</code></pre>
   setLang(initLang, false);
   langBtn.addEventListener('click', function () {
     setLang(html.getAttribute('data-lang') === 'zh' ? 'en' : 'zh', true);
+  });
+
+  // ----- copy contact details -----
+  var copyAnnouncement = document.getElementById('copyAnnouncement');
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+    return new Promise(function (resolve, reject) {
+      var field = document.createElement('textarea');
+      field.value = text;
+      field.setAttribute('readonly', '');
+      field.style.position = 'fixed';
+      field.style.opacity = '0';
+      document.body.appendChild(field);
+      field.select();
+      try { document.execCommand('copy') ? resolve() : reject(); }
+      catch (e) { reject(e); }
+      document.body.removeChild(field);
+    });
+  }
+  copyBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      copyText(btn.dataset.copy).then(function () {
+        copyBtns.forEach(function (other) { other.classList.remove('copied'); });
+        btn.classList.add('copied');
+        var zh = html.getAttribute('data-lang') === 'zh';
+        copyAnnouncement.textContent = zh ? '已複製：' + btn.dataset.copy : 'Copied: ' + btn.dataset.copy;
+        clearTimeout(btn.copyTimer);
+        btn.copyTimer = setTimeout(function () { btn.classList.remove('copied'); }, 1600);
+      }).catch(function () {
+        copyAnnouncement.textContent = html.getAttribute('data-lang') === 'zh'
+          ? '複製失敗，請手動選取文字' : 'Copy failed. Please select the text manually.';
+      });
+    });
   });
 
   // ----- theme -----
