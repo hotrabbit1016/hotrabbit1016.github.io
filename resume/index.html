@@ -155,25 +155,23 @@
   .sechint { color: var(--soft); max-width: 74ch; margin: -6px 0 20px; font-size: .97rem; }
 
   /* ---------- hero ---------- */
-  .hero {
-    padding-top: 68px; display: grid;
-    grid-template-columns: minmax(0, 1fr) 176px; column-gap: 42px; align-items: start;
-  }
+  .hero { padding-top: 68px; }
+  .identity-row { display: flex; align-items: center; gap: 20px; margin-bottom: 6px; }
   .hero h1 {
-    font-size: clamp(2.1rem, 6vw, 3.15rem); margin: 0 0 6px;
-    letter-spacing: 1px; line-height: 1.2; grid-column: 1; grid-row: 1;
+    font-size: clamp(2.1rem, 6vw, 3.15rem); margin: 0;
+    letter-spacing: 1px; line-height: 1.2;
   }
-  .hero .alt { color: var(--faint); font-size: 1rem; letter-spacing: 2px; margin-bottom: 18px; grid-column: 1; grid-row: 2; }
-  .hero .role { font-size: 1.15rem; color: var(--accent); font-weight: 600; margin-bottom: 14px; grid-column: 1; grid-row: 3; }
-  .hero .pitch { font-size: 1.12rem; color: var(--soft); max-width: 63ch; margin-bottom: 17px; grid-column: 1; grid-row: 4; }
-  .hero-avatar {
-    grid-column: 2; grid-row: 1 / span 5; width: 176px; height: 176px;
-    object-fit: cover; object-position: center; border: 1px solid var(--line);
-    border-radius: 22px; box-shadow: var(--shadow);
+  .avatar-frame {
+    width: 96px; height: 96px; flex: none; overflow: hidden; border-radius: 50%;
+    border: 2px solid var(--panel); outline: 1px solid var(--line); box-shadow: var(--shadow);
   }
+  .hero-avatar { width: 100%; height: 100%; object-fit: cover; transform: scale(1.75); transform-origin: 68% 35%; }
+  .hero .alt { color: var(--faint); font-size: 1rem; letter-spacing: 2px; margin-bottom: 18px; }
+  .hero .role { font-size: 1.15rem; color: var(--accent); font-weight: 600; margin-bottom: 14px; }
+  .hero .pitch { font-size: 1.12rem; color: var(--soft); max-width: 63ch; margin-bottom: 17px; }
   .contact-list {
     display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px;
-    margin: 0 0 24px; color: var(--soft); font-size: .93rem; grid-column: 1; grid-row: 5;
+    margin: 0 0 24px; color: var(--soft); font-size: .93rem;
   }
   .contact-item { display: inline-flex; align-items: center; gap: 7px; min-width: 0; }
   .contact-item + .contact-item { border-left: 1px solid var(--line); padding-left: 20px; }
@@ -199,12 +197,12 @@
     opacity: 0; pointer-events: none;
   }
   .copy-btn.copied .copy-feedback { opacity: 1; }
-  .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 30px; grid-column: 1; grid-row: 6; }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 30px; }
   .chip {
     background: var(--chip); border: 1px solid var(--line); color: var(--soft);
     border-radius: 5px; padding: 3px 10px; font-size: .82rem; white-space: nowrap;
   }
-  .cta { display: flex; flex-wrap: wrap; gap: 11px; grid-column: 1; grid-row: 7; }
+  .cta { display: flex; flex-wrap: wrap; gap: 11px; }
   .btn {
     display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
     border-radius: 7px; padding: 10px 19px; font-size: .93rem; font-weight: 600;
@@ -400,10 +398,9 @@
     main { padding: 0 16px 70px; }
     section { padding-top: 46px; }
     .proj { padding: 17px 16px; }
-    .hero { padding-top: 46px; grid-template-columns: minmax(0, 1fr) 104px; column-gap: 16px; }
-    .hero-avatar { width: 104px; height: 104px; border-radius: 16px; grid-row: 1 / span 3; }
-    .hero .alt { font-size: .88rem; letter-spacing: 1px; }
-    .hero .pitch, .contact-list, .chips, .cta { grid-column: 1 / -1; }
+    .hero { padding-top: 46px; }
+    .identity-row { gap: 14px; }
+    .avatar-frame { width: 78px; height: 78px; }
   }
 
   @media (max-width: 560px) {
@@ -452,7 +449,10 @@
 <main id="main">
 
   <section class="hero" id="top">
-    <h1>吳承儒</h1>
+    <div class="identity-row">
+      <h1>吳承儒</h1>
+      <span class="avatar-frame"><img class="hero-avatar" src="avatar.png" alt="吳承儒 Jack Wu" width="360" height="360"></span>
+    </div>
     <div class="alt">Wu Cheng-Ju &nbsp;/&nbsp; Jack Wu</div>
     <div class="role"><span class="l-zh">後端工程師</span><span class="l-en">Backend Engineer</span></div>
     <p class="pitch">
@@ -479,7 +479,6 @@
         </button>
       </div>
     </div>
-    <img class="hero-avatar" src="avatar.png" alt="吳承儒 Jack Wu" width="360" height="360">
     <span class="sr-only" id="copyAnnouncement" aria-live="polite"></span>
     <div class="chips">
       <span class="chip">C# / .NET</span><span class="chip">Go</span><span class="chip">Python</span>
