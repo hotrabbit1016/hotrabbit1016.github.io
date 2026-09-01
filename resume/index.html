@@ -134,7 +134,24 @@
     border-bottom: 1.5px solid transparent;
   }
   .navlinks a:hover, .navlinks a.on { color: var(--ink); border-bottom-color: var(--accent); }
-  .toggles { display: flex; gap: 7px; }
+  .toggles { display: flex; align-items: center; gap: 11px; }
+  .lang-switch {
+    display: inline-flex; align-items: center; padding: 2px;
+    background: color-mix(in srgb, var(--chip) 72%, transparent);
+    border: 1px solid var(--line); border-radius: 999px;
+  }
+  .lang-option {
+    min-width: 42px; border: 0; border-radius: 999px; padding: 4px 10px;
+    background: transparent; color: var(--soft); cursor: pointer;
+    font-family: inherit; font-size: .8rem; line-height: 1.5; white-space: nowrap;
+  }
+  .lang-option:hover:not([aria-pressed="true"]) {
+    color: var(--ink); background: color-mix(in srgb, var(--panel) 55%, transparent);
+  }
+  .lang-option[aria-pressed="true"] {
+    background: var(--accent-soft); color: var(--accent); font-weight: 700;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent);
+  }
   .tbtn {
     background: var(--chip); color: var(--soft); border: 1px solid var(--line);
     border-radius: 999px; padding: 4px 11px; font-size: .8rem; cursor: pointer;
@@ -442,7 +459,10 @@
       <a href="#integration"><span class="l-zh">軟硬整合</span><span class="l-en">Integration</span></a>
     </nav>
     <div class="toggles">
-      <button class="tbtn" id="langBtn" type="button" aria-label="Switch language">EN</button>
+      <div class="lang-switch" role="group" aria-label="語言 / Language">
+        <button class="lang-option" type="button" data-lang="zh" aria-label="繁體中文" aria-pressed="true">中文</button>
+        <button class="lang-option" type="button" data-lang="en" aria-label="English" aria-pressed="false">EN</button>
+      </div>
       <button class="tbtn" id="themeBtn" type="button" aria-label="Switch colour theme">◐</button>
     </div>
   </div>
@@ -1160,12 +1180,13 @@ consumer group → ClickHouse operation_logs</code></pre>
   });
 
   // ----- language -----
-  var langBtn = document.getElementById('langBtn');
+  var langBtns = Array.prototype.slice.call(document.querySelectorAll('.lang-option'));
   function setLang(l, persist) {
     html.setAttribute('data-lang', l);
     html.setAttribute('lang', l === 'zh' ? 'zh-Hant' : 'en');
-    langBtn.textContent = l === 'zh' ? 'EN' : '中';
-    langBtn.setAttribute('aria-label', l === 'zh' ? 'Switch to English' : '切換為繁體中文');
+    langBtns.forEach(function (btn) {
+      btn.setAttribute('aria-pressed', btn.dataset.lang === l ? 'true' : 'false');
+    });
     copyBtns.forEach(function (btn) { btn.setAttribute('aria-label', btn.dataset[l === 'zh' ? 'labelZh' : 'labelEn']); });
     if (persist) { try { localStorage.setItem('lang', l); } catch (e) {} }
   }
@@ -1174,10 +1195,14 @@ consumer group → ClickHouse operation_logs</code></pre>
   try { savedLang = localStorage.getItem('lang'); } catch (e) {}
   var initLang = (urlLang === 'en' || urlLang === 'zh') ? urlLang
                : (savedLang === 'en' || savedLang === 'zh') ? savedLang
-               : (navigator.language || '').toLowerCase().indexOf('zh') === 0 ? 'zh' : 'zh';
+               : (navigator.language || '').toLowerCase().indexOf('zh') === 0 ? 'zh' : 'en';
   setLang(initLang, false);
-  langBtn.addEventListener('click', function () {
-    setLang(html.getAttribute('data-lang') === 'zh' ? 'en' : 'zh', true);
+  langBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var nextLang = btn.dataset.lang;
+      if (html.getAttribute('data-lang') === nextLang) return;
+      setLang(nextLang, true);
+    });
   });
 
   // ----- copy contact details -----
