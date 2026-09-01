@@ -210,6 +210,8 @@
   }
   .btn-primary { background: var(--accent); color: var(--bg); }
   .btn-primary:hover { opacity: .88; }
+  .btn-secondary { background: transparent; color: var(--accent); }
+  .btn-secondary:hover { background: var(--accent-soft); }
 
   /* ---------- skills ---------- */
   .skillgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 13px; }
@@ -486,8 +488,11 @@
       <span class="chip">SignalR</span><span class="chip">RabbitMQ</span><span class="chip">YOLO</span>
     </div>
     <div class="cta">
-      <a class="btn btn-primary" href="resume.pdf" download>
-        <span class="l-zh">下載履歷 PDF</span><span class="l-en">Download résumé</span>
+      <a class="btn btn-primary" href="resume.pdf" download="Jack-Wu-Resume-ZH.pdf">
+        <span class="l-zh">中文履歷 PDF</span><span class="l-en">Chinese Résumé PDF</span>
+      </a>
+      <a class="btn btn-secondary" href="resume-en.pdf" download="Jack-Wu-Resume-EN.pdf">
+        <span class="l-zh">英文履歷 PDF</span><span class="l-en">English Résumé PDF</span>
       </a>
     </div>
   </section>
@@ -1122,7 +1127,8 @@ consumer group → ClickHouse operation_logs</code></pre>
 
 <footer>
   <div class="flinks">
-    <a href="resume.pdf" download><span class="l-zh">履歷 PDF</span><span class="l-en">Résumé PDF</span></a>
+    <a href="resume.pdf" download="Jack-Wu-Resume-ZH.pdf"><span class="l-zh">中文履歷 PDF</span><span class="l-en">Chinese Résumé PDF</span></a>
+    <a href="resume-en.pdf" download="Jack-Wu-Resume-EN.pdf"><span class="l-zh">英文履歷 PDF</span><span class="l-en">English Résumé PDF</span></a>
     <a href="#top"><span class="l-zh">回到頂端</span><span class="l-en">Back to top</span></a>
   </div>
   <div>

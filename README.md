@@ -9,7 +9,9 @@
 | 檔案 | 說明 |
 |---|---|
 | `resume/index.html` | 整個網站。內嵌 CSS 與 JS，**零外部請求**，沒有建置步驟 |
-| `resume/resume.pdf` | 履歷（公開版，不含 email 與電話） |
+| `resume/resume.pdf` | 中文履歷 PDF（公開版） |
+| `resume/resume-en.pdf` | English resume PDF (public version) |
+| `generate_resume_pdfs.py` | 產生中、英文兩頁 A4 PDF 履歷的 ReportLab 腳本 |
 | `resume/og.png` | 分享預覽圖（1200×630） |
 | `resume/hintme/index.html` | 面試準備筆記。單檔、內嵌 CSS/JS，練習進度存 `localStorage` |
 | `.nojekyll` | 跳過 GitHub 的 Jekyll 處理，部署較快 |
@@ -40,6 +42,8 @@ Open Graph 標籤刻意留著 —— 那是給你貼連結時的預覽圖用的�
 
 直接編輯 `resume/index.html`，推上 `main` 就會自動部署（Pages 從 `main` 分支根目錄讀取），大約一到兩分鐘生效。
 
+PDF 履歷內容與版型由 `generate_resume_pdfs.py` 維護。修改後執行 `python generate_resume_pdfs.py`，會更新 `resume/resume.pdf` 與 `resume/resume-en.pdf`；兩份都應保持兩頁 A4。
+
 改網址時記得同步 `resume/index.html` 裡的 `canonical`、`og:url`、`og:image`、JSON-LD 的 `url`，以及 `sitemap.xml`。
 
 網站是繁中與英文兩份平行內容，用 `class="l-zh"` 與 `class="l-en"` 標記，靠 `<html data-lang>` 切換顯示。**改中文的時候記得同步改英文**，否則切語言會看到舊內容。
@@ -48,5 +52,5 @@ Open Graph 標籤刻意留著 —— 那是給你貼連結時的預覽圖用的�
 
 ## 注意
 
-- 頁面上**刻意不放 email 與電話**，聯絡管道只走 GitHub。要加聯絡方式前先想清楚：公開頁面上的信箱會被爬蟲收集。
-- `resume.pdf` 是公開版，聯絡資訊已移除、產業用詞改為中性。完整版履歷不在這個 repo 裡。
+- 頁面與兩份 PDF 都公開顯示 email 與電話，更新聯絡方式時三處要同步修改。
+- `resume.pdf` 必須保留為中文版檔名，避免既有公開連結失效；英文版使用 `resume-en.pdf`。
